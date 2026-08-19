@@ -4,413 +4,202 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>瞿德旺 - 视觉设计与AI应用实践者</title>
+
+<!-- ========== Google Fonts: Plus Jakarta Sans ========== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- ========== Tailwind CSS ========== -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', '"Helvetica Neue"', 'Arial', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+
+<!-- ========== Lucide Icons ========== -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
-/* ========== CSS Reset & Variables ========== */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --primary:#2D5F8A;
-  --primary-light:#4A8BC2;
-  --primary-dark:#1C3A5E;
-  --accent:#F28E2B;
-  --accent-light:#F5A84E;
-  --bg:#FFFFFF;
-  --bg-card:#F7F9FC;
-  --bg-nav:rgba(255,255,255,0.92);
-  --text:#2E3440;
-  --text-muted:#6B7280;
-  --text-light:#9CA3AF;
-  --border:#E5E7EB;
-  --shadow:0 4px 24px rgba(0,0,0,0.08);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.12);
-  --radius:12px;
-  --radius-sm:8px;
-  --transition:200ms cubic-bezier(0.4,0,0.2,1);
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
-  --nav-h:64px;
-}
-@media(prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0F172A;
-    --bg-card:#1E293B;
-    --bg-nav:rgba(15,23,42,0.95);
-    --text:#E2E8F0;
-    --text-muted:#94A3B8;
-    --text-light:#64748B;
-    --border:#334155;
-    --shadow:0 4px 24px rgba(0,0,0,0.3);
-    --shadow-hover:0 8px 32px rgba(0,0,0,0.4);
-  }
-}
-[data-theme="dark"]{
-  --bg:#0F172A;
-  --bg-card:#1E293B;
-  --bg-nav:rgba(15,23,42,0.95);
-  --text:#E2E8F0;
-  --text-muted:#94A3B8;
-  --text-light:#64748B;
-  --border:#334155;
-  --shadow:0 4px 24px rgba(0,0,0,0.3);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.4);
-}
-[data-theme="light"]{
-  --bg:#FFFFFF;
-  --bg-card:#F7F9FC;
-  --bg-nav:rgba(255,255,255,0.92);
-  --text:#2E3440;
-  --text-muted:#6B7280;
-  --text-light:#9CA3AF;
-  --border:#E5E7EB;
-  --shadow:0 4px 24px rgba(0,0,0,0.08);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.12);
-}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:rgba(34,211,238,.25);color:#fff}
 
-/* ========== Base ========== */
-html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h)}
-body{
-  font-family:var(--font);
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.7;
-  -webkit-font-smoothing:antialiased;
-  transition:background var(--transition),color var(--transition);
-}
-a{color:var(--primary);text-decoration:none;transition:color var(--transition)}
-a:hover{color:var(--accent)}
-img{max-width:100%;display:block}
+/* 细滚动条 */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(148,163,184,.2);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.35)}
 
-/* ========== Nav ========== */
-.nav{
-  position:fixed;top:0;left:0;right:0;height:var(--nav-h);
-  background:var(--bg-nav);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  z-index:1000;
-  transition:all var(--transition);
-}
-.nav-inner{
-  max-width:1100px;margin:0 auto;padding:0 24px;
-  height:100%;display:flex;align-items:center;justify-content:space-between;
-}
-.nav-brand{font-size:1.25rem;font-weight:700;color:var(--primary);letter-spacing:-0.5px}
-.nav-links{display:flex;gap:8px;align-items:center}
-.nav-link{
-  padding:6px 14px;border-radius:20px;font-size:0.875rem;font-weight:500;
-  color:var(--text-muted);transition:all var(--transition);cursor:pointer;border:none;background:none;
-}
-.nav-link:hover,.nav-link.active{color:var(--primary);background:rgba(45,95,138,0.1)}
-.nav-actions{display:flex;gap:6px;align-items:center}
-.nav-btn{
-  width:36px;height:36px;border-radius:50%;border:1px solid var(--border);
-  background:var(--bg);color:var(--text-muted);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all var(--transition);font-size:1rem;
-}
-.nav-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
-
-/* ========== Hero ========== */
-.hero{
-  padding:120px 24px 60px;
-  max-width:1100px;margin:0 auto;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
-}
-.hero-avatar{
-  width:100px;height:100px;border-radius:50%;
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.5rem;font-weight:700;color:#fff;
-  margin-bottom:20px;
-  box-shadow:0 8px 32px rgba(45,95,138,0.3);
-}
-.hero h1{font-size:2.5rem;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
-.hero h1 span{color:var(--primary)}
-.hero .subtitle{font-size:1.125rem;color:var(--text-muted);margin-bottom:16px}
-.hero .tagline{
-  font-size:1rem;color:var(--text-muted);max-width:600px;margin-bottom:24px;
-  line-height:1.8;
-}
-.hero-contact{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
-.contact-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 18px;border-radius:24px;font-size:0.875rem;font-weight:500;
-  border:1px solid var(--border);background:var(--bg);color:var(--text);
-  cursor:pointer;transition:all var(--transition);
-}
-.contact-btn:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px)}
-.hero-badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.badge{
-  padding:5px 14px;border-radius:20px;font-size:0.8rem;font-weight:500;
-  background:linear-gradient(135deg,rgba(45,95,138,0.1),rgba(45,95,138,0.05));
-  color:var(--primary);border:1px solid rgba(45,95,138,0.15);
-}
-
-/* ========== Section ========== */
-.section{padding:60px 24px;max-width:1100px;margin:0 auto}
-.section-title{
-  font-size:1.5rem;font-weight:700;margin-bottom:32px;
-  display:flex;align-items:center;gap:10px;
-}
-.section-title::before{
-  content:'';width:4px;height:28px;border-radius:2px;
-  background:linear-gradient(180deg,var(--primary),var(--accent));
-}
-
-/* ========== Highlights ========== */
-.highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-.highlight-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;text-align:center;transition:all var(--transition);position:relative;overflow:hidden;
-}
-.highlight-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--primary),var(--accent));
-  transform:scaleX(0);transition:transform var(--transition);transform-origin:left;
-}
-.highlight-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
-.highlight-card:hover::before{transform:scaleX(1)}
-.highlight-num{font-size:2.25rem;font-weight:800;color:var(--primary);line-height:1}
-.highlight-label{font-size:0.875rem;color:var(--text-muted);margin-top:6px}
-
-/* ========== Tabs ========== */
-.tabs-wrapper{margin-bottom:24px}
-.tab-nav{
-  display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:24px;
-  overflow-x:auto;padding-bottom:0;
-}
-.tab-btn{
-  padding:10px 20px;border:none;background:none;cursor:pointer;
-  font-size:0.9375rem;font-weight:500;color:var(--text-muted);
-  border-bottom:2px solid transparent;margin-bottom:-2px;
-  transition:all var(--transition);white-space:nowrap;
-}
-.tab-btn:hover{color:var(--primary)}
-.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
-.tab-panel{display:none;animation:fadeIn 300ms ease}
-.tab-panel.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* ========== Experience / Project Cards ========== */
-.timeline{position:relative;padding-left:24px}
-.timeline::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:1px;
-}
-.timeline-item{position:relative;margin-bottom:32px}
-.timeline-item::before{
-  content:'';position:absolute;left:-28px;top:6px;width:10px;height:10px;
-  border-radius:50%;background:var(--primary);border:2px solid var(--bg);
-  box-shadow:0 0 0 3px var(--primary);
-}
-.timeline-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.timeline-title{font-size:1.125rem;font-weight:600}
-.timeline-meta{font-size:0.8125rem;color:var(--text-muted);display:flex;gap:12px;align-items:center}
-.timeline-body ul{list-style:none;padding:0}
-.timeline-body li{
-  position:relative;padding-left:18px;margin-bottom:6px;font-size:0.9375rem;color:var(--text);
-}
-.timeline-body li::before{
-  content:'';position:absolute;left:0;color:var(--accent);font-weight:700;
-}
-
-/* ========== Project Cards ========== */
-.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.project-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;transition:all var(--transition);display:flex;flex-direction:column;
-}
-.project-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
-.project-card h4{font-size:1.0625rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.project-card h4::before{content:'';width:3px;height:16px;border-radius:2px;background:var(--accent)}
-.project-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.project-tag{
-  padding:2px 10px;border-radius:12px;font-size:0.75rem;font-weight:500;
-  background:rgba(242,142,43,0.1);color:var(--accent);
-}
-.project-card p{font-size:0.9375rem;color:var(--text-muted);flex:1}
-
-/* ========== Skills ========== */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
-.skill-category h4{font-size:1rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.skill-category h4::before{content:'';width:3px;height:18px;border-radius:2px;background:var(--accent)}
-.skill-bar-wrap{margin-bottom:14px}
-.skill-bar-header{display:flex;justify-content:space-between;font-size:0.875rem;margin-bottom:4px}
-.skill-bar-label{font-weight:500}
-.skill-bar-pct{color:var(--text-muted)}
-.skill-bar{
-  height:8px;background:var(--border);border-radius:4px;overflow:hidden;
-}
-.skill-bar-fill{
-  height:100%;border-radius:4px;
-  background:linear-gradient(90deg,var(--primary),var(--accent));
-  width:0;transition:width 1s cubic-bezier(0.4,0,0.2,1);
-}
-
-/* ========== Education & Certs ========== */
-.edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.edu-card,.cert-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;transition:all var(--transition);
-}
-.edu-card:hover,.cert-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-.edu-card h4,.cert-card h4{font-size:1.0625rem;font-weight:600;margin-bottom:6px}
-.edu-card .meta,.cert-card .meta{font-size:0.8125rem;color:var(--text-muted);margin-bottom:8px}
-.edu-card p,.cert-card p{font-size:0.9375rem;color:var(--text-muted);line-height:1.7}
-
-/* ========== Footer ========== */
-.footer{
-  text-align:center;padding:40px 24px;font-size:0.8125rem;color:var(--text-muted);
-  border-top:1px solid var(--border);margin-top:40px;
-}
-
-/* ========== Back to Top ========== */
-.back-top{
-  position:fixed;bottom:30px;right:30px;width:44px;height:44px;
-  border-radius:50%;background:var(--primary);color:#fff;border:none;
-  cursor:pointer;font-size:1.25rem;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 16px rgba(45,95,138,0.3);
-  opacity:0;transform:translateY(20px);
-  transition:all var(--transition);pointer-events:none;z-index:999;
-}
-.back-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
-.back-top:hover{background:var(--accent);transform:translateY(-2px)}
-
-/* ========== Toast ========== */
-.toast{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:var(--primary-dark);color:#fff;padding:10px 24px;border-radius:24px;
-  font-size:0.875rem;font-weight:500;opacity:0;pointer-events:none;
-  transition:all 300ms ease;z-index:1001;
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ========== Print ========== */
-@media print{
-  .nav,.back-top,.tab-btn,.hero-badges,.contact-btn,.nav-actions{display:none!important}
-  .nav{position:static!important;height:auto!important}
-  .tab-panel{display:block!important;page-break-inside:avoid}
-  .tab-panel:not(:first-child){margin-top:24px}
-  body{background:#fff;color:#000}
-  .hero{padding-top:40px}
-  .section{padding:24px 0}
-  .highlight-card,.project-card,.edu-card,.cert-card{break-inside:avoid;border:none;box-shadow:none}
-  .skill-bar-fill{background:var(--primary)!important}
-}
-
-/* ========== Responsive ========== */
-@media(max-width:768px){
-  .nav-links{display:none}
-  .hero h1{font-size:2rem}
-  .hero .tagline{font-size:0.9375rem}
-  .section{padding:40px 16px}
-  .timeline-header{flex-direction:column}
-  .project-grid{grid-template-columns:1fr}
-}
-
-/* ========== Reduced Motion ========== */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:0.01ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:0.01ms!important;
-    scroll-behavior:instant!important;
-  }
-}
-
-/* ========== Scroll Reveal ========== */
-.reveal{opacity:0;transform:translateY(24px);transition:all 600ms cubic-bezier(0.4,0,0.2,1)}
+/* 滚动浮现 */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
+
+/* 技能条动画 */
+.skill-bar-fill{width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
+
+/* Toast */
+#toast{opacity:0;transform:translate(-50%,16px);pointer-events:none;transition:opacity .3s ease,transform .3s ease}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* 打印适配 */
+@media print{
+  body{background:#fff!important}
+  .no-print,.glow-blob{display:none!important}
+  .print-block{background:#fff!important;border-color:#e2e8f0!important;backdrop-filter:none!important}
+  .print-block *{color:#0f172a!important;text-shadow:none!important}
+  .skill-bar-fill{background:#0891b2!important}
+}
 </style>
 </head>
-<body>
+
+<body class="bg-[#030712] font-sans text-slate-300 antialiased overflow-x-hidden min-h-screen">
+
+<!-- ========== 背景光斑 ========== -->
+<div class="glow-blob pointer-events-none fixed -top-48 -left-48 z-0 h-[560px] w-[560px] rounded-full bg-cyan-500 opacity-[0.12] blur-[140px]" aria-hidden="true"></div>
+<div class="glow-blob pointer-events-none fixed -bottom-56 -right-48 z-0 h-[620px] w-[620px] rounded-full bg-indigo-600 opacity-[0.13] blur-[140px]" aria-hidden="true"></div>
 
 <!-- ========== NAV ========== -->
-<nav class="nav" id="nav">
-  <div class="nav-inner">
-    <a href="#hero" class="nav-brand">瞿德旺</a>
-    <div class="nav-links" id="navLinks">
-      <button class="nav-link active" data-target="hero">首页</button>
-      <button class="nav-link" data-target="highlights">亮点</button>
-      <button class="nav-link" data-target="experience">经历</button>
-      <button class="nav-link" data-target="projects">项目</button>
-      <button class="nav-link" data-target="skills">技能</button>
-      <button class="nav-link" data-target="education">教育</button>
+<nav class="no-print fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#030712]/70 backdrop-blur-xl">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+    <a href="#hero" class="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-white">
+      <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-indigo-500 text-sm font-extrabold text-slate-950 shadow-[0_0_18px_rgba(34,211,238,0.35)]">德</span>
+      瞿德旺
+    </a>
+    <div class="hidden items-center gap-1 md:flex" id="navLinks">
+      <button class="nav-link rounded-full px-3.5 py-1.5 text-sm font-medium text-slate-400 transition-all duration-200 hover:bg-white/[0.06] hover:text-cyan-300 active" data-target="hero">首页</button>
+      <button class="nav-link rounded-full px-3.5 py-1.5 text-sm font-medium text-slate-400 transition-all duration-200 hover:bg-white/[0.06] hover:text-cyan-300" data-target="highlights">亮点</button>
+      <button class="nav-link rounded-full px-3.5 py-1.5 text-sm font-medium text-slate-400 transition-all duration-200 hover:bg-white/[0.06] hover:text-cyan-300" data-target="experience">经历</button>
+      <button class="nav-link rounded-full px-3.5 py-1.5 text-sm font-medium text-slate-400 transition-all duration-200 hover:bg-white/[0.06] hover:text-cyan-300" data-target="projects">项目</button>
+      <button class="nav-link rounded-full px-3.5 py-1.5 text-sm font-medium text-slate-400 transition-all duration-200 hover:bg-white/[0.06] hover:text-cyan-300" data-target="skills">技能</button>
+      <button class="nav-link rounded-full px-3.5 py-1.5 text-sm font-medium text-slate-400 transition-all duration-200 hover:bg-white/[0.06] hover:text-cyan-300" data-target="education">教育</button>
     </div>
-    <div class="nav-actions">
-      <button class="nav-btn" id="themeToggle" title="切换主题"></button>
-      <button class="nav-btn" id="printBtn" title="打印简历">️</button>
-    </div>
+    <button id="printBtn" title="打印简历"
+      class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-400 transition-all duration-300 hover:border-cyan-400/40 hover:text-cyan-300 hover:shadow-[0_0_18px_rgba(34,211,238,0.25)]">
+      <i data-lucide="printer" class="h-4 w-4"></i>
+    </button>
   </div>
 </nav>
 
-<!-- ========== HERO ========== -->
-<section class="hero" id="hero">
-  <div class="hero-avatar">德</div>
-  <h1>瞿德旺 <span>|</span> 视觉设计与AI应用实践者</h1>
-  <p class="subtitle">PPT设计 · AI工具 · 视觉叙事 · 团队协作</p>
-  <p class="tagline">
-    中南林业科技大学在读本科生，热衷于将视觉设计美学与AI前沿技术深度融合。
-    擅长通过PPT视觉叙事、提示词工程与AI辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，
-    持续提升团队内容生产效率与数字化表达能力。
-  </p>
-  <div class="hero-contact">
-    <button class="contact-btn" data-copy="19720817095"> 19720817095</button>
-    <button class="contact-btn" data-copy="【待补】" title="邮箱地址待补充">️ 邮箱：【待补】</button>
-    <button class="contact-btn" data-copy="【待补】" title="GitHub/LinkedIn待补充"> GitHub / LinkedIn</button>
-  </div>
-  <div class="hero-badges" id="heroBadges"></div>
-</section>
+<main class="relative z-10">
 
-<!-- ========== HIGHLIGHTS ========== -->
-<section class="section" id="highlights">
-  <h2 class="section-title reveal">亮点成果</h2>
-  <div class="highlights" id="highlightsGrid"></div>
-</section>
+  <!-- ========== HERO ========== -->
+  <section id="hero" class="mx-auto flex max-w-6xl flex-col items-center px-4 pb-16 pt-32 text-center sm:px-6 sm:pt-36">
+    <div class="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-500 text-4xl font-extrabold text-slate-950 shadow-[0_0_45px_rgba(34,211,238,0.35)] ring-4 ring-white/10">德</div>
+    <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">瞿德旺 <span class="mx-1 text-cyan-400/70">|</span> 视觉设计与AI应用实践者</h1>
+    <p class="mt-4 text-base font-semibold tracking-wide text-cyan-400 sm:text-lg">PPT设计 · AI工具 · 视觉叙事 · 团队协作</p>
+    <p class="mt-5 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base sm:leading-8">
+      中南林业科技大学在读本科生，热衷于将视觉设计美学与AI前沿技术深度融合。
+      擅长通过PPT视觉叙事、提示词工程与AI辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，
+      持续提升团队内容生产效率与数字化表达能力。
+    </p>
 
-<!-- ========== EXPERIENCE ========== -->
-<section class="section" id="experience">
-  <h2 class="section-title reveal">经历</h2>
-  <div class="tabs-wrapper">
-    <div class="tab-nav" role="tablist" id="expTabs">
-      <button class="tab-btn active" role="tab" data-tab="campus" aria-selected="true">校园实践</button>
-      <button class="tab-btn" role="tab" data-tab="course" aria-selected="false">课程项目</button>
+    <div class="no-print mt-8 flex flex-wrap items-center justify-center gap-3">
+      <button class="contact-btn group flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/60 px-5 py-2.5 text-sm font-medium text-slate-300 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-400/40 hover:text-cyan-300 hover:shadow-[0_0_24px_rgba(34,211,238,0.25)]" data-copy="19720817095">
+        <i data-lucide="phone" class="h-4 w-4 text-cyan-400"></i> 19720817095
+      </button>
+      <button class="contact-btn group flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/60 px-5 py-2.5 text-sm font-medium text-slate-300 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-400/40 hover:text-cyan-300 hover:shadow-[0_0_24px_rgba(34,211,238,0.25)]" data-copy="【待补】" title="邮箱地址待补充">
+        <i data-lucide="mail" class="h-4 w-4 text-cyan-400"></i> 邮箱：【待补】
+      </button>
+      <button class="contact-btn group flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/60 px-5 py-2.5 text-sm font-medium text-slate-300 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-400/40 hover:text-cyan-300 hover:shadow-[0_0_24px_rgba(34,211,238,0.25)]" data-copy="【待补】" title="GitHub/LinkedIn待补充">
+        <i data-lucide="github" class="h-4 w-4 text-cyan-400"></i> GitHub / LinkedIn
+      </button>
     </div>
-    <div class="tab-panel active" id="panel-campus" role="tabpanel"></div>
-    <div class="tab-panel" id="panel-course" role="tabpanel"></div>
-  </div>
-</section>
 
-<!-- ========== PROJECTS ========== -->
-<section class="section" id="projects">
-  <h2 class="section-title reveal">项目经历</h2>
-  <div class="project-grid" id="projectGrid"></div>
-</section>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-2" id="heroBadges"></div>
+  </section>
 
-<!-- ========== SKILLS ========== -->
-<section class="section" id="skills">
-  <h2 class="section-title reveal">技能矩阵</h2>
-  <div class="skills-grid" id="skillsGrid"></div>
-</section>
+  <!-- ========== HIGHLIGHTS ========== -->
+  <section id="highlights" class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <h2 class="reveal mb-8 flex items-center gap-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+      <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/10">
+        <i data-lucide="trophy" class="h-5 w-5 text-cyan-400"></i>
+      </span>
+      亮点成果
+    </h2>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" id="highlightsGrid"></div>
+  </section>
 
-<!-- ========== EDUCATION ========== -->
-<section class="section" id="education">
-  <h2 class="section-title reveal">教育与证书</h2>
-  <div class="edu-grid" id="eduGrid"></div>
-</section>
+  <!-- ========== EXPERIENCE ========== -->
+  <section id="experience" class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <h2 class="reveal mb-8 flex items-center gap-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+      <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/10">
+        <i data-lucide="briefcase" class="h-5 w-5 text-cyan-400"></i>
+      </span>
+      经历
+    </h2>
+    <div class="reveal mb-8 inline-flex max-w-full gap-1 overflow-x-auto rounded-full border border-white/10 bg-slate-900/60 p-1 backdrop-blur-xl" role="tablist" id="expTabs">
+      <button class="tab-btn whitespace-nowrap rounded-full bg-gradient-to-r from-cyan-500/90 to-indigo-500/90 px-5 py-2 text-sm font-semibold text-white shadow-[0_0_18px_rgba(34,211,238,0.25)] transition-all duration-300 active" role="tab" data-tab="campus" aria-selected="true">校园实践</button>
+      <button class="tab-btn whitespace-nowrap rounded-full px-5 py-2 text-sm font-medium text-slate-400 transition-all duration-300 hover:text-cyan-300" role="tab" data-tab="course" aria-selected="false">课程项目</button>
+    </div>
+    <div class="tab-panel" id="panel-campus" role="tabpanel"></div>
+    <div class="tab-panel hidden" id="panel-course" role="tabpanel"></div>
+  </section>
 
-<!-- ========== FOOTER ========== -->
-<footer class="footer">
-  <p>© 2026 瞿德旺 · 视觉设计与AI应用实践者 · 最后更新于 2026年8月</p>
-</footer>
+  <!-- ========== PROJECTS ========== -->
+  <section id="projects" class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <h2 class="reveal mb-8 flex items-center gap-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+      <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/10">
+        <i data-lucide="rocket" class="h-5 w-5 text-cyan-400"></i>
+      </span>
+      项目经历
+    </h2>
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2" id="projectGrid"></div>
+  </section>
+
+  <!-- ========== SKILLS ========== -->
+  <section id="skills" class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <h2 class="reveal mb-8 flex items-center gap-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+      <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/10">
+        <i data-lucide="layers" class="h-5 w-5 text-cyan-400"></i>
+      </span>
+      技能矩阵
+    </h2>
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3" id="skillsGrid"></div>
+  </section>
+
+  <!-- ========== EDUCATION ========== -->
+  <section id="education" class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <h2 class="reveal mb-8 flex items-center gap-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+      <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/10">
+        <i data-lucide="graduation-cap" class="h-5 w-5 text-cyan-400"></i>
+      </span>
+      教育与证书
+    </h2>
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2" id="eduGrid"></div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="mt-10 border-t border-white/[0.06] px-6 py-10 text-center text-xs text-slate-500">
+    <p>© 2026 瞿德旺 · 视觉设计与AI应用实践者 · 最后更新于 2026年8月</p>
+  </footer>
+</main>
 
 <!-- ========== BACK TO TOP ========== -->
-<button class="back-top" id="backTop" title="返回顶部">↑</button>
+<button id="backTop" title="返回顶部"
+  class="no-print fixed bottom-8 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-cyan-400/30 bg-slate-900/70 text-cyan-300 opacity-0 backdrop-blur-xl transition-all duration-300 hover:shadow-[0_0_24px_rgba(34,211,238,0.4)] hover:-translate-y-1 pointer-events-none sm:right-8">
+  <i data-lucide="arrow-up" class="h-5 w-5"></i>
+</button>
 
 <!-- ========== TOAST ========== -->
-<div class="toast" id="toast"></div>
+<div id="toast" class="fixed bottom-8 left-1/2 z-50 flex items-center gap-2.5 rounded-full border border-white/10 bg-slate-900/70 px-5 py-3 text-sm font-medium text-slate-200 shadow-[0_8px_32px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+  <i data-lucide="check-circle-2" class="h-4 w-4 text-cyan-400"></i>
+  <span id="toastMsg"></span>
+</div>
 
 <script>
-/* ========== Resume Data ========== */
+/* ========== Resume Data（原始数据，保持不变） ========== */
 const resume = {
   name: "瞿德旺",
   title: "视觉设计与AI应用实践者",
@@ -425,10 +214,10 @@ const resume = {
     desc: "保持优异的学业成绩，积极参与各类校园实践与技能拓展活动，注重综合素质的全面提升。"
   },
   highlights: [
-    { num: "10+", label: "场大型活动PPT设计" },
-    { num: "30%", label: "内容筹备周期缩短" },
-    { num: "5+", label: "场内部技能分享会" },
-    { num: "1", label: "阿里巴巴AI训练师认证" }
+    { num: "10+", label: "场大型活动PPT设计", icon: "presentation" },
+    { num: "30%", label: "内容筹备周期缩短", icon: "timer" },
+    { num: "5+", label: "场内部技能分享会", icon: "mic" },
+    { num: "1", label: "阿里巴巴AI训练师认证", icon: "badge-check" }
   ],
   skills: {
     "设计工具": [
@@ -501,6 +290,9 @@ const resume = {
   ]
 };
 
+/* 技能分类图标 */
+const skillIcons = { "设计工具": "palette", "AI与工具": "cpu", "软技能": "users" };
+
 /* ========== Render Functions ========== */
 function renderHeroBadges() {
   const badges = resume.skills;
@@ -508,61 +300,76 @@ function renderHeroBadges() {
   const allSkills = [];
   Object.values(badges).forEach(arr => arr.forEach(s => allSkills.push(s.name.split('（')[0].split('/')[0].trim())));
   const unique = [...new Set(allSkills.slice(0, 8))];
-  container.innerHTML = unique.map(s => `<span class="badge">${s}</span>`).join('');
+  container.innerHTML = unique.map(s =>
+    `<span class="flex items-center gap-1.5 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3.5 py-1.5 text-xs font-medium text-cyan-300">
+       <i data-lucide="sparkles" class="h-3 w-3"></i>${s}
+     </span>`).join('');
 }
 
 function renderHighlights() {
   const grid = document.getElementById('highlightsGrid');
   grid.innerHTML = resume.highlights.map(h => `
-    <div class="highlight-card reveal">
-      <div class="highlight-num">${h.num}</div>
-      <div class="highlight-label">${h.label}</div>
+    <div class="reveal print-block group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 p-6 text-center backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/30 hover:shadow-[0_0_36px_rgba(34,211,238,0.18)]">
+      <div class="mb-3 flex justify-center">
+        <span class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] transition-colors duration-300 group-hover:border-cyan-400/30 group-hover:bg-cyan-500/10">
+          <i data-lucide="${h.icon}" class="h-[18px] w-[18px] text-cyan-400"></i>
+        </span>
+      </div>
+      <div class="bg-gradient-to-br from-cyan-300 via-sky-400 to-indigo-400 bg-clip-text text-4xl font-extrabold leading-none tracking-tight text-transparent sm:text-[2.75rem]">${h.num}</div>
+      <div class="mt-3 text-sm text-slate-400">${h.label}</div>
     </div>
   `).join('');
 }
 
 function renderExperience() {
-  const campusPanel = document.getElementById('panel-campus');
-  const coursePanel = document.getElementById('panel-course');
-  
-  campusPanel.innerHTML = `
-    <div class="timeline-item">
-      <div class="timeline-header">
-        <div>
-          <div class="timeline-title">${resume.experience.campus.title}</div>
-          <div class="timeline-meta"><span>${resume.experience.campus.role}</span></div>
+  const renderPanel = (key, panelId) => {
+    const exp = resume.experience[key];
+    document.getElementById(panelId).innerHTML = `
+      <div class="relative pl-8 sm:pl-10">
+        <span class="absolute left-[7px] top-2 bottom-2 w-px bg-gradient-to-b from-cyan-400/70 via-indigo-400/40 to-transparent" aria-hidden="true"></span>
+        <div class="reveal print-block relative rounded-2xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-xl transition-all duration-300 hover:border-cyan-400/25 hover:shadow-[0_0_30px_rgba(34,211,238,0.12)] sm:p-8">
+          <span class="absolute -left-[37px] top-8 h-3.5 w-3.5 rounded-full bg-cyan-400 shadow-[0_0_0_4px_rgba(34,211,238,0.2),0_0_14px_rgba(34,211,238,0.6)] sm:-left-[45px]" aria-hidden="true"></span>
+          <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h3 class="flex items-center gap-2.5 text-lg font-bold text-white">
+                <i data-lucide="building-2" class="h-5 w-5 text-cyan-400"></i>${exp.title}
+              </h3>
+              <p class="mt-1.5 flex items-center gap-2 text-sm font-medium text-cyan-400">
+                <i data-lucide="user" class="h-4 w-4"></i>${exp.role}
+              </p>
+            </div>
+            <span class="flex w-fit items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-slate-400">
+              <i data-lucide="calendar" class="h-3.5 w-3.5 text-cyan-400"></i>${exp.period}
+            </span>
+          </div>
+          <ul class="space-y-3.5">
+            ${exp.items.map(i => `
+              <li class="flex gap-3 text-sm leading-7 text-slate-300">
+                <i data-lucide="chevron-right" class="mt-1.5 h-4 w-4 shrink-0 text-cyan-400/80"></i>
+                <span>${i}</span>
+              </li>`).join('')}
+          </ul>
         </div>
-        <div class="timeline-meta"><span>${resume.experience.campus.period}</span></div>
-      </div>
-      <div class="timeline-body">
-        <ul>${resume.experience.campus.items.map(i => `<li>${i}</li>`).join('')}</ul>
-      </div>
-    </div>
-  `;
-  
-  coursePanel.innerHTML = `
-    <div class="timeline-item">
-      <div class="timeline-header">
-        <div>
-          <div class="timeline-title">${resume.experience.course.title}</div>
-          <div class="timeline-meta"><span>${resume.experience.course.role}</span></div>
-        </div>
-        <div class="timeline-meta"><span>${resume.experience.course.period}</span></div>
-      </div>
-      <div class="timeline-body">
-        <ul>${resume.experience.course.items.map(i => `<li>${i}</li>`).join('')}</ul>
-      </div>
-    </div>
-  `;
+      </div>`;
+  };
+  renderPanel('campus', 'panel-campus');
+  renderPanel('course', 'panel-course');
 }
 
 function renderProjects() {
   const grid = document.getElementById('projectGrid');
   grid.innerHTML = resume.projects.map(p => `
-    <div class="project-card reveal">
-      <h4>${p.name}</h4>
-      <div class="project-tags">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
-      <p>${p.desc}</p>
+    <div class="reveal print-block group flex flex-col rounded-2xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/30 hover:shadow-[0_0_32px_rgba(34,211,238,0.15)] sm:p-7">
+      <h4 class="mb-4 flex items-center gap-2.5 text-base font-bold text-white">
+        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-indigo-400/20 bg-indigo-500/10">
+          <i data-lucide="folder-open" class="h-4 w-4 text-indigo-300"></i>
+        </span>
+        ${p.name}
+      </h4>
+      <div class="mb-4 flex flex-wrap gap-2">
+        ${p.tags.map(t => `<span class="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-300">${t}</span>`).join('')}
+      </div>
+      <p class="flex-1 text-sm leading-7 text-slate-400">${p.desc}</p>
     </div>
   `).join('');
 }
@@ -570,72 +377,87 @@ function renderProjects() {
 function renderSkills() {
   const grid = document.getElementById('skillsGrid');
   grid.innerHTML = Object.entries(resume.skills).map(([cat, skills]) => `
-    <div class="skill-category reveal">
-      <h4>${cat}</h4>
-      ${skills.map(s => `
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-header">
-            <span class="skill-bar-label">${s.name}</span>
-            <span class="skill-bar-pct">${s.level}%</span>
-          </div>
-          <div class="skill-bar">
-            <div class="skill-bar-fill" data-width="${s.level}"></div>
-          </div>
-        </div>
-      `).join('')}
+    <div class="reveal print-block rounded-2xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-xl transition-all duration-300 hover:border-cyan-400/25 hover:shadow-[0_0_30px_rgba(34,211,238,0.12)] sm:p-7">
+      <h4 class="mb-6 flex items-center gap-2.5 text-base font-bold text-white">
+        <span class="flex h-8 w-8 items-center justify-center rounded-lg border border-cyan-400/20 bg-cyan-500/10">
+          <i data-lucide="${skillIcons[cat] || 'star'}" class="h-4 w-4 text-cyan-400"></i>
+        </span>
+        ${cat}
+      </h4>
+      <div class="space-y-5">
+        ${skills.map(s => `
+          <div>
+            <div class="mb-2 flex items-center justify-between gap-3 text-sm">
+              <span class="font-medium text-slate-300">${s.name}</span>
+              <span class="shrink-0 text-xs font-semibold text-cyan-400">${s.level}%</span>
+            </div>
+            <div class="h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+              <div class="skill-bar-fill h-full rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 shadow-[0_0_10px_rgba(34,211,238,0.5)]" data-width="${s.level}"></div>
+            </div>
+          </div>`).join('')}
+      </div>
     </div>
   `).join('');
 }
 
 function renderEducation() {
   const grid = document.getElementById('eduGrid');
-  grid.innerHTML = `
-    <div class="edu-card reveal">
-      <h4> ${resume.education.school}</h4>
-      <div class="meta">${resume.education.major} · ${resume.education.degree}</div>
-      <p>核心课程：${resume.education.courses}</p>
-      <p style="margin-top:8px">${resume.education.desc}</p>
-    </div>
-    <div class="cert-card reveal">
-      <h4> ${resume.certificates[0].name}</h4>
-      <div class="meta">${resume.certificates[0].org}</div>
-      <p>${resume.certificates[0].desc}</p>
-    </div>
-  `;
-  // Add remaining certs
-  if (resume.certificates.length > 1) {
-    grid.innerHTML += `
-      <div class="cert-card reveal">
-        <h4> ${resume.certificates[1].name}</h4>
-        <div class="meta">${resume.certificates[1].org}</div>
-        <p>${resume.certificates[1].desc}</p>
+  const certCard = c => `
+    <div class="reveal print-block rounded-2xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/30 hover:shadow-[0_0_32px_rgba(34,211,238,0.15)] sm:p-7">
+      <h4 class="mb-2 flex items-center gap-2.5 text-base font-bold text-white">
+        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-amber-400/20 bg-amber-500/10">
+          <i data-lucide="award" class="h-4 w-4 text-amber-300"></i>
+        </span>
+        ${c.name}
+      </h4>
+      <div class="mb-3 flex items-center gap-1.5 text-xs font-medium text-slate-500">
+        <i data-lucide="building" class="h-3.5 w-3.5"></i>${c.org}
       </div>
-    `;
-  }
+      <p class="text-sm leading-7 text-slate-400">${c.desc}</p>
+    </div>`;
+  grid.innerHTML = `
+    <div class="reveal print-block rounded-2xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/30 hover:shadow-[0_0_32px_rgba(34,211,238,0.15)] sm:p-7">
+      <h4 class="mb-2 flex items-center gap-2.5 text-base font-bold text-white">
+        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-cyan-400/20 bg-cyan-500/10">
+          <i data-lucide="graduation-cap" class="h-4 w-4 text-cyan-400"></i>
+        </span>
+        ${resume.education.school}
+      </h4>
+      <div class="mb-3 flex items-center gap-1.5 text-xs font-medium text-slate-500">
+        <i data-lucide="book-open" class="h-3.5 w-3.5"></i>${resume.education.major} · ${resume.education.degree}
+      </div>
+      <p class="text-sm leading-7 text-slate-400">核心课程：${resume.education.courses}</p>
+      <p class="mt-2 text-sm leading-7 text-slate-400">${resume.education.desc}</p>
+    </div>
+    ${resume.certificates.map(certCard).join('')}
+  `;
 }
 
 /* ========== Tab Logic ========== */
 function initTabs() {
   const tabBtns = document.querySelectorAll('.tab-btn');
+  const activeCls = 'bg-gradient-to-r from-cyan-500/90 to-indigo-500/90 text-white font-semibold shadow-[0_0_18px_rgba(34,211,238,0.25)]';
+  const idleCls = 'text-slate-400';
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
+      tabBtns.forEach(b => {
+        b.classList.remove('active', ...activeCls.split(' '));
+        b.classList.add(...idleCls.split(' '));
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      btn.classList.add('active', ...activeCls.split(' '));
+      btn.classList.remove(...idleCls.split(' '));
       btn.setAttribute('aria-selected', 'true');
-      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.remove('hidden');
     });
-    // Keyboard support
     btn.addEventListener('keydown', (e) => {
       const tabs = Array.from(tabBtns);
       const idx = tabs.indexOf(btn);
       let next = idx;
       if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
       if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
-      if (next !== idx) {
-        tabs[next].click();
-        tabs[next].focus();
-      }
+      if (next !== idx) { tabs[next].click(); tabs[next].focus(); }
     });
   });
 }
@@ -644,44 +466,31 @@ function initTabs() {
 function initNavScroll() {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
-  window.addEventListener('scroll', () => {
+  const update = () => {
     let current = '';
     sections.forEach(sec => {
-      if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
     });
     navLinks.forEach(link => {
-      link.classList.toggle('active', link.dataset.target === current);
+      const active = link.dataset.target === current;
+      link.classList.toggle('text-cyan-300', active);
+      link.classList.toggle('bg-white/[0.06]', active);
+      link.classList.toggle('text-slate-400', !active);
     });
-  });
+  };
+  window.addEventListener('scroll', update);
+  update();
 }
 
 /* ========== Back to Top ========== */
 function initBackTop() {
   const btn = document.getElementById('backTop');
   window.addEventListener('scroll', () => {
-    btn.classList.toggle('visible', window.scrollY > 400);
+    const visible = window.scrollY > 400;
+    btn.classList.toggle('opacity-0', !visible);
+    btn.classList.toggle('pointer-events-none', !visible);
   });
   btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-}
-
-/* ========== Theme Toggle ========== */
-function initTheme() {
-  const btn = document.getElementById('themeToggle');
-  const saved = localStorage.getItem('theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    btn.textContent = saved === 'dark' ? '️' : '';
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    btn.textContent = '️';
-  }
-  btn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    btn.textContent = next === 'dark' ? '️' : '';
-  });
 }
 
 /* ========== Print ========== */
@@ -689,23 +498,39 @@ function initPrint() {
   document.getElementById('printBtn').addEventListener('click', () => window.print());
 }
 
-/* ========== Copy to Clipboard ========== */
+/* ========== Copy to Clipboard + Toast ========== */
 function initCopy() {
   const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  let timer;
   document.querySelectorAll('.contact-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const text = btn.dataset.copy;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(`已复制：${text}`);
-      }).catch(() => {
-        showToast('复制失败，请手动复制');
-      });
+      const fallback = () => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showToast(`已复制：${text}`); }
+        catch (e) { showToast('复制失败，请手动复制'); }
+        document.body.removeChild(ta);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => showToast(`已复制：${text}`))
+          .catch(fallback);
+      } else {
+        fallback();
+      }
     });
   });
   function showToast(msg) {
-    toast.textContent = msg;
+    toastMsg.textContent = msg;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
+    clearTimeout(timer);
+    timer = setTimeout(() => toast.classList.remove('show'), 2200);
   }
 }
 
@@ -715,14 +540,12 @@ function initReveal() {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        // Animate skill bars
         entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
           bar.style.width = bar.dataset.width + '%';
         });
       }
     });
   }, { threshold: 0.15 });
-  
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
@@ -734,10 +557,10 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProjects();
   renderSkills();
   renderEducation();
+  lucide.createIcons();
   initTabs();
   initNavScroll();
   initBackTop();
-  initTheme();
   initPrint();
   initCopy();
   initReveal();
