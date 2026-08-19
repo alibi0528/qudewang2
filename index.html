@@ -1,747 +1,842 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>瞿德旺 - 视觉设计与AI应用实践者</title>
-<style>
-/* ========== CSS Reset & Variables ========== */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --primary:#2D5F8A;
-  --primary-light:#4A8BC2;
-  --primary-dark:#1C3A5E;
-  --accent:#F28E2B;
-  --accent-light:#F5A84E;
-  --bg:#FFFFFF;
-  --bg-card:#F7F9FC;
-  --bg-nav:rgba(255,255,255,0.92);
-  --text:#2E3440;
-  --text-muted:#6B7280;
-  --text-light:#9CA3AF;
-  --border:#E5E7EB;
-  --shadow:0 4px 24px rgba(0,0,0,0.08);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.12);
-  --radius:12px;
-  --radius-sm:8px;
-  --transition:200ms cubic-bezier(0.4,0,0.2,1);
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
-  --nav-h:64px;
-}
-@media(prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0F172A;
-    --bg-card:#1E293B;
-    --bg-nav:rgba(15,23,42,0.95);
-    --text:#E2E8F0;
-    --text-muted:#94A3B8;
-    --text-light:#64748B;
-    --border:#334155;
-    --shadow:0 4px 24px rgba(0,0,0,0.3);
-    --shadow-hover:0 8px 32px rgba(0,0,0,0.4);
-  }
-}
-[data-theme="dark"]{
-  --bg:#0F172A;
-  --bg-card:#1E293B;
-  --bg-nav:rgba(15,23,42,0.95);
-  --text:#E2E8F0;
-  --text-muted:#94A3B8;
-  --text-light:#64748B;
-  --border:#334155;
-  --shadow:0 4px 24px rgba(0,0,0,0.3);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.4);
-}
-[data-theme="light"]{
-  --bg:#FFFFFF;
-  --bg-card:#F7F9FC;
-  --bg-nav:rgba(255,255,255,0.92);
-  --text:#2E3440;
-  --text-muted:#6B7280;
-  --text-light:#9CA3AF;
-  --border:#E5E7EB;
-  --shadow:0 4px 24px rgba(0,0,0,0.08);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.12);
-}
-
-/* ========== Base ========== */
-html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h)}
-body{
-  font-family:var(--font);
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.7;
-  -webkit-font-smoothing:antialiased;
-  transition:background var(--transition),color var(--transition);
-}
-a{color:var(--primary);text-decoration:none;transition:color var(--transition)}
-a:hover{color:var(--accent)}
-img{max-width:100%;display:block}
-
-/* ========== Nav ========== */
-.nav{
-  position:fixed;top:0;left:0;right:0;height:var(--nav-h);
-  background:var(--bg-nav);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  z-index:1000;
-  transition:all var(--transition);
-}
-.nav-inner{
-  max-width:1100px;margin:0 auto;padding:0 24px;
-  height:100%;display:flex;align-items:center;justify-content:space-between;
-}
-.nav-brand{font-size:1.25rem;font-weight:700;color:var(--primary);letter-spacing:-0.5px}
-.nav-links{display:flex;gap:8px;align-items:center}
-.nav-link{
-  padding:6px 14px;border-radius:20px;font-size:0.875rem;font-weight:500;
-  color:var(--text-muted);transition:all var(--transition);cursor:pointer;border:none;background:none;
-}
-.nav-link:hover,.nav-link.active{color:var(--primary);background:rgba(45,95,138,0.1)}
-.nav-actions{display:flex;gap:6px;align-items:center}
-.nav-btn{
-  width:36px;height:36px;border-radius:50%;border:1px solid var(--border);
-  background:var(--bg);color:var(--text-muted);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all var(--transition);font-size:1rem;
-}
-.nav-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
-
-/* ========== Hero ========== */
-.hero{
-  padding:120px 24px 60px;
-  max-width:1100px;margin:0 auto;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
-}
-.hero-avatar{
-  width:100px;height:100px;border-radius:50%;
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.5rem;font-weight:700;color:#fff;
-  margin-bottom:20px;
-  box-shadow:0 8px 32px rgba(45,95,138,0.3);
-}
-.hero h1{font-size:2.5rem;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
-.hero h1 span{color:var(--primary)}
-.hero .subtitle{font-size:1.125rem;color:var(--text-muted);margin-bottom:16px}
-.hero .tagline{
-  font-size:1rem;color:var(--text-muted);max-width:600px;margin-bottom:24px;
-  line-height:1.8;
-}
-.hero-contact{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
-.contact-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 18px;border-radius:24px;font-size:0.875rem;font-weight:500;
-  border:1px solid var(--border);background:var(--bg);color:var(--text);
-  cursor:pointer;transition:all var(--transition);
-}
-.contact-btn:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px)}
-.hero-badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.badge{
-  padding:5px 14px;border-radius:20px;font-size:0.8rem;font-weight:500;
-  background:linear-gradient(135deg,rgba(45,95,138,0.1),rgba(45,95,138,0.05));
-  color:var(--primary);border:1px solid rgba(45,95,138,0.15);
-}
-
-/* ========== Section ========== */
-.section{padding:60px 24px;max-width:1100px;margin:0 auto}
-.section-title{
-  font-size:1.5rem;font-weight:700;margin-bottom:32px;
-  display:flex;align-items:center;gap:10px;
-}
-.section-title::before{
-  content:'';width:4px;height:28px;border-radius:2px;
-  background:linear-gradient(180deg,var(--primary),var(--accent));
-}
-
-/* ========== Highlights ========== */
-.highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-.highlight-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;text-align:center;transition:all var(--transition);position:relative;overflow:hidden;
-}
-.highlight-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--primary),var(--accent));
-  transform:scaleX(0);transition:transform var(--transition);transform-origin:left;
-}
-.highlight-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
-.highlight-card:hover::before{transform:scaleX(1)}
-.highlight-num{font-size:2.25rem;font-weight:800;color:var(--primary);line-height:1}
-.highlight-label{font-size:0.875rem;color:var(--text-muted);margin-top:6px}
-
-/* ========== Tabs ========== */
-.tabs-wrapper{margin-bottom:24px}
-.tab-nav{
-  display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:24px;
-  overflow-x:auto;padding-bottom:0;
-}
-.tab-btn{
-  padding:10px 20px;border:none;background:none;cursor:pointer;
-  font-size:0.9375rem;font-weight:500;color:var(--text-muted);
-  border-bottom:2px solid transparent;margin-bottom:-2px;
-  transition:all var(--transition);white-space:nowrap;
-}
-.tab-btn:hover{color:var(--primary)}
-.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
-.tab-panel{display:none;animation:fadeIn 300ms ease}
-.tab-panel.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* ========== Experience / Project Cards ========== */
-.timeline{position:relative;padding-left:24px}
-.timeline::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:1px;
-}
-.timeline-item{position:relative;margin-bottom:32px}
-.timeline-item::before{
-  content:'';position:absolute;left:-28px;top:6px;width:10px;height:10px;
-  border-radius:50%;background:var(--primary);border:2px solid var(--bg);
-  box-shadow:0 0 0 3px var(--primary);
-}
-.timeline-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.timeline-title{font-size:1.125rem;font-weight:600}
-.timeline-meta{font-size:0.8125rem;color:var(--text-muted);display:flex;gap:12px;align-items:center}
-.timeline-body ul{list-style:none;padding:0}
-.timeline-body li{
-  position:relative;padding-left:18px;margin-bottom:6px;font-size:0.9375rem;color:var(--text);
-}
-.timeline-body li::before{
-  content:'';position:absolute;left:0;color:var(--accent);font-weight:700;
-}
-
-/* ========== Project Cards ========== */
-.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.project-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;transition:all var(--transition);display:flex;flex-direction:column;
-}
-.project-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
-.project-card h4{font-size:1.0625rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.project-card h4::before{content:'';width:3px;height:16px;border-radius:2px;background:var(--accent)}
-.project-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.project-tag{
-  padding:2px 10px;border-radius:12px;font-size:0.75rem;font-weight:500;
-  background:rgba(242,142,43,0.1);color:var(--accent);
-}
-.project-card p{font-size:0.9375rem;color:var(--text-muted);flex:1}
-
-/* ========== Skills ========== */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
-.skill-category h4{font-size:1rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.skill-category h4::before{content:'';width:3px;height:18px;border-radius:2px;background:var(--accent)}
-.skill-bar-wrap{margin-bottom:14px}
-.skill-bar-header{display:flex;justify-content:space-between;font-size:0.875rem;margin-bottom:4px}
-.skill-bar-label{font-weight:500}
-.skill-bar-pct{color:var(--text-muted)}
-.skill-bar{
-  height:8px;background:var(--border);border-radius:4px;overflow:hidden;
-}
-.skill-bar-fill{
-  height:100%;border-radius:4px;
-  background:linear-gradient(90deg,var(--primary),var(--accent));
-  width:0;transition:width 1s cubic-bezier(0.4,0,0.2,1);
-}
-
-/* ========== Education & Certs ========== */
-.edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.edu-card,.cert-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;transition:all var(--transition);
-}
-.edu-card:hover,.cert-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-.edu-card h4,.cert-card h4{font-size:1.0625rem;font-weight:600;margin-bottom:6px}
-.edu-card .meta,.cert-card .meta{font-size:0.8125rem;color:var(--text-muted);margin-bottom:8px}
-.edu-card p,.cert-card p{font-size:0.9375rem;color:var(--text-muted);line-height:1.7}
-
-/* ========== Footer ========== */
-.footer{
-  text-align:center;padding:40px 24px;font-size:0.8125rem;color:var(--text-muted);
-  border-top:1px solid var(--border);margin-top:40px;
-}
-
-/* ========== Back to Top ========== */
-.back-top{
-  position:fixed;bottom:30px;right:30px;width:44px;height:44px;
-  border-radius:50%;background:var(--primary);color:#fff;border:none;
-  cursor:pointer;font-size:1.25rem;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 16px rgba(45,95,138,0.3);
-  opacity:0;transform:translateY(20px);
-  transition:all var(--transition);pointer-events:none;z-index:999;
-}
-.back-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
-.back-top:hover{background:var(--accent);transform:translateY(-2px)}
-
-/* ========== Toast ========== */
-.toast{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:var(--primary-dark);color:#fff;padding:10px 24px;border-radius:24px;
-  font-size:0.875rem;font-weight:500;opacity:0;pointer-events:none;
-  transition:all 300ms ease;z-index:1001;
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ========== Print ========== */
-@media print{
-  .nav,.back-top,.tab-btn,.hero-badges,.contact-btn,.nav-actions{display:none!important}
-  .nav{position:static!important;height:auto!important}
-  .tab-panel{display:block!important;page-break-inside:avoid}
-  .tab-panel:not(:first-child){margin-top:24px}
-  body{background:#fff;color:#000}
-  .hero{padding-top:40px}
-  .section{padding:24px 0}
-  .highlight-card,.project-card,.edu-card,.cert-card{break-inside:avoid;border:none;box-shadow:none}
-  .skill-bar-fill{background:var(--primary)!important}
-}
-
-/* ========== Responsive ========== */
-@media(max-width:768px){
-  .nav-links{display:none}
-  .hero h1{font-size:2rem}
-  .hero .tagline{font-size:0.9375rem}
-  .section{padding:40px 16px}
-  .timeline-header{flex-direction:column}
-  .project-grid{grid-template-columns:1fr}
-}
-
-/* ========== Reduced Motion ========== */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:0.01ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:0.01ms!important;
-    scroll-behavior:instant!important;
-  }
-}
-
-/* ========== Scroll Reveal ========== */
-.reveal{opacity:0;transform:translateY(24px);transition:all 600ms cubic-bezier(0.4,0,0.2,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-</style>
-</head>
-<body>
-
-<!-- ========== NAV ========== -->
-<nav class="nav" id="nav">
-  <div class="nav-inner">
-    <a href="#hero" class="nav-brand">瞿德旺</a>
-    <div class="nav-links" id="navLinks">
-      <button class="nav-link active" data-target="hero">首页</button>
-      <button class="nav-link" data-target="highlights">亮点</button>
-      <button class="nav-link" data-target="experience">经历</button>
-      <button class="nav-link" data-target="projects">项目</button>
-      <button class="nav-link" data-target="skills">技能</button>
-      <button class="nav-link" data-target="education">教育</button>
-    </div>
-    <div class="nav-actions">
-      <button class="nav-btn" id="themeToggle" title="切换主题"></button>
-      <button class="nav-btn" id="printBtn" title="打印简历">️</button>
-    </div>
-  </div>
-</nav>
-
-<!-- ========== HERO ========== -->
-<section class="hero" id="hero">
-  <div class="hero-avatar">德</div>
-  <h1>瞿德旺 <span>|</span> 视觉设计与AI应用实践者</h1>
-  <p class="subtitle">PPT设计 · AI工具 · 视觉叙事 · 团队协作</p>
-  <p class="tagline">
-    中南林业科技大学在读本科生，热衷于将视觉设计美学与AI前沿技术深度融合。
-    擅长通过PPT视觉叙事、提示词工程与AI辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，
-    持续提升团队内容生产效率与数字化表达能力。
-  </p>
-  <div class="hero-contact">
-    <button class="contact-btn" data-copy="19720817095"> 19720817095</button>
-    <button class="contact-btn" data-copy="【待补】" title="邮箱地址待补充">️ 邮箱：【待补】</button>
-    <button class="contact-btn" data-copy="【待补】" title="GitHub/LinkedIn待补充"> GitHub / LinkedIn</button>
-  </div>
-  <div class="hero-badges" id="heroBadges"></div>
-</section>
-
-<!-- ========== HIGHLIGHTS ========== -->
-<section class="section" id="highlights">
-  <h2 class="section-title reveal">亮点成果</h2>
-  <div class="highlights" id="highlightsGrid"></div>
-</section>
-
-<!-- ========== EXPERIENCE ========== -->
-<section class="section" id="experience">
-  <h2 class="section-title reveal">经历</h2>
-  <div class="tabs-wrapper">
-    <div class="tab-nav" role="tablist" id="expTabs">
-      <button class="tab-btn active" role="tab" data-tab="campus" aria-selected="true">校园实践</button>
-      <button class="tab-btn" role="tab" data-tab="course" aria-selected="false">课程项目</button>
-    </div>
-    <div class="tab-panel active" id="panel-campus" role="tabpanel"></div>
-    <div class="tab-panel" id="panel-course" role="tabpanel"></div>
-  </div>
-</section>
-
-<!-- ========== PROJECTS ========== -->
-<section class="section" id="projects">
-  <h2 class="section-title reveal">项目经历</h2>
-  <div class="project-grid" id="projectGrid"></div>
-</section>
-
-<!-- ========== SKILLS ========== -->
-<section class="section" id="skills">
-  <h2 class="section-title reveal">技能矩阵</h2>
-  <div class="skills-grid" id="skillsGrid"></div>
-</section>
-
-<!-- ========== EDUCATION ========== -->
-<section class="section" id="education">
-  <h2 class="section-title reveal">教育与证书</h2>
-  <div class="edu-grid" id="eduGrid"></div>
-</section>
-
-<!-- ========== FOOTER ========== -->
-<footer class="footer">
-  <p>© 2026 瞿德旺 · 视觉设计与AI应用实践者 · 最后更新于 2026年8月</p>
-</footer>
-
-<!-- ========== BACK TO TOP ========== -->
-<button class="back-top" id="backTop" title="返回顶部">↑</button>
-
-<!-- ========== TOAST ========== -->
-<div class="toast" id="toast"></div>
-
-<script>
-/* ========== Resume Data ========== */
-const resume = {
-  name: "瞿德旺",
-  title: "视觉设计与AI应用实践者",
-  phone: "19720817095",
-  email: "【待补】",
-  github: "【待补】",
-  education: {
-    school: "中南林业科技大学",
-    major: "【待补】",
-    degree: "本科在读（大一）",
-    courses: "【待补】、【待补】、【待补】",
-    desc: "保持优异的学业成绩，积极参与各类校园实践与技能拓展活动，注重综合素质的全面提升。"
-  },
-  highlights: [
-    { num: "10+", label: "场大型活动PPT设计" },
-    { num: "30%", label: "内容筹备周期缩短" },
-    { num: "5+", label: "场内部技能分享会" },
-    { num: "1", label: "阿里巴巴AI训练师认证" }
-  ],
-  skills: {
-    "设计工具": [
-      { name: "PPT设计与视觉叙事", level: 90 },
-      { name: "信息层级规划", level: 85 },
-      { name: "数据可视化", level: 80 }
-    ],
-    "AI与工具": [
-      { name: "提示词工程（Prompt Engineering）", level: 88 },
-      { name: "ChatGPT / AI辅助工作流", level: 85 },
-      { name: "AI数据标注与模型训练", level: 75 }
-    ],
-    "软技能": [
-      { name: "团队协作与跨部门沟通", level: 90 },
-      { name: "自我管理与目标导向", level: 88 },
-      { name: "经验分享与团队赋能", level: 85 }
-    ]
-  },
-  experience: {
-    campus: {
-      title: "校园学术/社团组织",
-      role: "视觉设计与内容策划核心成员",
-      period: "【待补】年 – 至今",
-      items: [
-        "主导视觉呈现与PPT重构：负责社团/班级多场大型活动的宣讲PPT设计与视觉叙事规划，运用信息层级重构技巧，将冗长文字转化为结构化图表，使受众信息接收效率显著提升。",
-        "AI赋能内容生产：引入ChatGPT等AI工具辅助前期资料搜集与文案初稿撰写，通过精准提示词工程优化输出结果，使团队整体内容筹备周期缩短约30%。",
-        "跨部门协作与内容整合：统筹多名成员的文案素材，进行统一的视觉包装与排版美化，确保最终汇报材料风格一致、逻辑严密，获得指导老师高度评价。",
-        "经验分享与团队赋能：主动组织多场内部技能分享会，普及AI工具高效使用技巧与PPT设计原则，帮助多名同学解决制作痛点，显著提升团队数字化办公与视觉表达能力。"
-      ]
-    },
-    course: {
-      title: "校园课程/创新项目",
-      role: "核心组员",
-      period: "【待补】年 – 【待补】年",
-      items: [
-        "项目策划与视觉落地：负责整体汇报材料的视觉设计与逻辑梳理，结合动漫镜头语言技巧优化页面转场与视觉引导，使项目汇报的生动性与专业度显著提升。",
-        "数据可视化与排版优化：运用设计原则对多组复杂数据进行可视化处理，提炼核心洞察并转化为直观图表呈现，辅助团队在最终答辩中取得优异成绩。",
-        "团队沟通与进度把控：发挥团队协作优势，积极协调组员分工，跟进项目进度，有效化解团队分歧，确保项目高质量按期交付。"
-      ]
-    }
-  },
-  projects: [
-    {
-      name: "AI辅助PPT视觉叙事系统",
-      tags: ["PPT设计", "AI工具", "提示词工程"],
-      desc: "构建了一套结合AI工具与视觉设计原则的PPT制作工作流，从资料搜集、文案生成到视觉排版全流程自动化辅助，大幅提升内容生产效率与视觉呈现质量。"
-    },
-    {
-      name: "二次元视觉风格PPT模板库",
-      tags: ["视觉设计", "二次元文化", "模板设计"],
-      desc: "融合二次元动漫文化与专业排版设计，设计了一套具有独特视觉风格的PPT模板库，将镜头语言与视觉叙事技巧应用于幻灯片设计中，形成差异化设计优势。"
-    },
-    {
-      name: "团队AI工具技能培训方案",
-      tags: ["AI培训", "团队协作", "知识分享"],
-      desc: "设计并实施了一套面向团队的AI工具使用培训方案，涵盖ChatGPT提示词工程、AI辅助资料搜集与文案撰写等模块，帮助团队成员快速掌握AI工具高效使用技巧。"
-    }
-  ],
-  certificates: [
-    {
-      name: "阿里巴巴人工智能训练师证书",
-      org: "阿里巴巴",
-      desc: "系统学习并掌握AI数据标注、模型训练及提示词工程等核心技能，具备将AI工具应用于实际业务场景的实操能力。"
-    },
-    {
-      name: "【待补】PPT设计/视觉创意比赛奖项",
-      org: "【待补】",
-      desc: "【待补】年，荣获【待补】奖项（如：校级/院级PPT大赛一等奖等）。"
-    }
-  ]
-};
-
-/* ========== Render Functions ========== */
-function renderHeroBadges() {
-  const badges = resume.skills;
-  const container = document.getElementById('heroBadges');
-  const allSkills = [];
-  Object.values(badges).forEach(arr => arr.forEach(s => allSkills.push(s.name.split('（')[0].split('/')[0].trim())));
-  const unique = [...new Set(allSkills.slice(0, 8))];
-  container.innerHTML = unique.map(s => `<span class="badge">${s}</span>`).join('');
-}
-
-function renderHighlights() {
-  const grid = document.getElementById('highlightsGrid');
-  grid.innerHTML = resume.highlights.map(h => `
-    <div class="highlight-card reveal">
-      <div class="highlight-num">${h.num}</div>
-      <div class="highlight-label">${h.label}</div>
-    </div>
-  `).join('');
-}
-
-function renderExperience() {
-  const campusPanel = document.getElementById('panel-campus');
-  const coursePanel = document.getElementById('panel-course');
-  
-  campusPanel.innerHTML = `
-    <div class="timeline-item">
-      <div class="timeline-header">
-        <div>
-          <div class="timeline-title">${resume.experience.campus.title}</div>
-          <div class="timeline-meta"><span>${resume.experience.campus.role}</span></div>
-        </div>
-        <div class="timeline-meta"><span>${resume.experience.campus.period}</span></div>
-      </div>
-      <div class="timeline-body">
-        <ul>${resume.experience.campus.items.map(i => `<li>${i}</li>`).join('')}</ul>
-      </div>
-    </div>
-  `;
-  
-  coursePanel.innerHTML = `
-    <div class="timeline-item">
-      <div class="timeline-header">
-        <div>
-          <div class="timeline-title">${resume.experience.course.title}</div>
-          <div class="timeline-meta"><span>${resume.experience.course.role}</span></div>
-        </div>
-        <div class="timeline-meta"><span>${resume.experience.course.period}</span></div>
-      </div>
-      <div class="timeline-body">
-        <ul>${resume.experience.course.items.map(i => `<li>${i}</li>`).join('')}</ul>
-      </div>
-    </div>
-  `;
-}
-
-function renderProjects() {
-  const grid = document.getElementById('projectGrid');
-  grid.innerHTML = resume.projects.map(p => `
-    <div class="project-card reveal">
-      <h4>${p.name}</h4>
-      <div class="project-tags">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
-      <p>${p.desc}</p>
-    </div>
-  `).join('');
-}
-
-function renderSkills() {
-  const grid = document.getElementById('skillsGrid');
-  grid.innerHTML = Object.entries(resume.skills).map(([cat, skills]) => `
-    <div class="skill-category reveal">
-      <h4>${cat}</h4>
-      ${skills.map(s => `
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-header">
-            <span class="skill-bar-label">${s.name}</span>
-            <span class="skill-bar-pct">${s.level}%</span>
-          </div>
-          <div class="skill-bar">
-            <div class="skill-bar-fill" data-width="${s.level}"></div>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
-}
-
-function renderEducation() {
-  const grid = document.getElementById('eduGrid');
-  grid.innerHTML = `
-    <div class="edu-card reveal">
-      <h4> ${resume.education.school}</h4>
-      <div class="meta">${resume.education.major} · ${resume.education.degree}</div>
-      <p>核心课程：${resume.education.courses}</p>
-      <p style="margin-top:8px">${resume.education.desc}</p>
-    </div>
-    <div class="cert-card reveal">
-      <h4> ${resume.certificates[0].name}</h4>
-      <div class="meta">${resume.certificates[0].org}</div>
-      <p>${resume.certificates[0].desc}</p>
-    </div>
-  `;
-  // Add remaining certs
-  if (resume.certificates.length > 1) {
-    grid.innerHTML += `
-      <div class="cert-card reveal">
-        <h4> ${resume.certificates[1].name}</h4>
-        <div class="meta">${resume.certificates[1].org}</div>
-        <p>${resume.certificates[1].desc}</p>
-      </div>
-    `;
-  }
-}
-
-/* ========== Tab Logic ========== */
-function initTabs() {
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-    });
-    // Keyboard support
-    btn.addEventListener('keydown', (e) => {
-      const tabs = Array.from(tabBtns);
-      const idx = tabs.indexOf(btn);
-      let next = idx;
-      if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
-      if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
-      if (next !== idx) {
-        tabs[next].click();
-        tabs[next].focus();
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>瞿德旺 - 视觉设计与AI应用实践者</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Segoe UI"', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+          },
+          animation: {
+            'aurora': 'aurora 18s ease infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse-slow 4s ease-in-out infinite',
+          },
+          keyframes: {
+            aurora: {
+              '0%, 100%': { transform: 'translate(0%, 0%) rotate(0deg) scale(1)' },
+              '33%': { transform: 'translate(2%, -2%) rotate(2deg) scale(1.05)' },
+              '66%': { transform: 'translate(-2%, 2%) rotate(-1deg) scale(0.98)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            'pulse-slow': {
+              '0%, 100%': { opacity: '0.6' },
+              '50%': { opacity: '1' },
+            }
+          }
+        }
       }
-    });
-  });
-}
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: #050505;
+      color: #f4f4f5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
 
-/* ========== Nav Active State ========== */
-function initNavScroll() {
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(sec => {
-      if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
-    });
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.dataset.target === current);
-    });
-  });
-}
+    /* Ambient background */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 20%, rgba(45, 95, 138, 0.22), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 80% 80%, rgba(242, 142, 43, 0.18), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 50% 50%, rgba(99, 102, 241, 0.12), transparent 50%),
+        #050505;
+      animation: aurora 18s ease infinite;
+    }
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.04;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
 
-/* ========== Back to Top ========== */
-function initBackTop() {
-  const btn = document.getElementById('backTop');
-  window.addEventListener('scroll', () => {
-    btn.classList.toggle('visible', window.scrollY > 400);
-  });
-  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-}
+    /* Bento card base */
+    .bento-card {
+      background: rgba(24, 24, 27, 0.90);
+      border: 1px solid rgba(63, 63, 70, 0.65);
+      border-radius: 1.75rem;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+    .bento-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(99,102,241,0.1);
+    }
 
-/* ========== Theme Toggle ========== */
-function initTheme() {
-  const btn = document.getElementById('themeToggle');
-  const saved = localStorage.getItem('theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    btn.textContent = saved === 'dark' ? '️' : '';
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    btn.textContent = '️';
-  }
-  btn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    btn.textContent = next === 'dark' ? '️' : '';
-  });
-}
+    /* Vanilla-Tilt glare override */
+    .js-tilt-glare { border-radius: inherit; }
 
-/* ========== Print ========== */
-function initPrint() {
-  document.getElementById('printBtn').addEventListener('click', () => window.print());
-}
+    /* Gradient text */
+    .text-gradient {
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f5a84e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .text-gradient-blue {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-/* ========== Copy to Clipboard ========== */
-function initCopy() {
-  const toast = document.getElementById('toast');
-  document.querySelectorAll('.contact-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const text = btn.dataset.copy;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(`已复制：${text}`);
-      }).catch(() => {
-        showToast('复制失败，请手动复制');
+    /* Tags / capsules */
+    .capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.875rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #d4d4d8;
+      transition: all 0.2s ease;
+    }
+    .capsule:hover {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.16);
+      transform: translateY(-1px);
+    }
+    .capsule-accent {
+      background: linear-gradient(135deg, rgba(45,95,138,0.20), rgba(242,142,43,0.12));
+      border-color: rgba(45,95,138,0.30);
+      color: #bfdbfe;
+    }
+
+    /* Glow orbs */
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* Timeline */
+    .timeline-flow {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.75rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.12) transparent;
+    }
+    .timeline-flow::-webkit-scrollbar { height: 6px; }
+    .timeline-flow::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.12);
+      border-radius: 3px;
+    }
+    .timeline-node {
+      flex: 0 0 auto;
+      width: min(420px, 82vw);
+      position: relative;
+      padding-left: 1.25rem;
+      border-left: 2px solid rgba(99, 102, 241, 0.35);
+    }
+    .timeline-node::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 0.25rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #818cf8;
+      box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.2);
+    }
+
+    /* Back to top */
+    .back-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(24,24,27,0.9);
+      border: 1px solid rgba(63,63,70,0.65);
+      color: #f4f4f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+    .back-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 88px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(24,24,27,0.95);
+      border: 1px solid rgba(63,63,70,0.65);
+      color: #f4f4f5;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 60;
+      backdrop-filter: blur(12px);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Print */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; color: #000; }
+      .bento-card {
+        background: #fff !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+      .ambient-bg, .noise-overlay, .glow-orb { display: none !important; }
+      .text-gradient, .text-gradient-blue {
+        background: none !important;
+        -webkit-text-fill-color: #000 !important;
+        color: #000 !important;
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="ambient-bg"></div>
+  <div class="noise-overlay"></div>
+
+  <!-- Nav -->
+  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/40 backdrop-blur-xl" id="nav">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#bento" class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-orange-400 flex items-center justify-center text-sm">德</span>
+        瞿德旺
+      </a>
+      <div class="hidden md:flex items-center gap-1">
+        <a href="#bento" class="px-4 py-2 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">首页</a>
+        <a href="#projects" class="px-4 py-2 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">项目</a>
+        <a href="#experience" class="px-4 py-2 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">经历</a>
+        <a href="#education" class="px-4 py-2 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">教育</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="printBtn" class="no-print w-9 h-9 rounded-full border border-white/10 bg-white/5 text-zinc-300 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors" title="打印简历">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Bento Grid -->
+  <main id="bento" class="max-w-7xl mx-auto px-4 sm:px-6 pt-28 pb-16">
+
+    <!-- Bento Grid Container -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 auto-rows-min">
+
+      <!-- 1. Core Profile Card (2 cols) -->
+      <article class="bento-card md:col-span-2 lg:col-span-2 row-span-1 md:row-span-2 flex flex-col justify-between tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.25">
+        <div class="glow-orb w-64 h-64 bg-blue-600/30 -top-20 -right-20"></div>
+        <div>
+          <div class="flex items-start justify-between mb-6">
+            <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-blue-500 via-indigo-500 to-orange-400 flex items-center justify-center text-3xl font-bold text-white shadow-lg shadow-blue-500/20">
+              德
+            </div>
+            <div class="flex gap-2">
+              <span class="capsule capsule-accent"><i data-lucide="sparkles" class="w-3 h-3"></i> AI 应用</span>
+              <span class="capsule"><i data-lucide="palette" class="w-3 h-3"></i> 视觉设计</span>
+            </div>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
+            瞿德旺 <span class="text-zinc-500 font-light">|</span> <span class="text-gradient">视觉设计与AI应用实践者</span>
+          </h1>
+          <p class="text-lg text-zinc-400 mb-4 font-medium">PPT设计 · AI工具 · 视觉叙事 · 团队协作</p>
+          <p class="text-zinc-400 leading-relaxed max-w-xl">
+            中南林业科技大学在读本科生，热衷于将视觉设计美学与AI前沿技术深度融合。
+            擅长通过PPT视觉叙事、提示词工程与AI辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，
+            持续提升团队内容生产效率与数字化表达能力。
+          </p>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <button class="contact-btn group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-zinc-900 font-semibold text-sm hover:bg-zinc-100 transition-colors"
+            data-copy="19720817095">
+            <i data-lucide="phone" class="w-4 h-4"></i> 19720817095
+          </button>
+          <button class="contact-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/5 text-zinc-300 text-sm hover:bg-white/10 hover:text-white transition-colors"
+            data-copy="【待补】" title="邮箱地址待补充">
+            <i data-lucide="mail" class="w-4 h-4"></i> 邮箱：【待补】
+          </button>
+          <button class="contact-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/5 text-zinc-300 text-sm hover:bg-white/10 hover:text-white transition-colors"
+            data-copy="【待补】" title="GitHub/LinkedIn待补充">
+            <i data-lucide="github" class="w-4 h-4"></i> GitHub / LinkedIn
+          </button>
+        </div>
+      </article>
+
+      <!-- 2. Achievement Cards (1 col each, square-ish) -->
+      <article class="bento-card md:col-span-1 flex flex-col justify-between tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="glow-orb w-32 h-32 bg-blue-500/25 -top-8 -right-8"></div>
+        <div>
+          <div class="text-5xl font-bold text-gradient-blue mb-1">10+</div>
+          <div class="text-sm text-zinc-400">场大型活动PPT设计</div>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-xs text-zinc-500">
+          <i data-lucide="presentation" class="w-4 h-4"></i> 视觉叙事
+        </div>
+      </article>
+
+      <article class="bento-card md:col-span-1 flex flex-col justify-between tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="glow-orb w-32 h-32 bg-orange-500/25 -bottom-8 -left-8"></div>
+        <div>
+          <div class="text-5xl font-bold text-gradient mb-1">30%</div>
+          <div class="text-sm text-zinc-400">内容筹备周期缩短</div>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-xs text-zinc-500">
+          <i data-lucide="zap" class="w-4 h-4"></i> AI 赋能
+        </div>
+      </article>
+
+      <article class="bento-card md:col-span-1 flex flex-col justify-between tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div>
+          <div class="text-5xl font-bold text-gradient-blue mb-1">5+</div>
+          <div class="text-sm text-zinc-400">场内部技能分享会</div>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-xs text-zinc-500">
+          <i data-lucide="users" class="w-4 h-4"></i> 团队赋能
+        </div>
+      </article>
+
+      <article class="bento-card md:col-span-1 flex flex-col justify-between tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div>
+          <div class="text-5xl font-bold text-gradient mb-1">1</div>
+          <div class="text-sm text-zinc-400">阿里巴巴AI训练师认证</div>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-xs text-zinc-500">
+          <i data-lucide="award" class="w-4 h-4"></i> 专业认证
+        </div>
+      </article>
+
+      <!-- 3. Featured Project Card (2 cols) -->
+      <article id="projects" class="bento-card md:col-span-2 lg:col-span-2 tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.25">
+        <div class="glow-orb w-72 h-72 bg-indigo-600/20 -bottom-24 -right-24"></div>
+        <div class="flex flex-col h-full">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">主打项目</span>
+            <div class="flex gap-2">
+              <span class="capsule capsule-accent">PPT设计</span>
+              <span class="capsule">AI工具</span>
+              <span class="capsule">提示词工程</span>
+            </div>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">AI辅助PPT视觉叙事系统</h2>
+
+          <!-- Project visual -->
+          <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-900 border border-white/5 mb-5 aspect-[16/9] md:aspect-[21/9]">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-orange-500/15"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-3/4 space-y-3">
+                <div class="h-3 bg-white/10 rounded-full w-full"></div>
+                <div class="flex gap-3">
+                  <div class="h-20 flex-1 bg-white/8 rounded-xl"></div>
+                  <div class="h-20 flex-1 bg-white/8 rounded-xl"></div>
+                </div>
+                <div class="h-3 bg-white/10 rounded-full w-4/5"></div>
+                <div class="flex gap-2">
+                  <div class="h-2 bg-blue-500/40 rounded-full w-1/3"></div>
+                  <div class="h-2 bg-orange-500/40 rounded-full w-1/4"></div>
+                </div>
+              </div>
+            </div>
+            <div class="absolute bottom-4 right-4 flex gap-2">
+              <span class="px-2 py-1 rounded-lg bg-black/40 border border-white/10 text-[10px] text-zinc-300 backdrop-blur">全流程自动化</span>
+            </div>
+          </div>
+
+          <p class="text-zinc-400 leading-relaxed flex-1">
+            构建了一套结合AI工具与视觉设计原则的PPT制作工作流，从资料搜集、文案生成到视觉排版全流程自动化辅助，
+            大幅提升内容生产效率与视觉呈现质量。
+          </p>
+          <div class="mt-5 pt-5 border-t border-white/5 flex items-center justify-between">
+            <div class="flex gap-4 text-sm text-zinc-500">
+              <span class="flex items-center gap-1.5"><i data-lucide="gauge" class="w-4 h-4 text-blue-400"></i> 效率提升 30%</span>
+              <span class="flex items-center gap-1.5"><i data-lucide="layers" class="w-4 h-4 text-orange-400"></i> 10+ 场景验证</span>
+            </div>
+            <button class="text-sm font-medium text-white hover:text-blue-400 transition-colors flex items-center gap-1">
+              查看详情 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4. Skills Aggregation Card (1 col, spans rows) -->
+      <article class="bento-card md:col-span-1 lg:row-span-2 tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="flex flex-col h-full">
+          <div class="flex items-center gap-2 mb-5">
+            <i data-lucide="cpu" class="w-5 h-5 text-blue-400"></i>
+            <h3 class="text-lg font-bold text-white">能力栈</h3>
+          </div>
+
+          <div class="space-y-5 flex-1">
+            <div>
+              <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">设计工具</div>
+              <div class="flex flex-wrap gap-2">
+                <span class="capsule">PPT设计</span>
+                <span class="capsule">视觉叙事</span>
+                <span class="capsule">信息层级</span>
+                <span class="capsule">数据可视化</span>
+              </div>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">AI 与工具</div>
+              <div class="flex flex-wrap gap-2">
+                <span class="capsule capsule-accent">Prompt Engineering</span>
+                <span class="capsule">ChatGPT</span>
+                <span class="capsule">AI工作流</span>
+                <span class="capsule">数据标注</span>
+                <span class="capsule">模型训练</span>
+              </div>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">软技能</div>
+              <div class="flex flex-wrap gap-2">
+                <span class="capsule">团队协作</span>
+                <span class="capsule">跨部门沟通</span>
+                <span class="capsule">自我管理</span>
+                <span class="capsule">知识分享</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-5 border-t border-white/5">
+            <div class="text-xs text-zinc-500 mb-2">熟练度概览</div>
+            <div class="space-y-3">
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="text-zinc-300">PPT设计与视觉叙事</span>
+                  <span class="text-zinc-500">90%</span>
+                </div>
+                <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-400 rounded-full" style="width: 90%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="text-zinc-300">提示词工程</span>
+                  <span class="text-zinc-500">88%</span>
+                </div>
+                <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-orange-400 to-amber-400 rounded-full" style="width: 88%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="text-zinc-300">团队协作</span>
+                  <span class="text-zinc-500">90%</span>
+                </div>
+                <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-400 rounded-full" style="width: 90%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Secondary Projects (1 col each) -->
+      <article class="bento-card md:col-span-1 tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="mb-3">
+          <span class="capsule text-[10px]">视觉设计</span>
+          <span class="capsule text-[10px]">二次元</span>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">二次元视觉风格PPT模板库</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed">
+          融合二次元动漫文化与专业排版设计，将镜头语言与视觉叙事技巧应用于幻灯片设计中，形成差异化设计优势。
+        </p>
+      </article>
+
+      <article class="bento-card md:col-span-1 tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="mb-3">
+          <span class="capsule text-[10px]">AI培训</span>
+          <span class="capsule text-[10px]">知识分享</span>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">团队AI工具技能培训方案</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed">
+          设计并实施面向团队的AI工具培训方案，涵盖提示词工程、资料搜集与文案撰写，帮助成员快速掌握AI技巧。
+        </p>
+      </article>
+
+      <!-- 5. Experience Timeline Card (full row) -->
+      <article id="experience" class="bento-card md:col-span-3 lg:col-span-4 tilt-card"
+        data-tilt data-tilt-max="4" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.15">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-2">
+            <i data-lucide="briefcase" class="w-5 h-5 text-orange-400"></i>
+            <h3 class="text-xl font-bold text-white">工作 / 实习 / 项目经历</h3>
+          </div>
+          <div class="hidden sm:flex gap-2">
+            <button class="tab-btn active px-4 py-1.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/10" data-tab="campus">校园实践</button>
+            <button class="tab-btn px-4 py-1.5 rounded-full text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent" data-tab="course">课程项目</button>
+          </div>
+        </div>
+
+        <!-- Mobile tabs -->
+        <div class="flex sm:hidden gap-2 mb-5">
+          <button class="tab-btn active px-4 py-1.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/10" data-tab="campus">校园实践</button>
+          <button class="tab-btn px-4 py-1.5 rounded-full text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent" data-tab="course">课程项目</button>
+        </div>
+
+        <div class="tab-panel active" id="panel-campus">
+          <div class="timeline-flow">
+            <div class="timeline-node">
+              <div class="text-xs text-blue-400 font-semibold mb-1">【待补】年 – 至今</div>
+              <h4 class="text-lg font-bold text-white mb-1">校园学术/社团组织</h4>
+              <p class="text-sm text-zinc-500 mb-3">视觉设计与内容策划核心成员</p>
+              <ul class="space-y-2 text-sm text-zinc-400">
+                <li class="flex gap-2"><span class="text-blue-500 mt-1.5">•</span><span>主导多场大型活动宣讲PPT设计与视觉叙事规划，运用信息层级重构技巧，将冗长文字转化为结构化图表。</span></li>
+                <li class="flex gap-2"><span class="text-blue-500 mt-1.5">•</span><span>引入ChatGPT等AI工具辅助资料搜集与文案撰写，通过精准提示词工程使团队内容筹备周期缩短约30%。</span></li>
+                <li class="flex gap-2"><span class="text-blue-500 mt-1.5">•</span><span>统筹多名成员文案素材，统一视觉包装与排版美化，确保汇报材料风格一致、逻辑严密。</span></li>
+                <li class="flex gap-2"><span class="text-blue-500 mt-1.5">•</span><span>组织多场内部技能分享会，普及AI工具与PPT设计原则，提升团队数字化办公与视觉表达能力。</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel hidden" id="panel-course">
+          <div class="timeline-flow">
+            <div class="timeline-node">
+              <div class="text-xs text-orange-400 font-semibold mb-1">【待补】年 – 【待补】年</div>
+              <h4 class="text-lg font-bold text-white mb-1">校园课程/创新项目</h4>
+              <p class="text-sm text-zinc-500 mb-3">核心组员</p>
+              <ul class="space-y-2 text-sm text-zinc-400">
+                <li class="flex gap-2"><span class="text-orange-500 mt-1.5">•</span><span>负责整体汇报材料的视觉设计与逻辑梳理，结合动漫镜头语言优化页面转场与视觉引导。</span></li>
+                <li class="flex gap-2"><span class="text-orange-500 mt-1.5">•</span><span>对多组复杂数据进行可视化处理，提炼核心洞察并转化为直观图表，辅助团队答辩取得优异成绩。</span></li>
+                <li class="flex gap-2"><span class="text-orange-500 mt-1.5">•</span><span>协调组员分工，跟进项目进度，有效化解团队分歧，确保项目高质量按期交付。</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Education & Certs -->
+      <article id="education" class="bento-card md:col-span-2 lg:col-span-2 tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="glow-orb w-48 h-48 bg-emerald-500/15 -top-16 -right-16"></div>
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="graduation-cap" class="w-5 h-5 text-emerald-400"></i>
+          <h3 class="text-lg font-bold text-white">教育背景</h3>
+        </div>
+        <div class="space-y-1 mb-4">
+          <div class="text-xl font-bold text-white">中南林业科技大学</div>
+          <div class="text-sm text-zinc-400">【待补】 · 本科在读（大一）</div>
+        </div>
+        <p class="text-sm text-zinc-500 mb-3">核心课程：【待补】、【待补】、【待补】</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">
+          保持优异的学业成绩，积极参与各类校园实践与技能拓展活动，注重综合素质的全面提升。
+        </p>
+      </article>
+
+      <article class="bento-card md:col-span-1 tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="badge-check" class="w-5 h-5 text-amber-400"></i>
+          <h3 class="text-lg font-bold text-white">认证</h3>
+        </div>
+        <div class="text-base font-semibold text-white mb-1">阿里巴巴人工智能训练师证书</div>
+        <div class="text-xs text-zinc-500 mb-3">阿里巴巴</div>
+        <p class="text-sm text-zinc-400 leading-relaxed">
+          系统学习AI数据标注、模型训练及提示词工程等核心技能，具备将AI工具应用于实际业务场景的实操能力。
+        </p>
+      </article>
+
+      <article class="bento-card md:col-span-1 tilt-card"
+        data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="trophy" class="w-5 h-5 text-purple-400"></i>
+          <h3 class="text-lg font-bold text-white">奖项</h3>
+        </div>
+        <div class="text-base font-semibold text-white mb-1">【待补】PPT设计/视觉创意比赛奖项</div>
+        <div class="text-xs text-zinc-500 mb-3">【待补】</div>
+        <p class="text-sm text-zinc-400 leading-relaxed">
+          【待补】年，荣获【待补】奖项（如：校级/院级PPT大赛一等奖等）。
+        </p>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 bg-black/20">
+    <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-zinc-500">© 2026 瞿德旺 · 视觉设计与AI应用实践者 · 最后更新于 2026年8月</p>
+      <div class="flex gap-4">
+        <button class="contact-btn text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 text-sm" data-copy="19720817095">
+          <i data-lucide="phone" class="w-4 h-4"></i> 联系
+        </button>
+        <button class="contact-btn text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 text-sm" data-copy="【待补】">
+          <i data-lucide="mail" class="w-4 h-4"></i> 邮箱
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="back-top no-print" id="backTop" title="返回顶部">
+    <i data-lucide="arrow-up" class="w-5 h-5"></i>
+  </button>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* ========== Resume Data ========== */
+    const resume = {
+      name: "瞿德旺",
+      title: "视觉设计与AI应用实践者",
+      phone: "19720817095",
+      email: "【待补】",
+      github: "【待补】",
+      education: {
+        school: "中南林业科技大学",
+        major: "【待补】",
+        degree: "本科在读（大一）",
+        courses: "【待补】、【待补】、【待补】",
+        desc: "保持优异的学业成绩，积极参与各类校园实践与技能拓展活动，注重综合素质的全面提升。"
+      },
+      highlights: [
+        { num: "10+", label: "场大型活动PPT设计" },
+        { num: "30%", label: "内容筹备周期缩短" },
+        { num: "5+", label: "场内部技能分享会" },
+        { num: "1", label: "阿里巴巴AI训练师认证" }
+      ],
+      skills: {
+        "设计工具": [
+          { name: "PPT设计与视觉叙事", level: 90 },
+          { name: "信息层级规划", level: 85 },
+          { name: "数据可视化", level: 80 }
+        ],
+        "AI与工具": [
+          { name: "提示词工程（Prompt Engineering）", level: 88 },
+          { name: "ChatGPT / AI辅助工作流", level: 85 },
+          { name: "AI数据标注与模型训练", level: 75 }
+        ],
+        "软技能": [
+          { name: "团队协作与跨部门沟通", level: 90 },
+          { name: "自我管理与目标导向", level: 88 },
+          { name: "经验分享与团队赋能", level: 85 }
+        ]
+      },
+      experience: {
+        campus: {
+          title: "校园学术/社团组织",
+          role: "视觉设计与内容策划核心成员",
+          period: "【待补】年 – 至今",
+          items: [
+            "主导视觉呈现与PPT重构：负责社团/班级多场大型活动的宣讲PPT设计与视觉叙事规划，运用信息层级重构技巧，将冗长文字转化为结构化图表，使受众信息接收效率显著提升。",
+            "AI赋能内容生产：引入ChatGPT等AI工具辅助前期资料搜集与文案初稿撰写，通过精准提示词工程优化输出结果，使团队整体内容筹备周期缩短约30%。",
+            "跨部门协作与内容整合：统筹多名成员的文案素材，进行统一的视觉包装与排版美化，确保最终汇报材料风格一致、逻辑严密，获得指导老师高度评价。",
+            "经验分享与团队赋能：主动组织多场内部技能分享会，普及AI工具高效使用技巧与PPT设计原则，帮助多名同学解决制作痛点，显著提升团队数字化办公与视觉表达能力。"
+          ]
+        },
+        course: {
+          title: "校园课程/创新项目",
+          role: "核心组员",
+          period: "【待补】年 – 【待补】年",
+          items: [
+            "项目策划与视觉落地：负责整体汇报材料的视觉设计与逻辑梳理，结合动漫镜头语言技巧优化页面转场与视觉引导，使项目汇报的生动性与专业度显著提升。",
+            "数据可视化与排版优化：运用设计原则对多组复杂数据进行可视化处理，提炼核心洞察并转化为直观图表呈现，辅助团队在最终答辩中取得优异成绩。",
+            "团队沟通与进度把控：发挥团队协作优势，积极协调组员分工，跟进项目进度，有效化解团队分歧，确保项目高质量按期交付。"
+          ]
+        }
+      },
+      projects: [
+        {
+          name: "AI辅助PPT视觉叙事系统",
+          tags: ["PPT设计", "AI工具", "提示词工程"],
+          desc: "构建了一套结合AI工具与视觉设计原则的PPT制作工作流，从资料搜集、文案生成到视觉排版全流程自动化辅助，大幅提升内容生产效率与视觉呈现质量。"
+        },
+        {
+          name: "二次元视觉风格PPT模板库",
+          tags: ["视觉设计", "二次元文化", "模板设计"],
+          desc: "融合二次元动漫文化与专业排版设计，设计了一套具有独特视觉风格的PPT模板库，将镜头语言与视觉叙事技巧应用于幻灯片设计中，形成差异化设计优势。"
+        },
+        {
+          name: "团队AI工具技能培训方案",
+          tags: ["AI培训", "团队协作", "知识分享"],
+          desc: "设计并实施了一套面向团队的AI工具使用培训方案，涵盖ChatGPT提示词工程、AI辅助资料搜集与文案撰写等模块，帮助团队成员快速掌握AI工具高效使用技巧。"
+        }
+      ],
+      certificates: [
+        {
+          name: "阿里巴巴人工智能训练师证书",
+          org: "阿里巴巴",
+          desc: "系统学习并掌握AI数据标注、模型训练及提示词工程等核心技能，具备将AI工具应用于实际业务场景的实操能力。"
+        },
+        {
+          name: "【待补】PPT设计/视觉创意比赛奖项",
+          org: "【待补】",
+          desc: "【待补】年，荣获【待补】奖项（如：校级/院级PPT大赛一等奖等）。"
+        }
+      ]
+    };
+
+    /* ========== Init Lucide Icons ========== */
+    lucide.createIcons();
+
+    /* ========== Tab Logic ========== */
+    function initTabs() {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tab = btn.dataset.tab;
+          document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('active', 'bg-white/10', 'text-white', 'border-white/10');
+            b.classList.add('text-zinc-400', 'border-transparent');
+          });
+          btn.classList.add('active', 'bg-white/10', 'text-white', 'border-white/10');
+          btn.classList.remove('text-zinc-400', 'border-transparent');
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+          document.getElementById('panel-' + tab).classList.remove('hidden');
+        });
       });
-    });
-  });
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-  }
-}
+    }
 
-/* ========== Scroll Reveal ========== */
-function initReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        // Animate skill bars
-        entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
-          bar.style.width = bar.dataset.width + '%';
+    /* ========== Copy to Clipboard ========== */
+    function initCopy() {
+      const toast = document.getElementById('toast');
+      document.querySelectorAll('.contact-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const text = btn.dataset.copy;
+          navigator.clipboard.writeText(text).then(() => {
+            showToast(`已复制：${text}`);
+          }).catch(() => {
+            showToast('复制失败，请手动复制');
+          });
+        });
+      });
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      }
+    }
+
+    /* ========== Back to Top ========== */
+    function initBackTop() {
+      const btn = document.getElementById('backTop');
+      window.addEventListener('scroll', () => {
+        btn.classList.toggle('visible', window.scrollY > 400);
+      });
+      btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    /* ========== Print ========== */
+    function initPrint() {
+      document.getElementById('printBtn').addEventListener('click', () => window.print());
+    }
+
+    /* ========== 3D Tilt Initialization with Touch Fallback ========== */
+    function initTilt() {
+      const isTouch = window.matchMedia('(pointer: coarse)').matches;
+      const cards = document.querySelectorAll('.tilt-card');
+
+      if (isTouch) {
+        // Mobile/touch: strip tilt attributes to avoid scroll conflicts
+        cards.forEach(card => {
+          card.removeAttribute('data-tilt');
+          card.removeAttribute('data-tilt-max');
+          card.removeAttribute('data-tilt-speed');
+          card.removeAttribute('data-tilt-glare');
+          card.removeAttribute('data-tilt-max-glare');
+        });
+        return;
+      }
+
+      if (typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(cards, {
+          max: 6,
+          speed: 400,
+          glare: true,
+          'max-glare': 0.25,
+          scale: 1.02,
+          perspective: 1000,
+          gyroscope: false,
         });
       }
-    });
-  }, { threshold: 0.15 });
-  
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
+    }
 
-/* ========== Init ========== */
-document.addEventListener('DOMContentLoaded', () => {
-  renderHeroBadges();
-  renderHighlights();
-  renderExperience();
-  renderProjects();
-  renderSkills();
-  renderEducation();
-  initTabs();
-  initNavScroll();
-  initBackTop();
-  initTheme();
-  initPrint();
-  initCopy();
-  initReveal();
-});
-</script>
+    /* ========== Init ========== */
+    document.addEventListener('DOMContentLoaded', () => {
+      initTabs();
+      initCopy();
+      initBackTop();
+      initPrint();
+      initTilt();
+    });
+  </script>
 </body>
 </html>
