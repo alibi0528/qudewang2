@@ -418,6 +418,15 @@ function initReveal() {
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
+/* ========== 打印前确保技能条填充 ========== */
+window.addEventListener('beforeprint', () => {
+  document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+    bar.style.transition = 'none';
+    bar.style.width = bar.dataset.width + '%';
+  });
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+});
+
 /* ========== Init ========== */
 document.addEventListener('DOMContentLoaded', () => {
   renderHighlights();
