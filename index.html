@@ -4,410 +4,171 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>瞿德旺 - 视觉设计与AI应用实践者</title>
+
+<!-- Fonts: Geist -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Geist', '-apple-system', 'BlinkMacSystemFont', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', 'Arial', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
-/* ========== CSS Reset & Variables ========== */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --primary:#2D5F8A;
-  --primary-light:#4A8BC2;
-  --primary-dark:#1C3A5E;
-  --accent:#F28E2B;
-  --accent-light:#F5A84E;
-  --bg:#FFFFFF;
-  --bg-card:#F7F9FC;
-  --bg-nav:rgba(255,255,255,0.92);
-  --text:#2E3440;
-  --text-muted:#6B7280;
-  --text-light:#9CA3AF;
-  --border:#E5E7EB;
-  --shadow:0 4px 24px rgba(0,0,0,0.08);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.12);
-  --radius:12px;
-  --radius-sm:8px;
-  --transition:200ms cubic-bezier(0.4,0,0.2,1);
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
-  --nav-h:64px;
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+/* ---- 链接下划线展开动效 ---- */
+.u-link { position: relative; text-decoration: none; transition: color .2s ease; }
+.u-link::after {
+  content: ""; position: absolute; left: 0; bottom: -3px;
+  height: 1px; width: 100%; background: currentColor;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .28s cubic-bezier(.4, 0, .2, 1);
 }
-@media(prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0F172A;
-    --bg-card:#1E293B;
-    --bg-nav:rgba(15,23,42,0.95);
-    --text:#E2E8F0;
-    --text-muted:#94A3B8;
-    --text-light:#64748B;
-    --border:#334155;
-    --shadow:0 4px 24px rgba(0,0,0,0.3);
-    --shadow-hover:0 8px 32px rgba(0,0,0,0.4);
+.u-link:hover { color: #18181b; }
+.u-link:hover::after { transform: scaleX(1); }
+
+/* ---- 入场微动效 ---- */
+.reveal { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---- 打印样式：A4 纸质简历 ---- */
+@media print {
+  @page { size: A4; margin: 12mm 14mm; }
+  html { scroll-behavior: auto; }
+  body { background: #fff !important; font-size: 12px !important; }
+  .no-print { display: none !important; }
+  main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  section { margin-top: 18px !important; padding-top: 14px !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .animate-ping { display: none !important; }
+  article, .print-avoid-break { break-inside: avoid; }
+  li { break-inside: avoid; }
+  a { color: inherit !important; }
+  .u-link::after { display: none !important; }
+  * {
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    box-shadow: none !important;
   }
 }
-[data-theme="dark"]{
-  --bg:#0F172A;
-  --bg-card:#1E293B;
-  --bg-nav:rgba(15,23,42,0.95);
-  --text:#E2E8F0;
-  --text-muted:#94A3B8;
-  --text-light:#64748B;
-  --border:#334155;
-  --shadow:0 4px 24px rgba(0,0,0,0.3);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.4);
-}
-[data-theme="light"]{
-  --bg:#FFFFFF;
-  --bg-card:#F7F9FC;
-  --bg-nav:rgba(255,255,255,0.92);
-  --text:#2E3440;
-  --text-muted:#6B7280;
-  --text-light:#9CA3AF;
-  --border:#E5E7EB;
-  --shadow:0 4px 24px rgba(0,0,0,0.08);
-  --shadow-hover:0 8px 32px rgba(0,0,0,0.12);
-}
-
-/* ========== Base ========== */
-html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h)}
-body{
-  font-family:var(--font);
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.7;
-  -webkit-font-smoothing:antialiased;
-  transition:background var(--transition),color var(--transition);
-}
-a{color:var(--primary);text-decoration:none;transition:color var(--transition)}
-a:hover{color:var(--accent)}
-img{max-width:100%;display:block}
-
-/* ========== Nav ========== */
-.nav{
-  position:fixed;top:0;left:0;right:0;height:var(--nav-h);
-  background:var(--bg-nav);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  z-index:1000;
-  transition:all var(--transition);
-}
-.nav-inner{
-  max-width:1100px;margin:0 auto;padding:0 24px;
-  height:100%;display:flex;align-items:center;justify-content:space-between;
-}
-.nav-brand{font-size:1.25rem;font-weight:700;color:var(--primary);letter-spacing:-0.5px}
-.nav-links{display:flex;gap:8px;align-items:center}
-.nav-link{
-  padding:6px 14px;border-radius:20px;font-size:0.875rem;font-weight:500;
-  color:var(--text-muted);transition:all var(--transition);cursor:pointer;border:none;background:none;
-}
-.nav-link:hover,.nav-link.active{color:var(--primary);background:rgba(45,95,138,0.1)}
-.nav-actions{display:flex;gap:6px;align-items:center}
-.nav-btn{
-  width:36px;height:36px;border-radius:50%;border:1px solid var(--border);
-  background:var(--bg);color:var(--text-muted);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all var(--transition);font-size:1rem;
-}
-.nav-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
-
-/* ========== Hero ========== */
-.hero{
-  padding:120px 24px 60px;
-  max-width:1100px;margin:0 auto;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
-}
-.hero-avatar{
-  width:100px;height:100px;border-radius:50%;
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.5rem;font-weight:700;color:#fff;
-  margin-bottom:20px;
-  box-shadow:0 8px 32px rgba(45,95,138,0.3);
-}
-.hero h1{font-size:2.5rem;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
-.hero h1 span{color:var(--primary)}
-.hero .subtitle{font-size:1.125rem;color:var(--text-muted);margin-bottom:16px}
-.hero .tagline{
-  font-size:1rem;color:var(--text-muted);max-width:600px;margin-bottom:24px;
-  line-height:1.8;
-}
-.hero-contact{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
-.contact-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 18px;border-radius:24px;font-size:0.875rem;font-weight:500;
-  border:1px solid var(--border);background:var(--bg);color:var(--text);
-  cursor:pointer;transition:all var(--transition);
-}
-.contact-btn:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px)}
-.hero-badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.badge{
-  padding:5px 14px;border-radius:20px;font-size:0.8rem;font-weight:500;
-  background:linear-gradient(135deg,rgba(45,95,138,0.1),rgba(45,95,138,0.05));
-  color:var(--primary);border:1px solid rgba(45,95,138,0.15);
-}
-
-/* ========== Section ========== */
-.section{padding:60px 24px;max-width:1100px;margin:0 auto}
-.section-title{
-  font-size:1.5rem;font-weight:700;margin-bottom:32px;
-  display:flex;align-items:center;gap:10px;
-}
-.section-title::before{
-  content:'';width:4px;height:28px;border-radius:2px;
-  background:linear-gradient(180deg,var(--primary),var(--accent));
-}
-
-/* ========== Highlights ========== */
-.highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-.highlight-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;text-align:center;transition:all var(--transition);position:relative;overflow:hidden;
-}
-.highlight-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--primary),var(--accent));
-  transform:scaleX(0);transition:transform var(--transition);transform-origin:left;
-}
-.highlight-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
-.highlight-card:hover::before{transform:scaleX(1)}
-.highlight-num{font-size:2.25rem;font-weight:800;color:var(--primary);line-height:1}
-.highlight-label{font-size:0.875rem;color:var(--text-muted);margin-top:6px}
-
-/* ========== Tabs ========== */
-.tabs-wrapper{margin-bottom:24px}
-.tab-nav{
-  display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:24px;
-  overflow-x:auto;padding-bottom:0;
-}
-.tab-btn{
-  padding:10px 20px;border:none;background:none;cursor:pointer;
-  font-size:0.9375rem;font-weight:500;color:var(--text-muted);
-  border-bottom:2px solid transparent;margin-bottom:-2px;
-  transition:all var(--transition);white-space:nowrap;
-}
-.tab-btn:hover{color:var(--primary)}
-.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
-.tab-panel{display:none;animation:fadeIn 300ms ease}
-.tab-panel.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* ========== Experience / Project Cards ========== */
-.timeline{position:relative;padding-left:24px}
-.timeline::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:1px;
-}
-.timeline-item{position:relative;margin-bottom:32px}
-.timeline-item::before{
-  content:'';position:absolute;left:-28px;top:6px;width:10px;height:10px;
-  border-radius:50%;background:var(--primary);border:2px solid var(--bg);
-  box-shadow:0 0 0 3px var(--primary);
-}
-.timeline-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.timeline-title{font-size:1.125rem;font-weight:600}
-.timeline-meta{font-size:0.8125rem;color:var(--text-muted);display:flex;gap:12px;align-items:center}
-.timeline-body ul{list-style:none;padding:0}
-.timeline-body li{
-  position:relative;padding-left:18px;margin-bottom:6px;font-size:0.9375rem;color:var(--text);
-}
-.timeline-body li::before{
-  content:'';position:absolute;left:0;color:var(--accent);font-weight:700;
-}
-
-/* ========== Project Cards ========== */
-.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.project-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;transition:all var(--transition);display:flex;flex-direction:column;
-}
-.project-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
-.project-card h4{font-size:1.0625rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.project-card h4::before{content:'';width:3px;height:16px;border-radius:2px;background:var(--accent)}
-.project-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.project-tag{
-  padding:2px 10px;border-radius:12px;font-size:0.75rem;font-weight:500;
-  background:rgba(242,142,43,0.1);color:var(--accent);
-}
-.project-card p{font-size:0.9375rem;color:var(--text-muted);flex:1}
-
-/* ========== Skills ========== */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
-.skill-category h4{font-size:1rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.skill-category h4::before{content:'';width:3px;height:18px;border-radius:2px;background:var(--accent)}
-.skill-bar-wrap{margin-bottom:14px}
-.skill-bar-header{display:flex;justify-content:space-between;font-size:0.875rem;margin-bottom:4px}
-.skill-bar-label{font-weight:500}
-.skill-bar-pct{color:var(--text-muted)}
-.skill-bar{
-  height:8px;background:var(--border);border-radius:4px;overflow:hidden;
-}
-.skill-bar-fill{
-  height:100%;border-radius:4px;
-  background:linear-gradient(90deg,var(--primary),var(--accent));
-  width:0;transition:width 1s cubic-bezier(0.4,0,0.2,1);
-}
-
-/* ========== Education & Certs ========== */
-.edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.edu-card,.cert-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;transition:all var(--transition);
-}
-.edu-card:hover,.cert-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-.edu-card h4,.cert-card h4{font-size:1.0625rem;font-weight:600;margin-bottom:6px}
-.edu-card .meta,.cert-card .meta{font-size:0.8125rem;color:var(--text-muted);margin-bottom:8px}
-.edu-card p,.cert-card p{font-size:0.9375rem;color:var(--text-muted);line-height:1.7}
-
-/* ========== Footer ========== */
-.footer{
-  text-align:center;padding:40px 24px;font-size:0.8125rem;color:var(--text-muted);
-  border-top:1px solid var(--border);margin-top:40px;
-}
-
-/* ========== Back to Top ========== */
-.back-top{
-  position:fixed;bottom:30px;right:30px;width:44px;height:44px;
-  border-radius:50%;background:var(--primary);color:#fff;border:none;
-  cursor:pointer;font-size:1.25rem;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 16px rgba(45,95,138,0.3);
-  opacity:0;transform:translateY(20px);
-  transition:all var(--transition);pointer-events:none;z-index:999;
-}
-.back-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
-.back-top:hover{background:var(--accent);transform:translateY(-2px)}
-
-/* ========== Toast ========== */
-.toast{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:var(--primary-dark);color:#fff;padding:10px 24px;border-radius:24px;
-  font-size:0.875rem;font-weight:500;opacity:0;pointer-events:none;
-  transition:all 300ms ease;z-index:1001;
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ========== Print ========== */
-@media print{
-  .nav,.back-top,.tab-btn,.hero-badges,.contact-btn,.nav-actions{display:none!important}
-  .nav{position:static!important;height:auto!important}
-  .tab-panel{display:block!important;page-break-inside:avoid}
-  .tab-panel:not(:first-child){margin-top:24px}
-  body{background:#fff;color:#000}
-  .hero{padding-top:40px}
-  .section{padding:24px 0}
-  .highlight-card,.project-card,.edu-card,.cert-card{break-inside:avoid;border:none;box-shadow:none}
-  .skill-bar-fill{background:var(--primary)!important}
-}
-
-/* ========== Responsive ========== */
-@media(max-width:768px){
-  .nav-links{display:none}
-  .hero h1{font-size:2rem}
-  .hero .tagline{font-size:0.9375rem}
-  .section{padding:40px 16px}
-  .timeline-header{flex-direction:column}
-  .project-grid{grid-template-columns:1fr}
-}
-
-/* ========== Reduced Motion ========== */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:0.01ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:0.01ms!important;
-    scroll-behavior:instant!important;
-  }
-}
-
-/* ========== Scroll Reveal ========== */
-.reveal{opacity:0;transform:translateY(24px);transition:all 600ms cubic-bezier(0.4,0,0.2,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
 </style>
 </head>
-<body>
 
-<!-- ========== NAV ========== -->
-<nav class="nav" id="nav">
-  <div class="nav-inner">
-    <a href="#hero" class="nav-brand">瞿德旺</a>
-    <div class="nav-links" id="navLinks">
-      <button class="nav-link active" data-target="hero">首页</button>
-      <button class="nav-link" data-target="highlights">亮点</button>
-      <button class="nav-link" data-target="experience">经历</button>
-      <button class="nav-link" data-target="projects">项目</button>
-      <button class="nav-link" data-target="skills">技能</button>
-      <button class="nav-link" data-target="education">教育</button>
+<body class="bg-[#FAFAFA] font-sans text-zinc-800 antialiased">
+
+<main class="mx-auto max-w-3xl px-6 py-16 md:px-8 md:py-20">
+
+  <!-- ========== 头部 ========== -->
+  <header id="top">
+    <div class="flex items-start justify-between gap-6">
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-zinc-900">瞿德旺</h1>
+        <p class="mt-1.5 text-[15px] text-zinc-500">视觉设计与AI应用实践者</p>
+      </div>
+      <div class="no-print flex shrink-0 items-center gap-4 pt-1.5">
+        <a href="#contact" class="u-link text-[13px] font-medium text-zinc-600">联系方式</a>
+        <button onclick="window.print()"
+          class="inline-flex h-8 items-center gap-1.5 rounded-md border border-zinc-200 bg-white px-3 text-[13px] font-medium text-zinc-600 transition-colors hover:border-zinc-400">
+          <i data-lucide="printer" class="h-3.5 w-3.5"></i>打印
+        </button>
+      </div>
     </div>
-    <div class="nav-actions">
-      <button class="nav-btn" id="themeToggle" title="切换主题"></button>
-      <button class="nav-btn" id="printBtn" title="打印简历">️</button>
+
+    <p class="mt-8 max-w-2xl text-[15px] leading-7 text-zinc-600">
+      中南林业科技大学在读本科生，热衷于将视觉设计美学与AI前沿技术深度融合。
+      擅长通过PPT视觉叙事、提示词工程与AI辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，
+      持续提升团队内容生产效率与数字化表达能力。
+    </p>
+
+    <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+      <!-- 状态 Pill Badge：绿色呼吸指示灯 -->
+      <span class="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-medium text-zinc-600">
+        <span class="relative flex h-1 w-1">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex h-1 w-1 rounded-full bg-emerald-500"></span>
+        </span>
+        在读 · 中南林业科技大学（本科一年级）
+      </span>
+      <span class="text-[13px] text-zinc-400">PPT设计 · AI工具 · 视觉叙事 · 团队协作</span>
     </div>
-  </div>
-</nav>
 
-<!-- ========== HERO ========== -->
-<section class="hero" id="hero">
-  <div class="hero-avatar">德</div>
-  <h1>瞿德旺 <span>|</span> 视觉设计与AI应用实践者</h1>
-  <p class="subtitle">PPT设计 · AI工具 · 视觉叙事 · 团队协作</p>
-  <p class="tagline">
-    中南林业科技大学在读本科生，热衷于将视觉设计美学与AI前沿技术深度融合。
-    擅长通过PPT视觉叙事、提示词工程与AI辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，
-    持续提升团队内容生产效率与数字化表达能力。
-  </p>
-  <div class="hero-contact">
-    <button class="contact-btn" data-copy="19720817095"> 19720817095</button>
-    <button class="contact-btn" data-copy="【待补】" title="邮箱地址待补充">️ 邮箱：【待补】</button>
-    <button class="contact-btn" data-copy="【待补】" title="GitHub/LinkedIn待补充"> GitHub / LinkedIn</button>
-  </div>
-  <div class="hero-badges" id="heroBadges"></div>
-</section>
-
-<!-- ========== HIGHLIGHTS ========== -->
-<section class="section" id="highlights">
-  <h2 class="section-title reveal">亮点成果</h2>
-  <div class="highlights" id="highlightsGrid"></div>
-</section>
-
-<!-- ========== EXPERIENCE ========== -->
-<section class="section" id="experience">
-  <h2 class="section-title reveal">经历</h2>
-  <div class="tabs-wrapper">
-    <div class="tab-nav" role="tablist" id="expTabs">
-      <button class="tab-btn active" role="tab" data-tab="campus" aria-selected="true">校园实践</button>
-      <button class="tab-btn" role="tab" data-tab="course" aria-selected="false">课程项目</button>
+    <!-- 联系方式：一键复制 -->
+    <div id="contact" class="mt-6 flex flex-wrap gap-2">
+      <button class="copy-chip inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-[13px] text-zinc-600 transition-colors hover:border-zinc-400" data-copy="19720817095" title="点击复制电话">
+        <i data-lucide="phone" class="chip-icon h-3.5 w-3.5 text-zinc-400"></i>
+        <i data-lucide="check" class="chip-icon-check hidden h-3.5 w-3.5 text-emerald-500"></i>
+        <span class="chip-label">19720817095</span>
+      </button>
+      <button class="copy-chip inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-[13px] text-zinc-600 transition-colors hover:border-zinc-400" data-copy="【待补】" title="点击复制邮箱">
+        <i data-lucide="mail" class="chip-icon h-3.5 w-3.5 text-zinc-400"></i>
+        <i data-lucide="check" class="chip-icon-check hidden h-3.5 w-3.5 text-emerald-500"></i>
+        <span class="chip-label">邮箱：【待补】</span>
+      </button>
+      <button class="copy-chip inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-[13px] text-zinc-600 transition-colors hover:border-zinc-400" data-copy="【待补】" title="点击复制 GitHub / LinkedIn">
+        <i data-lucide="github" class="chip-icon h-3.5 w-3.5 text-zinc-400"></i>
+        <i data-lucide="check" class="chip-icon-check hidden h-3.5 w-3.5 text-emerald-500"></i>
+        <span class="chip-label">GitHub / LinkedIn：【待补】</span>
+      </button>
     </div>
-    <div class="tab-panel active" id="panel-campus" role="tabpanel"></div>
-    <div class="tab-panel" id="panel-course" role="tabpanel"></div>
-  </div>
-</section>
+  </header>
 
-<!-- ========== PROJECTS ========== -->
-<section class="section" id="projects">
-  <h2 class="section-title reveal">项目经历</h2>
-  <div class="project-grid" id="projectGrid"></div>
-</section>
+  <!-- ========== 亮点成果 ========== -->
+  <section class="mt-16 border-t border-zinc-200 pt-10">
+    <h2 class="text-base font-semibold tracking-tight text-zinc-900">亮点成果</h2>
+    <div id="highlightsGrid" class="mt-6 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4"></div>
+  </section>
 
-<!-- ========== SKILLS ========== -->
-<section class="section" id="skills">
-  <h2 class="section-title reveal">技能矩阵</h2>
-  <div class="skills-grid" id="skillsGrid"></div>
-</section>
+  <!-- ========== 经历：极简垂直时间轴 ========== -->
+  <section class="mt-16 border-t border-zinc-200 pt-10">
+    <h2 class="text-base font-semibold tracking-tight text-zinc-900">经历</h2>
+    <ol id="timeline" class="relative mt-7 ml-[3px] border-l border-zinc-200"></ol>
+  </section>
 
-<!-- ========== EDUCATION ========== -->
-<section class="section" id="education">
-  <h2 class="section-title reveal">教育与证书</h2>
-  <div class="edu-grid" id="eduGrid"></div>
-</section>
+  <!-- ========== 项目经历 ========== -->
+  <section class="mt-16 border-t border-zinc-200 pt-10">
+    <h2 class="text-base font-semibold tracking-tight text-zinc-900">项目经历</h2>
+    <div id="projectGrid" class="mt-6 grid gap-4 sm:grid-cols-2"></div>
+  </section>
 
-<!-- ========== FOOTER ========== -->
-<footer class="footer">
-  <p>© 2026 瞿德旺 · 视觉设计与AI应用实践者 · 最后更新于 2026年8月</p>
-</footer>
+  <!-- ========== 技能矩阵 ========== -->
+  <section class="mt-16 border-t border-zinc-200 pt-10">
+    <h2 class="text-base font-semibold tracking-tight text-zinc-900">技能矩阵</h2>
+    <div id="skillsGrid" class="mt-6 grid gap-8 md:grid-cols-3"></div>
+  </section>
 
-<!-- ========== BACK TO TOP ========== -->
-<button class="back-top" id="backTop" title="返回顶部">↑</button>
+  <!-- ========== 教育与证书 ========== -->
+  <section class="mt-16 border-t border-zinc-200 pt-10">
+    <h2 class="text-base font-semibold tracking-tight text-zinc-900">教育与证书</h2>
+    <div id="eduGrid" class="mt-6 grid gap-4 md:grid-cols-2"></div>
+  </section>
 
-<!-- ========== TOAST ========== -->
-<div class="toast" id="toast"></div>
+  <!-- ========== 页脚 ========== -->
+  <footer class="mt-16 flex flex-col gap-1 border-t border-zinc-200 pt-6 text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
+    <p>© 2026 <a href="#top" class="u-link text-zinc-500">瞿德旺</a> · 视觉设计与AI应用实践者</p>
+    <p>最后更新于 2026年8月</p>
+  </footer>
+
+</main>
 
 <script>
 /* ========== Resume Data ========== */
@@ -501,244 +262,170 @@ const resume = {
   ]
 };
 
-/* ========== Render Functions ========== */
-function renderHeroBadges() {
-  const badges = resume.skills;
-  const container = document.getElementById('heroBadges');
-  const allSkills = [];
-  Object.values(badges).forEach(arr => arr.forEach(s => allSkills.push(s.name.split('（')[0].split('/')[0].trim())));
-  const unique = [...new Set(allSkills.slice(0, 8))];
-  container.innerHTML = unique.map(s => `<span class="badge">${s}</span>`).join('');
-}
-
+/* ========== Render ========== */
 function renderHighlights() {
-  const grid = document.getElementById('highlightsGrid');
-  grid.innerHTML = resume.highlights.map(h => `
-    <div class="highlight-card reveal">
-      <div class="highlight-num">${h.num}</div>
-      <div class="highlight-label">${h.label}</div>
+  document.getElementById('highlightsGrid').innerHTML = resume.highlights.map(h => `
+    <div class="reveal border-l border-zinc-200 pl-4">
+      <div class="text-2xl font-bold tracking-tight text-zinc-900 tabular-nums">${h.num}</div>
+      <div class="mt-1 text-[13px] leading-5 text-zinc-500">${h.label}</div>
     </div>
   `).join('');
 }
 
-function renderExperience() {
-  const campusPanel = document.getElementById('panel-campus');
-  const coursePanel = document.getElementById('panel-course');
-  
-  campusPanel.innerHTML = `
-    <div class="timeline-item">
-      <div class="timeline-header">
-        <div>
-          <div class="timeline-title">${resume.experience.campus.title}</div>
-          <div class="timeline-meta"><span>${resume.experience.campus.role}</span></div>
-        </div>
-        <div class="timeline-meta"><span>${resume.experience.campus.period}</span></div>
+function renderTimeline() {
+  const entries = [resume.experience.campus, resume.experience.course];
+  document.getElementById('timeline').innerHTML = entries.map(e => `
+    <li class="reveal relative pb-10 pl-7 last:pb-0">
+      <span class="absolute -left-[3.5px] top-[7px] h-[6px] w-[6px] rounded-full bg-zinc-900"></span>
+      <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h3 class="text-[15px] font-semibold text-zinc-900">${e.title}</h3>
+        <span class="shrink-0 text-xs text-zinc-400 tabular-nums">${e.period}</span>
       </div>
-      <div class="timeline-body">
-        <ul>${resume.experience.campus.items.map(i => `<li>${i}</li>`).join('')}</ul>
-      </div>
-    </div>
-  `;
-  
-  coursePanel.innerHTML = `
-    <div class="timeline-item">
-      <div class="timeline-header">
-        <div>
-          <div class="timeline-title">${resume.experience.course.title}</div>
-          <div class="timeline-meta"><span>${resume.experience.course.role}</span></div>
-        </div>
-        <div class="timeline-meta"><span>${resume.experience.course.period}</span></div>
-      </div>
-      <div class="timeline-body">
-        <ul>${resume.experience.course.items.map(i => `<li>${i}</li>`).join('')}</ul>
-      </div>
-    </div>
-  `;
+      <p class="mt-0.5 text-[13px] text-zinc-500">${e.role}</p>
+      <ul class="mt-3 space-y-2">
+        ${e.items.map(i => `
+          <li class="relative pl-4 text-sm leading-relaxed text-zinc-600 before:absolute before:left-0 before:top-[9px] before:h-[3px] before:w-[3px] before:rounded-full before:bg-zinc-300 before:content-['']">${i}</li>
+        `).join('')}
+      </ul>
+    </li>
+  `).join('');
 }
 
 function renderProjects() {
-  const grid = document.getElementById('projectGrid');
-  grid.innerHTML = resume.projects.map(p => `
-    <div class="project-card reveal">
-      <h4>${p.name}</h4>
-      <div class="project-tags">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
-      <p>${p.desc}</p>
-    </div>
+  document.getElementById('projectGrid').innerHTML = resume.projects.map(p => `
+    <article class="reveal group rounded-xl border border-zinc-200 bg-white p-5 transition-colors duration-200 hover:border-zinc-400">
+      <h3 class="text-sm font-semibold text-zinc-900">${p.name}</h3>
+      <p class="mt-2 text-[13px] leading-relaxed text-zinc-500">${p.desc}</p>
+      <div class="mt-4 flex flex-wrap gap-1.5">
+        ${p.tags.map(t => `<span class="rounded bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600">${t}</span>`).join('')}
+      </div>
+    </article>
   `).join('');
 }
 
 function renderSkills() {
-  const grid = document.getElementById('skillsGrid');
-  grid.innerHTML = Object.entries(resume.skills).map(([cat, skills]) => `
-    <div class="skill-category reveal">
-      <h4>${cat}</h4>
-      ${skills.map(s => `
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-header">
-            <span class="skill-bar-label">${s.name}</span>
-            <span class="skill-bar-pct">${s.level}%</span>
+  document.getElementById('skillsGrid').innerHTML = Object.entries(resume.skills).map(([cat, skills]) => `
+    <div class="reveal">
+      <h3 class="text-[13px] font-semibold text-zinc-900">${cat}</h3>
+      <div class="mt-4 space-y-3.5">
+        ${skills.map(s => `
+          <div>
+            <div class="mb-1.5 flex items-baseline justify-between gap-2 text-xs">
+              <span class="text-zinc-600">${s.name}</span>
+              <span class="shrink-0 text-zinc-400 tabular-nums">${s.level}%</span>
+            </div>
+            <div class="h-[3px] overflow-hidden rounded-full bg-zinc-100">
+              <div class="skill-bar-fill h-full rounded-full bg-zinc-800" data-width="${s.level}" style="width:0%"></div>
+            </div>
           </div>
-          <div class="skill-bar">
-            <div class="skill-bar-fill" data-width="${s.level}"></div>
-          </div>
-        </div>
-      `).join('')}
+        `).join('')}
+      </div>
     </div>
   `).join('');
 }
 
 function renderEducation() {
-  const grid = document.getElementById('eduGrid');
-  grid.innerHTML = `
-    <div class="edu-card reveal">
-      <h4> ${resume.education.school}</h4>
-      <div class="meta">${resume.education.major} · ${resume.education.degree}</div>
-      <p>核心课程：${resume.education.courses}</p>
-      <p style="margin-top:8px">${resume.education.desc}</p>
-    </div>
-    <div class="cert-card reveal">
-      <h4> ${resume.certificates[0].name}</h4>
-      <div class="meta">${resume.certificates[0].org}</div>
-      <p>${resume.certificates[0].desc}</p>
-    </div>
-  `;
-  // Add remaining certs
-  if (resume.certificates.length > 1) {
-    grid.innerHTML += `
-      <div class="cert-card reveal">
-        <h4> ${resume.certificates[1].name}</h4>
-        <div class="meta">${resume.certificates[1].org}</div>
-        <p>${resume.certificates[1].desc}</p>
+  const edu = resume.education;
+  const certs = resume.certificates;
+  document.getElementById('eduGrid').innerHTML = `
+    <article class="reveal rounded-xl border border-zinc-200 bg-white p-5 transition-colors duration-200 hover:border-zinc-400">
+      <div class="flex items-center gap-2">
+        <i data-lucide="graduation-cap" class="h-4 w-4 text-zinc-400"></i>
+        <h3 class="text-sm font-semibold text-zinc-900">${edu.school}</h3>
       </div>
-    `;
+      <p class="mt-1.5 text-[13px] text-zinc-400">${edu.major} · ${edu.degree}</p>
+      <p class="mt-3 text-[13px] leading-6 text-zinc-600">核心课程：${edu.courses}</p>
+      <p class="mt-2 text-[13px] leading-6 text-zinc-600">${edu.desc}</p>
+    </article>
+    <article class="reveal rounded-xl border border-zinc-200 bg-white p-5 transition-colors duration-200 hover:border-zinc-400">
+      <div class="flex items-center gap-2">
+        <i data-lucide="award" class="h-4 w-4 text-zinc-400"></i>
+        <h3 class="text-sm font-semibold text-zinc-900">证书与奖项</h3>
+      </div>
+      <div class="mt-3.5 space-y-4">
+        ${certs.map(c => `
+          <div>
+            <div class="text-[13px] font-medium text-zinc-700">${c.name}</div>
+            <div class="mt-0.5 text-xs text-zinc-400">${c.org}</div>
+            <p class="mt-1 text-[13px] leading-6 text-zinc-500">${c.desc}</p>
+          </div>
+        `).join('')}
+      </div>
+    </article>
+  `;
+}
+
+/* ========== 一键复制（轻量文本反馈） ========== */
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
   }
-}
-
-/* ========== Tab Logic ========== */
-function initTabs() {
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-    });
-    // Keyboard support
-    btn.addEventListener('keydown', (e) => {
-      const tabs = Array.from(tabBtns);
-      const idx = tabs.indexOf(btn);
-      let next = idx;
-      if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
-      if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
-      if (next !== idx) {
-        tabs[next].click();
-        tabs[next].focus();
-      }
-    });
+  return new Promise(resolve => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    resolve();
   });
 }
 
-/* ========== Nav Active State ========== */
-function initNavScroll() {
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(sec => {
-      if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
-    });
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.dataset.target === current);
-    });
-  });
-}
-
-/* ========== Back to Top ========== */
-function initBackTop() {
-  const btn = document.getElementById('backTop');
-  window.addEventListener('scroll', () => {
-    btn.classList.toggle('visible', window.scrollY > 400);
-  });
-  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-}
-
-/* ========== Theme Toggle ========== */
-function initTheme() {
-  const btn = document.getElementById('themeToggle');
-  const saved = localStorage.getItem('theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    btn.textContent = saved === 'dark' ? '️' : '';
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    btn.textContent = '️';
-  }
-  btn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    btn.textContent = next === 'dark' ? '️' : '';
-  });
-}
-
-/* ========== Print ========== */
-function initPrint() {
-  document.getElementById('printBtn').addEventListener('click', () => window.print());
-}
-
-/* ========== Copy to Clipboard ========== */
 function initCopy() {
-  const toast = document.getElementById('toast');
-  document.querySelectorAll('.contact-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const text = btn.dataset.copy;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(`已复制：${text}`);
+  document.querySelectorAll('.copy-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (chip.dataset.busy) return;
+      chip.dataset.busy = '1';
+      const label = chip.querySelector('.chip-label');
+      const icon = chip.querySelector('.chip-icon');
+      const iconCheck = chip.querySelector('.chip-icon-check');
+      const original = label.textContent;
+
+      copyText(chip.dataset.copy).then(() => {
+        label.textContent = '已复制';
+        icon.classList.add('hidden');
+        iconCheck.classList.remove('hidden');
+        setTimeout(() => {
+          label.textContent = original;
+          icon.classList.remove('hidden');
+          iconCheck.classList.add('hidden');
+          delete chip.dataset.busy;
+        }, 1600);
       }).catch(() => {
-        showToast('复制失败，请手动复制');
+        label.textContent = '复制失败';
+        setTimeout(() => { label.textContent = original; delete chip.dataset.busy; }, 1600);
       });
     });
   });
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-  }
 }
 
-/* ========== Scroll Reveal ========== */
+/* ========== 入场动效 & 技能条 ========== */
 function initReveal() {
-  const observer = new IntersectionObserver((entries) => {
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        // Animate skill bars
         entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+          bar.style.transition = 'width .8s cubic-bezier(.4,0,.2,1)';
           bar.style.width = bar.dataset.width + '%';
         });
+        observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.15 });
-  
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
 /* ========== Init ========== */
 document.addEventListener('DOMContentLoaded', () => {
-  renderHeroBadges();
   renderHighlights();
-  renderExperience();
+  renderTimeline();
   renderProjects();
   renderSkills();
   renderEducation();
-  initTabs();
-  initNavScroll();
-  initBackTop();
-  initTheme();
-  initPrint();
+  lucide.createIcons();
   initCopy();
   initReveal();
 });
