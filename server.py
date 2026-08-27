@@ -55,96 +55,137 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         content_type = self.headers.get('Content-Type', '')
         content_length = int(self.headers.get('Content-Length', '0'))
-        raw_body = self.rfile.read(content_length)
 
-        # Try JSON first (base64 encoded)
-        if 'application/json' in content_type:
-            try:
-                data = json.loads(raw_body.decode('utf-8'))
-                cert_index = int(data.get('cert_index', 0))
-                filename = data.get('filename', 'image.jpg')
-                img_data_b64 = data.get('data', '')
-
-                if img_data_b64.startswith('data:'):
-                    img_data_b64 = img_data_b64.split(',', 1)[1]
-
-                img_bytes = base64.b64decode(img_data_b64)
-                ext = os.path.splitext(filename)[1].lower() or '.jpg'
-                if ext == '.jpeg':
-                    ext = '.jpg'
-
-                cert_idx = cert_index % len(CERT_NAMES)
-                new_name = f'{CERT_NAMES[cert_idx]}{ext}'
-                filepath = os.path.join(IMAGES_DIR, new_name)
-
-                with open(filepath, 'wb') as f:
-                    f.write(img_bytes)
-
-                print(f"[UPLOAD JSON] Saved: {filepath}, size: {len(img_bytes)}, cert: {cert_index}")
-                self._send_success(cert_idx, len(img_bytes))
-                return
-            except Exception as e:
-                print(f"[UPLOAD JSON] Error: {e}")
-                self.send_error(400, str(e))
-                return
-
-        # Try multipart/form-data
-        if 'multipart/form-data' in content_type:
-            boundary = None
-            for param in content_type.split(';'):
-                param = param.strip()
-                if param.startswith('boundary='):
-                    boundary = param[9:].encode()
+        if content_length > 0:
+            raw_body = self.rfile.read(content_length)
+        else:
+            raw_body = b''
+            while True:
+                chunk = self.rfile.read(65536)
+                if not chunk:
                     break
+                raw_body += chunk
 
-            if not boundary:
-                self.send_error(400, 'No boundary found')
-                return
+        try:
+            return self._handle_upload(content_type, raw_body)
+        except Exception as e:
+            print(f"[UPLOAD] Error: {e}", flush=True)
+            self._send_json(400, {'error': str(e)})
 
-            parts = raw_body.split(b'--' + boundary)
-            file_data = None
-            filename = None
-            cert_index = 0
+    def _handle_upload(self, content_type, raw_body):
+        if raw_body and ('{' in raw_body[:100].decode('utf-8', errors='replace')):
+            try:
+                return self._handle_json(raw_body)
+            except Exception as e:
+                print(f"[UPLOAD JSON] Parse failed: {e}", flush=True)
+                pass
 
-            for part in parts:
-                stripped = part.strip()
-                if not stripped or stripped == b'--':
-                    continue
+        if 'application/json' in content_type:
+            return self._handle_json(raw_body)
 
-                if b'Content-Disposition' in part:
-                    body_start = part.find(b'\r\n\r\n')
+        if 'multipart/form-data' in content_type:
+            return self._handle_multipart(content_type, raw_body)
+
+        if raw_body:
+            try:
+                return self._handle_json(raw_body)
+            except Exception:
+                pass
+
+        self._send_json(400, {'error': f'Unsupported request'})
+
+    def _handle_json(self, raw_body):
+        data = json.loads(raw_body.decode('utf-8'))
+        cert_index = int(data.get('cert_index', 0))
+        filename = data.get('filename', 'image.jpg')
+        img_data_b64 = data.get('data', '')
+
+        if img_data_b64.startswith('data:'):
+            img_data_b64 = img_data_b64.split(',', 1)[1]
+
+        img_bytes = base64.b64decode(img_data_b64)
+        ext = os.path.splitext(filename)[1].lower() or '.jpg'
+        if ext == '.jpeg':
+            ext = '.jpg'
+
+        cert_idx = cert_index % len(CERT_NAMES)
+        new_name = f'{CERT_NAMES[cert_idx]}{ext}'
+        filepath = os.path.join(IMAGES_DIR, new_name)
+
+        with open(filepath, 'wb') as f:
+            f.write(img_bytes)
+
+        print(f"[UPLOAD JSON] Saved: {filepath}, size: {len(img_bytes)}, cert: {cert_index}", flush=True)
+        self._send_json(200, {'success': True, 'cert_index': cert_idx, 'size': len(img_bytes), 'filename': new_name})
+
+    def _handle_multipart(self, content_type, raw_body):
+        boundary = None
+        for param in content_type.split(';'):
+            param = param.strip()
+            if param.startswith('boundary='):
+                boundary = param[9:].encode()
+                break
+
+        if not boundary:
+            self._send_json(400, {'error': 'No boundary found'})
+            return
+
+        parts = raw_body.split(b'--' + boundary)
+        files = []
+        current_file = None
+
+        for part in parts:
+            stripped = part.strip()
+            if not stripped or stripped == b'--':
+                continue
+
+            if b'Content-Disposition' in part:
+                body_start = part.find(b'\r\n\r\n')
+                if body_start == -1:
+                    body_start = part.find(b'\n\n')
                     if body_start == -1:
-                        body_start = part.find(b'\n\n')
-                        if body_start == -1:
-                            continue
-                        body_content = part[body_start+2:]
-                    else:
-                        body_content = part[body_start+4:]
+                        continue
+                    body_content = part[body_start+2:]
+                else:
+                    body_content = part[body_start+4:]
 
-                    if body_content.endswith(b'\r\n'):
-                        body_content = body_content[:-2]
+                if body_content.endswith(b'\r\n'):
+                    body_content = body_content[:-2]
 
-                    headers_str = part[:body_start].decode('utf-8', errors='replace')
+                headers_str = part[:body_start].decode('utf-8', errors='replace')
 
-                    field_name = None
+                field_name = None
+                for param in headers_str.split(';'):
+                    param = param.strip()
+                    if param.startswith('name="'):
+                        field_name = param[6:-1]
+
+                if field_name == 'files':
+                    filename = None
                     for param in headers_str.split(';'):
                         param = param.strip()
-                        if param.startswith('name="'):
-                            field_name = param[6:-1]
+                        if param.startswith('filename="'):
+                            filename = param[10:-1]
+                    current_file = {'data': body_content, 'filename': filename}
+                elif field_name == 'cert_index' and current_file is not None:
+                    idx = int(body_content.decode().strip())
+                    current_file['cert_index'] = idx
+                    files.append(current_file)
+                    current_file = None
 
-                    if field_name == 'files':
-                        filename = None
-                        for param in headers_str.split(';'):
-                            param = param.strip()
-                            if param.startswith('filename="'):
-                                filename = param[10:-1]
-                        file_data = body_content
-                    elif field_name == 'cert_index':
-                        cert_index = int(body_content.decode().strip())
+        if current_file is not None:
+            current_file['cert_index'] = 0
+            files.append(current_file)
 
-            if not file_data or not filename:
-                self.send_error(400, 'No file data found')
-                return
+        if not files:
+            self._send_json(400, {'error': 'No file data found'})
+            return
+
+        saved = []
+        for f in files:
+            filename = f['filename']
+            file_data = f['data']
+            cert_index = f['cert_index']
 
             ext = '.jpg'
             for e in ['.png', '.jpg', '.jpeg', '.gif', '.webp']:
@@ -156,33 +197,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             new_name = f'{CERT_NAMES[cert_idx]}{ext}'
             filepath = os.path.join(IMAGES_DIR, new_name)
 
-            with open(filepath, 'wb') as f:
-                f.write(file_data)
+            with open(filepath, 'wb') as fh:
+                fh.write(file_data)
 
-            print(f"[UPLOAD MP] Saved: {filepath}, size: {len(file_data)}, cert: {cert_index}")
-            self._send_success(cert_idx, len(file_data))
-            return
+            saved.append({'cert_index': cert_idx, 'size': len(file_data), 'filename': new_name})
+            print(f"[UPLOAD MP] Saved: {filepath}, size: {len(file_data)}, cert: {cert_index}", flush=True)
 
-        self.send_error(400, f'Unsupported Content-Type: {content_type}')
+        self._send_json(200, {'success': True, 'files': saved, 'count': len(saved)})
 
-    def _send_success(self, cert_idx, size):
-        cert_display = resume_cert_names[cert_idx] if cert_idx < len(resume_cert_names) else f'证书{cert_idx+1}'
-        success_html = f'''<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta http-equiv="refresh" content="2;url=/?v={cert_idx}"><title>上传成功</title>
-<style>body{{font-family:-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:linear-gradient(135deg,#667eea,#764ba2)}}.box{{text-align:center;background:#fff;padding:40px 60px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}}h1{{color:#1E8449;margin:0 0 12px}}p{{color:#2E3440;font-size:1.125rem;margin:8px 0}}.small{{color:#6B7280;font-size:0.875rem;margin-top:16px}}a{{color:#2D5F8A;text-decoration:none;font-weight:600}}</style>
-</head><body>
-<div class="box">
-<h1>🎉 上传成功！</h1>
-<p>{cert_display}</p>
-<p class="small">文件大小: {size} 字节</p>
-<p class="small">正在返回简历页面...</p>
-<p><a href="/">← 点击这里立即返回</a></p>
-</div></body></html>'''
-        self.send_response(200)
-        self.send_header('Content-Type', 'text/html; charset=utf-8')
+    def _send_json(self, code, obj):
+        body = json.dumps(obj, ensure_ascii=False).encode('utf-8')
+        self.send_response(code)
+        self.send_header('Content-Type', 'application/json; charset=utf-8')
+        self.send_header('Content-Length', str(len(body)))
         self.send_header('Cache-Control', 'no-cache')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
-        self.wfile.write(success_html.encode())
+        self.wfile.write(body)
 
     def do_OPTIONS(self):
         self.send_response(200)

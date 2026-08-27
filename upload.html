@@ -5,212 +5,273 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>证书图片上传</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;display:flex;align-items:center;justify-content:center}
-.container{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-width:500px;width:100%;padding:40px}
-h1{color:#2D5F8A;font-size:1.75rem;margin-bottom:8px;text-align:center}
-.subtitle{color:#6B7280;text-align:center;margin-bottom:24px}
-.instructions{background:#FFF8E1;border-radius:10px;padding:16px;margin-bottom:20px}
-.instructions h3{color:#8B6914;margin-bottom:8px;font-size:0.9375rem}
-.instructions ol{padding-left:20px;color:#6B7280;font-size:0.875rem;line-height:1.8}
-.dropzone{border:3px dashed #ced4da;border-radius:16px;padding:40px;text-align:center;transition:all .3s;background:#f8f9fa}
-.dropzone.dragover{border-color:#2D5F8A;background:#e7f1ff;transform:scale(1.02)}
-.dropzone-icon{font-size:56px;margin-bottom:12px}
-.dropzone-text{font-size:1.125rem;font-weight:600;color:#495057;margin-bottom:8px}
-.dropzone-hint{color:#6c757d;font-size:0.875rem}
-.file-list{margin-top:20px;text-align:left}
-.file-item{display:flex;align-items:center;gap:12px;padding:12px;background:#F7F9FC;border-radius:10px;margin-bottom:8px}
-.file-icon{font-size:24px}
-.file-info{flex:1;min-width:0}
-.file-name{font-weight:600;color:#2E3440;font-size:0.875rem}
-.file-size{color:#6B7280;font-size:0.75rem}
-.remove-btn{background:none;border:none;color:#dc3545;cursor:pointer;font-size:1.25rem}
-.start-btn{display:block;width:100%;margin-top:20px;background:linear-gradient(135deg,#F28E2B,#E67E22);color:#fff;border:none;border-radius:12px;padding:16px;font-size:1.125rem;font-weight:700;cursor:pointer;transition:all .2s}
-.start-btn:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(242,142,43,0.4)}
-.start-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-.progress-wrap{margin-top:16px;display:none}
-.progress-wrap.show{display:block}
-.progress-bar{height:8px;background:#e9ecef;border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,#2D5F8A,#764ba2);transition:width .3s;width:0}
-.progress-text{text-align:center;margin-top:8px;color:#6B7280;font-size:0.875rem}
-.success-box{text-align:center;background:#D5F5E3;border:2px solid #1E8449;border-radius:16px;padding:30px;margin-bottom:20px}
-.success-box h2{color:#1E8449;margin-bottom:8px}
-.success-box p{color:#2E3440;font-weight:600}
-.back-link{display:inline-block;margin-top:16px;color:#2D5F8A;text-decoration:none;font-weight:600}
-.back-link:hover{text-decoration:underline}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+h1 {
+  text-align: center;
+  color: #2D5F8A;
+  margin-bottom: 8px;
+}
+.subtitle {
+  text-align: center;
+  color: #6B7280;
+  margin-bottom: 30px;
+}
+.cert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cert-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: #F9FAFB;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+.cert-item:hover {
+  border-color: #667eea;
+  background: #F0F4FF;
+}
+.cert-info {
+  flex: 1;
+  min-width: 0;
+}
+.cert-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.cert-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1F2937;
+}
+.cert-desc {
+  font-size: 12px;
+  color: #6B7280;
+  margin-top: 2px;
+}
+.file-input {
+  display: none;
+}
+.file-label {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.file-label:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+.file-label.has-file {
+  background: linear-gradient(135deg, #10B981, #059669);
+}
+.file-name {
+  margin-left: 12px;
+  font-size: 12px;
+  color: #6B7280;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+.btn {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+.btn-secondary {
+  background: #E5E7EB;
+  color: #374151;
+}
+.btn-secondary:hover {
+  background: #D1D5DB;
+}
+.tip {
+  margin-top: 20px;
+  padding: 14px;
+  background: #FEF3C7;
+  border: 1px solid #FDE68A;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #92400E;
+  line-height: 1.6;
+}
+.tip strong { color: #78350F; }
+#submitForm { display: inline; }
 </style>
 </head>
 <body>
-<div class="container" id="mainContainer">
-  <h1>📸 证书图片上传</h1>
-  <p class="subtitle">拖拽图片即可上传，无需点击任何按钮</p>
-  
-  <div class="instructions">
-    <h3>📋 使用说明</h3>
-    <ol>
-      <li>打开此页面（保持打开）</li>
-      <li>把证书图片<strong>拖拽</strong>到下方虚线框内</li>
-      <li>所有图片都拖好后，点击「开始上传」</li>
-      <li>上传完成后返回简历页面即可看到效果</li>
-    </ol>
+<div class="container">
+  <h1>📎 证书图片上传</h1>
+  <p class="subtitle">请为每项证书选择对应的图片文件</p>
+
+  <div class="cert-list" id="certList"></div>
+
+  <div class="actions">
+    <a href="/" class="btn btn-secondary">← 返回简历</a>
+    <form id="submitForm" action="/" method="POST" enctype="multipart/form-data">
+      <button type="submit" class="btn btn-primary" id="submitBtn" disabled>🚀 上传已选文件</button>
+    </form>
   </div>
 
-  <div class="dropzone" id="dropzone">
-    <div class="dropzone-icon">📁</div>
-    <div class="dropzone-text">拖拽图片到这里</div>
-    <div class="dropzone-hint">支持 JPG / PNG / GIF / WEBP 格式，可同时拖入多张</div>
-  </div>
-  
-  <div class="file-list" id="fileList"></div>
-  
-  <button type="button" class="start-btn" id="submitBtn" disabled>🚀 开始上传</button>
-  
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-text" id="progressText">准备中...</div>
-  </div>
-</div>
-
-<div class="container" id="successContainer" style="display:none">
-  <div class="success-box">
-    <div style="font-size:48px;margin-bottom:12px">🎉</div>
-    <h2>上传成功！</h2>
-    <p id="successCount"></p>
-  </div>
-  <div style="text-align:center">
-    <a href="/" class="back-link">← 返回简历页面查看效果</a>
+  <div class="tip">
+    <strong>💡 小贴士：</strong><br>
+    1. 点击每个证书右侧的"选择文件"按钮，选择对应的证书图片<br>
+    2. 支持 JPG、PNG、GIF 格式<br>
+    3. 选择完毕后，点击"上传已选文件"按钮<br>
+    4. 上传成功后将自动返回简历页面
   </div>
 </div>
 
 <script>
-const dropzone = document.getElementById('dropzone');
-const fileListEl = document.getElementById('fileList');
+const certs = [
+  { name: '人工智能训练师证书（初级）', desc: 'AIT Junior Certificate' },
+  { name: 'VISION人工智能设计（入门）', desc: 'Apsara Clouder - VISION入门' },
+  { name: 'RAG应用构建及优化', desc: 'Apsara Clouder - RAG' },
+  { name: '基于百炼平台构建智能体应用', desc: 'Apsara Clouder - 百炼' },
+  { name: '人工智能训练师证书（高级）', desc: 'AIT Advanced Certificate' },
+  { name: 'VISION人工智能设计（进阶）', desc: 'Apsara Clouder - VISION进阶' },
+  { name: '基于PAI ArtLab的AIGC设计基础', desc: 'Apsara Clouder - PAI' },
+  { name: '利用大模型提升内容生产能力', desc: 'Apsara Clouder - LLM内容' }
+];
+
+const certList = document.getElementById('certList');
 const submitBtn = document.getElementById('submitBtn');
-const progressWrap = document.getElementById('progressWrap');
-const progressFill = document.getElementById('progressFill');
-const progressText = document.getElementById('progressText');
-const mainContainer = document.getElementById('mainContainer');
-const successContainer = document.getElementById('successContainer');
-const successCount = document.getElementById('successCount');
+const submitForm = document.getElementById('submitForm');
 
-let selectedFiles = [];
+certs.forEach((cert, i) => {
+  const item = document.createElement('div');
+  item.className = 'cert-item';
+  item.innerHTML = `
+    <div class="cert-info">
+      <span class="cert-number">${i + 1}</span>
+      <span style="vertical-align: middle;">
+        <div class="cert-name">${cert.name}</div>
+        <div class="cert-desc">${cert.desc}</div>
+      </span>
+    </div>
+    <div style="display:flex;align-items:center;">
+      <input type="file" id="file-${i}" class="file-input" accept="image/*" data-idx="${i}" name="files">
+      <label for="file-${i}" class="file-label" id="label-${i}">📁 选择文件</label>
+      <span class="file-name" id="name-${i}"></span>
+    </div>
+  `;
+  certList.appendChild(item);
 
-dropzone.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  dropzone.classList.add('dragover');
+  const input = item.querySelector('.file-input');
+  const label = item.querySelector('.file-label');
+  const nameSpan = item.querySelector('.file-name');
+
+  input.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      label.classList.add('has-file');
+      label.textContent = '✓ 已选择';
+      nameSpan.textContent = file.name;
+      updateSubmitState();
+    }
+  });
 });
 
-dropzone.addEventListener('dragleave', () => {
-  dropzone.classList.remove('dragover');
-});
-
-dropzone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  dropzone.classList.remove('dragover');
-  handleFiles(e.dataTransfer.files);
-});
-
-function handleFiles(files) {
-  for (const file of files) {
-    selectedFiles.push(file);
-  }
-  renderFileList();
+function updateSubmitState() {
+  const hasAny = certs.some((_, i) => document.getElementById(`file-${i}`).files[0]);
+  submitBtn.disabled = !hasAny;
 }
 
-function renderFileList() {
-  fileListEl.innerHTML = '';
-  selectedFiles.forEach((file, i) => {
-    const item = document.createElement('div');
-    item.className = 'file-item';
-    item.innerHTML = `
-      <span class="file-icon">🖼️</span>
-      <div class="file-info">
-        <div class="file-name">${i+1}. ${file.name}</div>
-        <div class="file-size">${(file.size/1024).toFixed(1)} KB</div>
-      </div>
-      <button class="remove-btn" data-idx="${i}" title="移除">✕</button>
-    `;
-    fileListEl.appendChild(item);
+submitForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const formData = new FormData();
+  let hasFile = false;
+  
+  certs.forEach((_, i) => {
+    const input = document.getElementById(`file-${i}`);
+    if (input.files[0]) {
+      formData.append('files', input.files[0], input.files[0].name);
+      formData.append('cert_index', String(i));
+      hasFile = true;
+    }
   });
-
-  fileListEl.querySelectorAll('.remove-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      selectedFiles.splice(idx, 1);
-      renderFileList();
-    });
-  });
-
-  submitBtn.disabled = selectedFiles.length === 0;
-  submitBtn.textContent = selectedFiles.length > 0 
-    ? `🚀 开始上传 (${selectedFiles.length} 张)` 
-    : '🚀 开始上传';
-}
-
-submitBtn.addEventListener('click', async () => {
-  if (selectedFiles.length === 0) return;
+  
+  if (!hasFile) return;
   
   submitBtn.disabled = true;
-  progressWrap.classList.add('show');
+  submitBtn.textContent = '上传中...';
   
-  let uploaded = 0;
-  const total = selectedFiles.length;
-
-  for (const file of selectedFiles) {
-    try {
-      const reader = new FileReader();
-      const dataUrl = await new Promise((resolve, reject) => {
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-
-      const payload = {
-        cert_index: uploaded,
-        filename: file.name,
-        data: dataUrl
-      };
-
-      await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        
-        xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) {
-            const overallProgress = ((uploaded + e.loaded / e.total) / total) * 100;
-            progressFill.style.width = overallProgress + '%';
-            progressText.textContent = `上传中 ${uploaded + 1}/${total}: ${Math.round(overallProgress)}%`;
-          }
-        };
-
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            resolve();
-          } else {
-            reject(new Error('HTTP ' + xhr.status));
-          }
-        };
-
-        xhr.onerror = () => reject(new Error('网络错误'));
-        xhr.send(JSON.stringify(payload));
-      });
-
-      uploaded++;
-    } catch (err) {
-      alert('上传失败: ' + err.message);
-      break;
+  fetch('/', {
+    method: 'POST',
+    body: formData
+  })
+  .then(resp => resp.json())
+  .then(data => {
+    if (data.success) {
+      submitBtn.textContent = '✅ 上传成功！';
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1500);
+    } else {
+      alert('上传失败: ' + (data.error || '未知错误'));
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🚀 重新上传';
     }
-  }
-
-  if (uploaded === total) {
-    progressText.textContent = `✅ 全部上传完成！`;
-    setTimeout(() => {
-      mainContainer.style.display = 'none';
-      successContainer.style.display = 'block';
-      successCount.textContent = `已成功上传 ${uploaded} 张证书图片`;
-    }, 500);
-  }
+  })
+  .catch(err => {
+    alert('上传失败: ' + err.message);
+    submitBtn.disabled = false;
+    submitBtn.textContent = '🚀 重新上传';
+  });
 });
 </script>
 </body>

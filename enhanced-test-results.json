@@ -1,0 +1,134 @@
+{
+  "testTime": "2026-08-27T05:36:19.891Z",
+  "testType": "Enhanced Browser Test",
+  "url": "http://localhost:16000/",
+  "pageAccessible": true,
+  "uploadButtonFound": true,
+  "uploadPanelOpen": true,
+  "certUploadBoxes": [
+    "人工智能训练师证书（初级）",
+    "阿里云Apsara Clouder · VISION人工智能设计（入门）",
+    "阿里云Apsara Clouder · RAG应用构建及优化",
+    "阿里云Apsara Clouder · 基于百炼平台构建智能体应用",
+    "人工智能训练师证书（高级）",
+    "阿里云Apsara Clouder · VISION人工智能设计（进阶）",
+    "阿里云Apsara Clouder · 基于PAI ArtLab的AIGC设计基础",
+    "阿里云Apsara Clouder · 利用大模型提升内容生产能力"
+  ],
+  "uploadAttempted": true,
+  "uploadSuccess": false,
+  "screenshots": [
+    "/workspace/enhanced-screenshot-1-panel-open.png",
+    "/workspace/enhanced-screenshot-2-after-upload.png"
+  ],
+  "consoleErrors": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    }
+  ],
+  "networkErrors": [],
+  "summary": {
+    "status": "PARTIAL",
+    "message": "部分功能异常",
+    "issues": [
+      "JavaScript 错误: 7 个 (主要是404资源未找到)"
+    ]
+  },
+  "certBoxesDetail": [
+    {
+      "index": 0,
+      "title": "人工智能训练师证书（初级）",
+      "status": "待上传"
+    },
+    {
+      "index": 1,
+      "title": "阿里云Apsara Clouder · VISION人工智能设计（入门）",
+      "status": "待上传"
+    },
+    {
+      "index": 2,
+      "title": "阿里云Apsara Clouder · RAG应用构建及优化",
+      "status": "待上传"
+    },
+    {
+      "index": 3,
+      "title": "阿里云Apsara Clouder · 基于百炼平台构建智能体应用",
+      "status": "待上传"
+    },
+    {
+      "index": 4,
+      "title": "人工智能训练师证书（高级）",
+      "status": "待上传"
+    },
+    {
+      "index": 5,
+      "title": "阿里云Apsara Clouder · VISION人工智能设计（进阶）",
+      "status": "待上传"
+    },
+    {
+      "index": 6,
+      "title": "阿里云Apsara Clouder · 基于PAI ArtLab的AIGC设计基础",
+      "status": "待上传"
+    },
+    {
+      "index": 7,
+      "title": "阿里云Apsara Clouder · 利用大模型提升内容生产能力",
+      "status": "待上传"
+    }
+  ],
+  "consoleErrorDetails": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    }
+  ]
+}
