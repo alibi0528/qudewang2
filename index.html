@@ -1045,54 +1045,63 @@ async function uploadFile(idx, file) {
   barEl.style.width = '0%';
 
   try {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const base64 = e.target.result.split(',')[1];
-      const ext = file.name.split('.').pop().toLowerCase();
-      const payload = {
-        filename: file.name,
-        data: base64,
-        index: idx
-      };
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('index', String(idx));
 
-      let progress = 0;
-      const progressInterval = setInterval(() => {
-        progress = Math.min(progress + 10, 90);
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/upload');
+    
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const progress = (e.loaded / e.total) * 100;
         barEl.style.width = progress + '%';
-      }, 100);
+      }
+    };
 
-      try {
-        const res = await fetch('/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        clearInterval(progressInterval);
-        barEl.style.width = '100%';
-        
-        statusEl.className = 'status uploaded';
-        statusEl.textContent = '✅ 已上传: ' + result.name;
-        
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        thumbEl.innerHTML = '';
-        thumbEl.appendChild(img);
-        
-        setTimeout(() => {
-          progressEl.style.display = 'none';
-        }, 500);
-      } catch (err) {
-        clearInterval(progressInterval);
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        try {
+          const result = JSON.parse(xhr.responseText);
+          barEl.style.width = '100%';
+          statusEl.className = 'status uploaded';
+          statusEl.textContent = '✅ 已上传: ' + result.name;
+          
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          thumbEl.innerHTML = '';
+          thumbEl.appendChild(img);
+          
+          setTimeout(() => {
+            progressEl.style.display = 'none';
+          }, 500);
+        } catch (err) {
+          statusEl.className = 'status pending';
+          statusEl.textContent = '❌ 解析响应失败';
+          barEl.style.width = '0%';
+        }
+      } else {
+        let msg = '上传失败';
+        try {
+          const err = JSON.parse(xhr.responseText);
+          msg = err.error || msg;
+        } catch(e) {}
         statusEl.className = 'status pending';
-        statusEl.textContent = '❌ 上传失败: ' + err.message;
+        statusEl.textContent = '❌ ' + msg;
         barEl.style.width = '0%';
       }
     };
-    reader.readAsDataURL(file);
+
+    xhr.onerror = () => {
+      statusEl.className = 'status pending';
+      statusEl.textContent = '❌ 网络错误，请刷新页面重试';
+      barEl.style.width = '0%';
+    };
+
+    xhr.send(formData);
   } catch (err) {
     statusEl.className = 'status pending';
-    statusEl.textContent = '❌ 读取文件失败';
+    statusEl.textContent = '❌ ' + err.message;
   }
 }
 </script>
