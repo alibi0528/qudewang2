@@ -1008,107 +1008,14 @@ function renderUploadList() {
       <div class="upload-info">
         <div class="name">${c.name}</div>
         <div class="status pending" id="status-${i}">待上传</div>
-        <div class="upload-progress" id="progress-${i}" style="display:none"><div class="upload-progress-bar" id="bar-${i}"></div></div>
       </div>
-      <input type="file" id="file-${i}" accept="image/*" style="display:none" data-idx="${i}">
-      <button class="upload-btn" data-idx="${i}">选择图片</button>
+      <form method="POST" action="/" enctype="multipart/form-data" style="display:inline" id="form-${i}">
+        <input type="file" name="files" accept="image/*" style="display:none" id="file-${i}" onchange="document.getElementById('form-${i}').submit()">
+        <input type="hidden" name="cert_index" value="${i}">
+        <button type="button" class="upload-btn" onclick="document.getElementById('file-${i}').click()">选择并上传</button>
+      </form>
     </div>
   `).join('');
-
-  list.querySelectorAll('.upload-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      document.getElementById(`file-${idx}`).click();
-    });
-  });
-
-  list.querySelectorAll('input[type=file]').forEach(input => {
-    input.addEventListener('change', async (e) => {
-      const idx = parseInt(e.target.dataset.idx);
-      const file = e.target.files[0];
-      if (file) {
-        await uploadFile(idx, file);
-      }
-    });
-  });
-}
-
-async function uploadFile(idx, file) {
-  const statusEl = document.getElementById(`status-${idx}`);
-  const progressEl = document.getElementById(`progress-${idx}`);
-  const barEl = document.getElementById(`bar-${idx}`);
-  const thumbEl = document.getElementById(`thumb-${idx}`);
-
-  statusEl.className = 'status uploading';
-  statusEl.textContent = '上传中...';
-  progressEl.style.display = 'block';
-  barEl.style.width = '0%';
-
-  try {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('index', String(idx));
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/upload');
-    
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) {
-        const progress = (e.loaded / e.total) * 100;
-        barEl.style.width = progress + '%';
-      }
-    };
-
-    xhr.onload = () => {
-      console.log('[UPLOAD] Response status:', xhr.status);
-      console.log('[UPLOAD] Response text:', xhr.responseText);
-      
-      if (xhr.status === 200) {
-        try {
-          const result = JSON.parse(xhr.responseText);
-          barEl.style.width = '100%';
-          statusEl.className = 'status uploaded';
-          statusEl.textContent = '✅ 已上传: ' + result.name;
-          
-          const img = document.createElement('img');
-          img.src = URL.createObjectURL(file);
-          thumbEl.innerHTML = '';
-          thumbEl.appendChild(img);
-          
-          setTimeout(() => {
-            progressEl.style.display = 'none';
-          }, 500);
-        } catch (err) {
-          console.error('[UPLOAD] Parse error:', err);
-          statusEl.className = 'status pending';
-          statusEl.textContent = '❌ 解析响应失败: ' + xhr.responseText.substring(0, 100);
-          barEl.style.width = '0%';
-        }
-      } else {
-        let msg = '上传失败 (HTTP ' + xhr.status + ')';
-        try {
-          const err = JSON.parse(xhr.responseText);
-          msg += ': ' + (err.error || err.trace || '');
-        } catch(e) {
-          msg += ' - ' + xhr.responseText.substring(0, 100);
-        }
-        statusEl.className = 'status pending';
-        statusEl.textContent = '❌ ' + msg;
-        barEl.style.width = '0%';
-      }
-    };
-
-    xhr.onerror = () => {
-      statusEl.className = 'status pending';
-      statusEl.textContent = '❌ 网络错误，请刷新页面重试';
-      barEl.style.width = '0%';
-    };
-
-    xhr.send(formData);
-  } catch (err) {
-    statusEl.className = 'status pending';
-    statusEl.textContent = '❌ ' + err.message;
-  }
 }
 </script>
 </body>
