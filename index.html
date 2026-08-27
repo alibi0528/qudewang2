@@ -793,8 +793,7 @@ function renderEducation() {
     return `
     <div class="cert-card reveal" data-cert-idx="${i}">
       <div class="cert-thumb" data-cert-img="${c.img}">
-        <img src="${c.img}" alt="${c.name}" loading="lazy"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='none';this.parentElement.querySelector('.cert-fallback')?.remove();const fb=document.createElement('div');fb.className='cert-fallback ${colorClass}';fb.innerHTML='<div class="fb-icon">📜</div><div class="fb-text">${c.name}</div><div class="fb-sub">${c.org}</div>';this.parentElement.insertBefore(fb,this.parentElement.firstChild);this.parentElement.dataset.hasImg='false';">
+        <img src="${c.img}" alt="${c.name}" loading="lazy" data-cert-idx="${i}">
         <span class="cert-badge">证书</span>
       </div>
       <h4>${c.name}</h4>
@@ -837,6 +836,25 @@ function initCertExpand() {
       overlay.classList.add('show');
     });
   });
+
+  // Handle broken certificate images
+  document.querySelectorAll('.cert-thumb img').forEach(img => {
+    img.addEventListener('error', () => {
+      const thumb = img.parentElement;
+      const idx = parseInt(img.dataset.certIdx);
+      const cert = resume.certificates[idx];
+      const colorClass = `c${(idx % 5) + 1}`;
+      img.style.display = 'none';
+      const badge = thumb.querySelector('.cert-badge');
+      if (badge) badge.style.display = 'none';
+      const fb = document.createElement('div');
+      fb.className = `cert-fallback ${colorClass}`;
+      fb.innerHTML = `<div class="fb-icon">📜</div><div class="fb-text">${cert.name}</div><div class="fb-sub">${cert.org}</div>`;
+      thumb.insertBefore(fb, thumb.firstChild);
+      thumb.dataset.hasImg = 'false';
+    });
+  });
+
   const closeOverlay = () => { overlay.classList.remove('show'); overlayImg.src = ''; };
   closeBtn.addEventListener('click', closeOverlay);
   overlay.addEventListener('click', (e) => { if (e.target === overlay) closeOverlay(); });
@@ -1005,52 +1023,68 @@ async function uploadFile(idx, file) {
   progressEl.style.width = '0%';
 
   try {
-    const formData = new FormData();
-    formData.append('files', file, file.name);
-    formData.append('cert_index', String(idx));
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64Data = reader.result;
+      const payload = {
+        cert_index: idx,
+        filename: file.name,
+        data: base64Data
+      };
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/', true);
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) {
-        progressEl.style.width = (e.loaded / e.total * 100) + '%';
-      }
-    };
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          progressEl.style.width = (e.loaded / e.total * 100) + '%';
+        }
+      };
 
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        progressEl.style.width = '100%';
-        statusEl.className = 'status uploaded';
-        statusEl.textContent = '✅ 上传成功';
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          progressEl.style.width = '100%';
+          statusEl.className = 'status uploaded';
+          statusEl.textContent = '✅ 上传成功';
 
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(file);
-        thumbEl.innerHTML = '';
-        thumbEl.appendChild(img);
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          thumbEl.innerHTML = '';
+          thumbEl.appendChild(img);
 
-        dropEl.classList.add('uploaded');
-        dropEl.querySelector('.upload-drop-icon').textContent = '✅';
-        dropEl.querySelector('.upload-drop-text').textContent = '已上传';
-        dropEl.querySelector('.upload-drop-hint').textContent = file.name;
+          dropEl.classList.add('uploaded');
+          dropEl.querySelector('.upload-drop-icon').textContent = '✅';
+          dropEl.querySelector('.upload-drop-text').textContent = '已上传';
+          dropEl.querySelector('.upload-drop-hint').textContent = file.name;
 
-        setTimeout(() => {
-          progressEl.style.display = 'none';
-        }, 800);
-      } else {
+          setTimeout(() => {
+            progressEl.style.display = 'none';
+          }, 800);
+        } else {
+          let msg = '上传失败 (HTTP ' + xhr.status + ')';
+          try { const err = JSON.parse(xhr.responseText); msg += ': ' + (err.error || ''); } catch(e) {}
+          statusEl.className = 'status pending';
+          statusEl.textContent = '❌ ' + msg;
+          progressEl.style.width = '0%';
+        }
+      };
+
+      xhr.onerror = () => {
         statusEl.className = 'status pending';
-        statusEl.textContent = '❌ 上传失败 (HTTP ' + xhr.status + ')';
+        statusEl.textContent = '❌ 网络错误 - 可能是代理限制';
         progressEl.style.width = '0%';
-      }
+      };
+
+      xhr.send(JSON.stringify(payload));
     };
 
-    xhr.onerror = () => {
+    reader.onerror = () => {
       statusEl.className = 'status pending';
-      statusEl.textContent = '❌ 网络错误';
-      progressEl.style.width = '0%';
+      statusEl.textContent = '❌ 读取文件失败';
     };
 
-    xhr.send(formData);
+    reader.readAsDataURL(file);
   } catch (err) {
     statusEl.className = 'status pending';
     statusEl.textContent = '❌ ' + err.message;

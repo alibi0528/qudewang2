@@ -157,14 +157,24 @@ submitBtn.addEventListener('click', async () => {
   const total = selectedFiles.length;
 
   for (const file of selectedFiles) {
-    const formData = new FormData();
-    formData.append('files', file, file.name);
-    formData.append('cert_index', String(uploaded));
-
     try {
-      const xhr = new XMLHttpRequest();
+      const reader = new FileReader();
+      const dataUrl = await new Promise((resolve, reject) => {
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const payload = {
+        cert_index: uploaded,
+        filename: file.name,
+        data: dataUrl
+      };
+
       await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
         xhr.open('POST', '/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
         
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) {
@@ -183,7 +193,7 @@ submitBtn.addEventListener('click', async () => {
         };
 
         xhr.onerror = () => reject(new Error('网络错误'));
-        xhr.send(formData);
+        xhr.send(JSON.stringify(payload));
       });
 
       uploaded++;
