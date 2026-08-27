@@ -255,6 +255,47 @@ img{max-width:100%;display:block}
 .edu-card h4,.cert-card h4{font-size:1.0625rem;font-weight:600;margin-bottom:6px}
 .edu-card .meta,.cert-card .meta{font-size:0.8125rem;color:var(--text-muted);margin-bottom:8px}
 .edu-card p,.cert-card p{font-size:0.9375rem;color:var(--text-muted);line-height:1.7}
+.cert-thumb{
+  position:relative;display:block;margin:-24px -24px 16px;
+  overflow:hidden;border-radius:var(--radius) var(--radius) 0 0;
+  max-height:220px;cursor:pointer;
+}
+.cert-thumb img{
+  width:100%;height:220px;object-fit:cover;object-position:center top;
+  transition:transform 400ms cubic-bezier(0.4,0,0.2,1);
+}
+.cert-thumb:hover img{transform:scale(1.04)}
+.cert-badge{
+  position:absolute;top:12px;right:12px;z-index:2;
+  padding:4px 10px;border-radius:14px;font-size:0.7rem;font-weight:600;
+  background:rgba(255,255,255,0.92);color:var(--primary-dark);
+  backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,0.12);
+}
+.cert-expiry{
+  display:inline-block;margin-top:10px;font-size:0.75rem;font-weight:500;
+  padding:3px 10px;border-radius:12px;background:rgba(45,95,138,0.08);color:var(--primary);
+}
+.cert-id{
+  font-family:'SF Mono','Menlo','Consolas',monospace;font-size:0.75rem;
+  color:var(--text-light);margin-top:8px;word-break:break-all;
+}
+.cert-expand{
+  position:fixed;inset:0;z-index:2000;display:none;
+  background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:24px;
+}
+.cert-expand.show{display:flex;animation:fadeIn 200ms ease}
+.cert-expand img{
+  max-width:95vw;max-height:92vh;border-radius:12px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.cert-expand-close{
+  position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,0.15);color:#fff;border:none;font-size:1.5rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all var(--transition);
+}
+.cert-expand-close:hover{background:rgba(255,255,255,0.25)}
 
 /* ========== Footer ========== */
 .footer{
@@ -428,7 +469,7 @@ const resume = {
     { num: "10+", label: "场大型活动PPT设计" },
     { num: "30%", label: "内容筹备周期缩短" },
     { num: "5+", label: "场内部技能分享会" },
-    { num: "1", label: "阿里巴巴AI训练师认证" }
+    { num: "5", label: "阿里云AI专项认证证书" }
   ],
   skills: {
     "设计工具": [
@@ -489,14 +530,44 @@ const resume = {
   ],
   certificates: [
     {
-      name: "阿里巴巴人工智能训练师证书",
-      org: "阿里巴巴",
-      desc: "系统学习并掌握AI数据标注、模型训练及提示词工程等核心技能，具备将AI工具应用于实际业务场景的实操能力。"
+      name: "人工智能训练师证书（初级）",
+      org: "阿里云达摩院 · 2026.08.03",
+      desc: "系统学习AI数据标注、模型训练及提示词工程核心技能，完成达摩院智能客服初级培训课程并认证合格。",
+      img: "images/cert1-ait-junior.jpg",
+      certId: "AIT260803213616000100",
+      validUntil: "2027.08.03"
     },
     {
-      name: "【待补】PPT设计/视觉创意比赛奖项",
-      org: "【待补】",
-      desc: "【待补】年，荣获【待补】奖项（如：校级/院级PPT大赛一等奖等）。"
+      name: "阿里云Apsara Clouder · VISION人工智能设计（入门）",
+      org: "阿里云 · 2026.08.25",
+      desc: "掌握VISION人工智能设计方法论，能够运用AI工具进行视觉内容生成与优化。",
+      img: "images/cert2-clouder-vision.jpg",
+      certId: "CLDM06260802769016",
+      validUntil: "2028.08.25"
+    },
+    {
+      name: "阿里云Apsara Clouder · RAG应用构建及优化",
+      org: "阿里云 · 2026.08.26",
+      desc: "掌握RAG（检索增强生成）架构，能独立构建和优化企业级RAG应用系统。",
+      img: "images/cert3-clouder-rag.jpg",
+      certId: "CLDM04260802769851",
+      validUntil: "2028.08.26"
+    },
+    {
+      name: "阿里云Apsara Clouder · 基于百炼平台构建智能体应用",
+      org: "阿里云 · 2026.08.25",
+      desc: "熟练使用阿里云百炼平台构建AI智能体（Agent）应用，具备从设计到部署的全流程能力。",
+      img: "images/cert4-clouder-bailian.jpg",
+      certId: "CLDM02260802768972",
+      validUntil: "2028.08.25"
+    },
+    {
+      name: "人工智能训练师证书（高级）",
+      org: "阿里云达摩院 · 2026.08.09",
+      desc: "完成达摩院智能客服高级培训课程，深入掌握AI模型训练优化与智能客服系统实战能力。",
+      img: "images/cert5-ait-advanced.jpg",
+      certId: "AIT260809235046000168",
+      validUntil: "2027.08.09"
     }
   ]
 };
@@ -589,29 +660,56 @@ function renderSkills() {
 
 function renderEducation() {
   const grid = document.getElementById('eduGrid');
+  const edu = resume.education;
+  const certCards = resume.certificates.map((c, i) => `
+    <div class="cert-card reveal" data-cert-idx="${i}">
+      <div class="cert-thumb" data-cert-img="${c.img}">
+        <img src="${c.img}" alt="${c.name}" loading="lazy">
+        <span class="cert-badge">证书</span>
+      </div>
+      <h4>${c.name}</h4>
+      <div class="meta">${c.org}</div>
+      <p>${c.desc}</p>
+      <span class="cert-expiry">有效期至 ${c.validUntil}</span>
+      <div class="cert-id">编号：${c.certId}</div>
+    </div>
+  `).join('');
+
   grid.innerHTML = `
     <div class="edu-card reveal">
-      <h4> ${resume.education.school}</h4>
-      <div class="meta">${resume.education.major} · ${resume.education.degree}</div>
-      <p>核心课程：${resume.education.courses}</p>
-      <p style="margin-top:8px">${resume.education.desc}</p>
+      <h4>${edu.school}</h4>
+      <div class="meta">${edu.major} · ${edu.degree}</div>
+      <p>核心课程：${edu.courses}</p>
+      <p style="margin-top:8px">${edu.desc}</p>
     </div>
-    <div class="cert-card reveal">
-      <h4> ${resume.certificates[0].name}</h4>
-      <div class="meta">${resume.certificates[0].org}</div>
-      <p>${resume.certificates[0].desc}</p>
-    </div>
+    ${certCards}
   `;
-  // Add remaining certs
-  if (resume.certificates.length > 1) {
-    grid.innerHTML += `
-      <div class="cert-card reveal">
-        <h4> ${resume.certificates[1].name}</h4>
-        <div class="meta">${resume.certificates[1].org}</div>
-        <p>${resume.certificates[1].desc}</p>
-      </div>
-    `;
+
+  initCertExpand();
+}
+
+function initCertExpand() {
+  const thumbs = document.querySelectorAll('.cert-thumb');
+  let overlay = document.querySelector('.cert-expand');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'cert-expand';
+    overlay.innerHTML = `<button class="cert-expand-close" aria-label="关闭">✕</button><img alt="证书大图">`;
+    document.body.appendChild(overlay);
   }
+  const overlayImg = overlay.querySelector('img');
+  const closeBtn = overlay.querySelector('.cert-expand-close');
+  thumbs.forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const src = thumb.dataset.certImg;
+      overlayImg.src = src;
+      overlay.classList.add('show');
+    });
+  });
+  const closeOverlay = () => overlay.classList.remove('show');
+  closeBtn.addEventListener('click', closeOverlay);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeOverlay(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeOverlay(); });
 }
 
 /* ========== Tab Logic ========== */
