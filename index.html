@@ -420,13 +420,18 @@ img{max-width:100%;display:block}
 .upload-info .status.pending{color:var(--text-light)}
 .upload-info .status.uploaded{color:#1E8449}
 .upload-info .status.uploading{color:var(--accent)}
-.upload-btn{
-  background:var(--primary);color:#fff;border:none;border-radius:6px;
-  padding:6px 12px;font-size:0.8125rem;cursor:pointer;white-space:nowrap;
-  transition:background .2s;
+.upload-drop{
+  background:linear-gradient(135deg,#f8f9fa,#e9ecef);border:2px dashed #ced4da;
+  border-radius:10px;padding:20px;text-align:center;cursor:pointer;
+  transition:all .2s;font-size:0.8125rem;color:#6c757d;
+  min-height:100px;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:6px;
 }
-.upload-btn:hover{background:var(--primary-dark)}
-.upload-btn:disabled{background:var(--text-light);cursor:not-allowed}
+.upload-drop.dragover{border-color:var(--primary);background:#e7f1ff;color:var(--primary);transform:scale(1.02)}
+.upload-drop.uploaded{border-color:#28a745;background:#d4edda;color:#155724}
+.upload-drop-icon{font-size:28px}
+.upload-drop-text{font-weight:600}
+.upload-drop-hint{font-size:0.75rem;opacity:0.7}
 .upload-progress{
   height:4px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden;
 }
@@ -451,17 +456,15 @@ img{max-width:100%;display:block}
   <div class="upload-modal-content">
     <button class="upload-modal-close" id="uploadModalClose">✕</button>
     <h2>📸 证书图片上传</h2>
-    <p class="subtitle">点击每张证书旁的「上传」按钮，选择对应的图片文件</p>
+    <p class="subtitle">将图片拖拽到对应证书的方框内即可上传</p>
     <div class="upload-tip">
       <strong>💡 使用说明：</strong><br>
-      共8张证书，请按顺序为每张证书上传对应的图片。<br>
-      支持 JPG / PNG 格式，上传后自动保存并刷新显示。
+      1. 把证书图片<strong>拖拽</strong>到下方对应的方框里<br>
+      2. 松手即可自动上传，上传成功会显示绿色 ✅<br>
+      3. 共8张证书，按顺序一一对应即可
     </div>
     <div id="uploadList"></div>
-    <div style="display:flex;gap:10px;margin-top:16px">
-      <button class="upload-btn" id="uploadAllBtn" style="flex:1;padding:10px">一键上传全部</button>
-      <button class="upload-btn" id="refreshBtn" style="flex:1;padding:10px;background:var(--accent)">刷新证书显示</button>
-    </div>
+    <button class="upload-btn" id="refreshBtn" style="width:100%;padding:10px;margin-top:16px;background:var(--accent)">刷新简历显示</button>
   </div>
 </div>
 
@@ -970,13 +973,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initUpload();
 });
 
-/* ========== Upload Feature ========== */
+/* ========== Upload Feature (Drag & Drop) ========== */
 function initUpload() {
   const fab = document.getElementById('uploadFab');
   const modal = document.getElementById('uploadModal');
   const closeBtn = document.getElementById('uploadModalClose');
-  const list = document.getElementById('uploadList');
-  const uploadAllBtn = document.getElementById('uploadAllBtn');
   const refreshBtn = document.getElementById('refreshBtn');
 
   fab.addEventListener('click', () => {
@@ -987,17 +988,73 @@ function initUpload() {
   modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
 
   refreshBtn.addEventListener('click', () => {
-    window.location.reload();
+    location.reload();
   });
+}
 
-  uploadAllBtn.addEventListener('click', async () => {
-    const inputs = list.querySelectorAll('input[type=file]');
-    for (let i = 0; i < inputs.length; i++) {
-      if (inputs[i].files.length > 0) {
-        await uploadFile(i, inputs[i].files[0]);
+async function uploadFile(idx, file) {
+  const statusEl = document.getElementById(`status-${idx}`);
+  const dropEl = document.getElementById(`drop-${idx}`);
+  const thumbEl = document.getElementById(`thumb-${idx}`);
+  const progressEl = document.getElementById(`progress-${idx}`);
+  const barEl = document.getElementById(`bar-${idx}`);
+
+  statusEl.className = 'status uploading';
+  statusEl.textContent = '上传中...';
+  progressEl.style.display = 'block';
+  progressEl.style.width = '0%';
+
+  try {
+    const formData = new FormData();
+    formData.append('files', file, file.name);
+    formData.append('cert_index', String(idx));
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/', true);
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        progressEl.style.width = (e.loaded / e.total * 100) + '%';
       }
-    }
-  });
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        progressEl.style.width = '100%';
+        statusEl.className = 'status uploaded';
+        statusEl.textContent = '✅ 上传成功';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        thumbEl.innerHTML = '';
+        thumbEl.appendChild(img);
+
+        dropEl.classList.add('uploaded');
+        dropEl.querySelector('.upload-drop-icon').textContent = '✅';
+        dropEl.querySelector('.upload-drop-text').textContent = '已上传';
+        dropEl.querySelector('.upload-drop-hint').textContent = file.name;
+
+        setTimeout(() => {
+          progressEl.style.display = 'none';
+        }, 800);
+      } else {
+        statusEl.className = 'status pending';
+        statusEl.textContent = '❌ 上传失败 (HTTP ' + xhr.status + ')';
+        progressEl.style.width = '0%';
+      }
+    };
+
+    xhr.onerror = () => {
+      statusEl.className = 'status pending';
+      statusEl.textContent = '❌ 网络错误';
+      progressEl.style.width = '0%';
+    };
+
+    xhr.send(formData);
+  } catch (err) {
+    statusEl.className = 'status pending';
+    statusEl.textContent = '❌ ' + err.message;
+  }
 }
 
 function renderUploadList() {
@@ -1005,17 +1062,73 @@ function renderUploadList() {
   list.innerHTML = resume.certificates.map((c, i) => `
     <div class="upload-item" data-idx="${i}">
       <div class="upload-thumb" id="thumb-${i}">📜</div>
-      <div class="upload-info">
+      <div class="upload-info" style="flex:1">
         <div class="name">${c.name}</div>
-        <div class="status pending" id="status-${i}">待上传</div>
+        <div class="status pending" id="status-${i}">待上传 · 拖拽图片到右侧方框</div>
+        <div class="upload-progress" id="progress-${i}" style="display:none"><div class="upload-progress-bar" id="bar-${i}"></div></div>
       </div>
-      <form method="POST" action="/" enctype="multipart/form-data" style="display:inline" id="form-${i}">
-        <input type="file" name="files" accept="image/*" style="display:none" id="file-${i}" onchange="document.getElementById('form-${i}').submit()">
-        <input type="hidden" name="cert_index" value="${i}">
-        <button type="button" class="upload-btn" onclick="document.getElementById('file-${i}').click()">选择并上传</button>
-      </form>
+      <div class="upload-drop" id="drop-${i}" data-idx="${i}">
+        <span class="upload-drop-icon">🖼️</span>
+        <span class="upload-drop-text">拖入图片</span>
+        <span class="upload-drop-hint">${c.name}</span>
+      </div>
     </div>
   `).join('');
+
+  list.querySelectorAll('.upload-drop').forEach(drop => {
+    const idx = parseInt(drop.dataset.idx);
+
+    drop.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      drop.classList.add('dragover');
+    });
+
+    drop.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      drop.classList.remove('dragover');
+    });
+
+    drop.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      drop.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        uploadFile(idx, files[0]);
+      }
+    });
+
+    drop.addEventListener('paste', (e) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type.startsWith('image/')) {
+          uploadFile(idx, item.getAsFile());
+          break;
+        }
+      }
+    });
+  });
+
+  // Global paste handler (Ctrl+V pastes image to first pending cert)
+  document.addEventListener('paste', (e) => {
+    if (!document.getElementById('uploadModal').classList.contains('show')) return;
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        const pendingDrops = list.querySelectorAll('.upload-drop:not(.uploaded)');
+        if (pendingDrops.length > 0) {
+          const idx = parseInt(pendingDrops[0].dataset.idx);
+          uploadFile(idx, item.getAsFile());
+        }
+        e.preventDefault();
+        break;
+      }
+    }
+  });
 }
 </script>
 </body>
