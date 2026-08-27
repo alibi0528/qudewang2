@@ -1060,6 +1060,9 @@ async function uploadFile(idx, file) {
     };
 
     xhr.onload = () => {
+      console.log('[UPLOAD] Response status:', xhr.status);
+      console.log('[UPLOAD] Response text:', xhr.responseText);
+      
       if (xhr.status === 200) {
         try {
           const result = JSON.parse(xhr.responseText);
@@ -1076,16 +1079,19 @@ async function uploadFile(idx, file) {
             progressEl.style.display = 'none';
           }, 500);
         } catch (err) {
+          console.error('[UPLOAD] Parse error:', err);
           statusEl.className = 'status pending';
-          statusEl.textContent = '❌ 解析响应失败';
+          statusEl.textContent = '❌ 解析响应失败: ' + xhr.responseText.substring(0, 100);
           barEl.style.width = '0%';
         }
       } else {
-        let msg = '上传失败';
+        let msg = '上传失败 (HTTP ' + xhr.status + ')';
         try {
           const err = JSON.parse(xhr.responseText);
-          msg = err.error || msg;
-        } catch(e) {}
+          msg += ': ' + (err.error || err.trace || '');
+        } catch(e) {
+          msg += ' - ' + xhr.responseText.substring(0, 100);
+        }
         statusEl.className = 'status pending';
         statusEl.textContent = '❌ ' + msg;
         barEl.style.width = '0%';
