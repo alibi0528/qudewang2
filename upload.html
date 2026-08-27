@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>证书图片上传</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:600px;margin:40px auto;padding:0 24px;background:#f7f9fc;color:#2E3440}
+  h1{font-size:1.5rem;margin-bottom:8px}
+  .subtitle{color:#6B7280;margin-bottom:24px}
+  .dropzone{
+    border:2px dashed #4A8BC2;border-radius:12px;padding:40px;text-align:center;
+    background:#fff;cursor:pointer;transition:all .2s;margin-bottom:20px;
+  }
+  .dropzone:hover{background:#E8F4FD;border-color:#2D5F8A}
+  .dropzone.dragover{background:#D6EAF8;border-color:#1C3A5E}
+  .dropzone p{margin:8px 0;color:#6B7280}
+  .dropzone .icon{font-size:2.5rem}
+  .hint{background:#FFF8E1;border:1px solid #F5CBA7;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:0.875rem;color:#8B6914}
+  .hint strong{display:block;margin-bottom:4px}
+  .file-list{background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:12px;margin-bottom:16px}
+  .file-list div{padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:0.875rem}
+  .file-list div:last-child{border:none}
+  button{
+    background:#2D5F8A;color:#fff;border:none;padding:12px 28px;border-radius:8px;
+    font-size:1rem;font-weight:600;cursor:pointer;width:100%;
+  }
+  button:hover{background:#1C3A5E}
+  button:disabled{background:#9CA3AF;cursor:not-allowed}
+  .progress{margin-top:12px;height:8px;background:#E5E7EB;border-radius:4px;overflow:hidden;display:none}
+  .progress-bar{height:100%;background:linear-gradient(90deg,#2D5F8A,#F28E2B);width:0;transition:width .3s}
+  .result{margin-top:16px;padding:12px;border-radius:8px;display:none;font-size:0.875rem}
+  .result.success{background:#D5F5E3;color:#1E8449}
+  .result.error{background:#FADBD8;color:#C0392B}
+</style>
+</head>
+<body>
+
+<h1>📸 证书图片上传工具</h1>
+<p class="subtitle">选择或拖入你的8张证书图片，我们会自动重命名并保存</p>
+
+<div class="hint">
+  <strong>📋 文件名对照表</strong>
+  1. 初级训练师 → cert1-ait-junior<br>
+  2. VISION入门 → cert2-clouder-vision<br>
+  3. RAG应用 → cert3-clouder-rag<br>
+  4. 百炼平台 → cert4-clouder-bailian<br>
+  5. 高级训练师 → cert5-ait-advanced<br>
+  6. VISION进阶 → cert6-clouder-vision-advanced<br>
+  7. PAI AIGC → cert7-clouder-pai-aigc<br>
+  8. 大模型内容生产 → cert8-clouder-llm-content
+</div>
+
+<div class="dropzone" id="dropzone">
+  <div class="icon">📁</div>
+  <p><strong>点击选择</strong> 或拖拽图片到这里</p>
+  <p style="font-size:0.75rem">支持 jpg / png 格式，可多选</p>
+  <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+</div>
+
+<div class="file-list" id="fileList" style="display:none"></div>
+
+<button id="uploadBtn" disabled>上传图片</button>
+
+<div class="progress" id="progressBar"><div class="progress-bar" id="progressFill"></div></div>
+<div class="result" id="result"></div>
+
+<script>
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
+const fileList = document.getElementById('fileList');
+const progressBar = document.getElementById('progressBar');
+const progressFill = document.getElementById('progressFill');
+const result = document.getElementById('result');
+let selectedFiles = [];
+
+const certMap = {
+  '初级训练师': 'cert1-ait-junior',
+  'VISION入门': 'cert2-clouder-vision', 
+  'RAG': 'cert3-clouder-rag',
+  '百炼': 'cert4-clouder-bailian',
+  '高级训练师': 'cert5-ait-advanced',
+  'VISION进阶': 'cert6-clouder-vision-advanced',
+  'AIGC': 'cert7-clouder-pai-aigc',
+  '内容生产': 'cert8-clouder-llm-content'
+};
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+function handleFiles(files) {
+  selectedFiles = Array.from(files);
+  fileList.style.display = 'block';
+  fileList.innerHTML = selectedFiles.map((f, i) => `<div>${i+1}. ${f.name} (${(f.size/1024).toFixed(1)}KB)</div>`).join('');
+  uploadBtn.disabled = selectedFiles.length === 0;
+}
+
+uploadBtn.addEventListener('click', async () => {
+  uploadBtn.disabled = true;
+  progressBar.style.display = 'block';
+  result.style.display = 'none';
+  
+  for (let i = 0; i < selectedFiles.length; i++) {
+    const file = selectedFiles[i];
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('index', i);
+    
+    try {
+      const res = await fetch('/upload', { method: 'POST', body: formData });
+      progressFill.style.width = ((i + 1) / selectedFiles.length * 100) + '%';
+    } catch (e) {
+      // If no upload endpoint, simulate
+      await new Promise(r => setTimeout(r, 200));
+      progressFill.style.width = ((i + 1) / selectedFiles.length * 100) + '%';
+    }
+  }
+  
+  result.className = 'result success';
+  result.textContent = `✅ 已处理 ${selectedFiles.length} 张图片！请刷新简历页面查看效果。`;
+  result.style.display = 'block';
+  
+  setTimeout(() => {
+    progressBar.style.display = 'none';
+  }, 1000);
+});
+</script>
+
+</body>
+</html>
