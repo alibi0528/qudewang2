@@ -479,9 +479,7 @@ const resume = {
   education: {
     school: "中南林业科技大学",
     major: "环境工程",
-    degree: "本科在读（大一）",
-    courses: "高等数学、大学化学、环境学导论、生态学基础、环境工程导论",
-    desc: "2026年入学，环境工程专业。"
+    degree: "2026年入学"
   },
   highlights: [
     { num: "10+", label: "场大型活动PPT设计" },
@@ -721,8 +719,6 @@ function renderEducation() {
     <div class="edu-card reveal">
       <h4>${edu.school}</h4>
       <div class="meta">${edu.major} · ${edu.degree}</div>
-      <p>核心课程：${edu.courses}</p>
-      <p style="margin-top:8px">${edu.desc}</p>
     </div>
     ${certCards}
   `;
