@@ -259,12 +259,26 @@ img{max-width:100%;display:block}
   position:relative;display:block;margin:-24px -24px 16px;
   overflow:hidden;border-radius:var(--radius) var(--radius) 0 0;
   max-height:220px;cursor:pointer;
+  background:linear-gradient(135deg,#E8F4FD 0%,#D6EAF8 50%,#EBF5FB 100%);
 }
 .cert-thumb img{
   width:100%;height:220px;object-fit:cover;object-position:center top;
   transition:transform 400ms cubic-bezier(0.4,0,0.2,1);
 }
 .cert-thumb:hover img{transform:scale(1.04)}
+.cert-thumb .cert-fallback{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:100%;height:220px;padding:20px;text-align:center;
+  background:linear-gradient(135deg,#E8F4FD 0%,#D6EAF8 50%,#EBF5FB 100%);
+}
+.cert-thumb .cert-fallback .fb-icon{font-size:2.5rem;margin-bottom:10px;opacity:0.5}
+.cert-thumb .cert-fallback .fb-text{font-size:0.875rem;font-weight:600;color:var(--primary-dark);line-height:1.4}
+.cert-thumb .cert-fallback .fb-sub{font-size:0.75rem;color:var(--text-muted);margin-top:4px}
+.cert-thumb .cert-fallback.c1{background:linear-gradient(135deg,#D1ECF1 0%,#AED6F1 100%)}
+.cert-thumb .cert-fallback.c2{background:linear-gradient(135deg,#FCF3CF 0%,#F5CBA7 100%)}
+.cert-thumb .cert-fallback.c3{background:linear-gradient(135deg,#E8F8F5 0%,#A3E4D7 100%)}
+.cert-thumb .cert-fallback.c4{background:linear-gradient(135deg,#FADBD8 0%,#F5B7B1 100%)}
+.cert-thumb .cert-fallback.c5{background:linear-gradient(135deg,#E8DAEF 0%,#D2B4DE 100%)}
 .cert-badge{
   position:absolute;top:12px;right:12px;z-index:2;
   padding:4px 10px;border-radius:14px;font-size:0.7rem;font-weight:600;
@@ -661,10 +675,13 @@ function renderSkills() {
 function renderEducation() {
   const grid = document.getElementById('eduGrid');
   const edu = resume.education;
-  const certCards = resume.certificates.map((c, i) => `
+  const certCards = resume.certificates.map((c, i) => {
+    const colorClass = `c${(i % 5) + 1}`;
+    return `
     <div class="cert-card reveal" data-cert-idx="${i}">
       <div class="cert-thumb" data-cert-img="${c.img}">
-        <img src="${c.img}" alt="${c.name}" loading="lazy">
+        <img src="${c.img}" alt="${c.name}" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='none';this.parentElement.querySelector('.cert-fallback')?.remove();const fb=document.createElement('div');fb.className='cert-fallback ${colorClass}';fb.innerHTML='<div class="fb-icon">📜</div><div class="fb-text">${c.name}</div><div class="fb-sub">${c.org}</div>';this.parentElement.insertBefore(fb,this.parentElement.firstChild);this.parentElement.dataset.hasImg='false';">
         <span class="cert-badge">证书</span>
       </div>
       <h4>${c.name}</h4>
@@ -673,7 +690,7 @@ function renderEducation() {
       <span class="cert-expiry">有效期至 ${c.validUntil}</span>
       <div class="cert-id">编号：${c.certId}</div>
     </div>
-  `).join('');
+  `}).join('');
 
   grid.innerHTML = `
     <div class="edu-card reveal">
@@ -701,12 +718,13 @@ function initCertExpand() {
   const closeBtn = overlay.querySelector('.cert-expand-close');
   thumbs.forEach(thumb => {
     thumb.addEventListener('click', () => {
+      if (thumb.dataset.hasImg === 'false') return;
       const src = thumb.dataset.certImg;
       overlayImg.src = src;
       overlay.classList.add('show');
     });
   });
-  const closeOverlay = () => overlay.classList.remove('show');
+  const closeOverlay = () => { overlay.classList.remove('show'); overlayImg.src = ''; };
   closeBtn.addEventListener('click', closeOverlay);
   overlay.addEventListener('click', (e) => { if (e.target === overlay) closeOverlay(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeOverlay(); });
