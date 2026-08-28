@@ -1,408 +1,725 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="theme-color" content="#09090b">
-<meta name="description" content="瞿德旺 - 视觉设计与AI应用实践者，中南林业科技大学环境工程专业，持有8项阿里云AI专项认证。">
-<title>瞿德旺 - 视觉设计与AI应用实践者</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>瞿德旺 · 视觉设计与 AI 应用实践者</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={theme:{extend:{fontFamily:{display:['Space Grotesk','system-ui','sans-serif'],sans:['Inter','system-ui','sans-serif']}}}}</script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Hanken+Grotesk:wght@300..800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:64px;-webkit-text-size-adjust:100%}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;background:#09090b;color:#a1a1aa;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
-h1,h2,h3,h4{font-family:'Space Grotesk',-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',system-ui,sans-serif}
+  :root{
+    --bg:#0B0B0D;
+    --surface:#141417;
+    --surface-2:#1B1B21;
+    --tile:#191920;
+    --ink:#F4F1EA;
+    --muted:#968F84;
+    --faint:#5C574F;
+    --accent:#FF7A18;
+    --accent-soft:#FFD9B0;
+    --accent-2:#FFC34D;
+    --line:rgba(244,241,234,0.10);
+    --line-strong:rgba(244,241,234,0.20);
 
-/* Glow */
-.glow{position:fixed;width:600px;height:600px;border-radius:50%;filter:blur(140px);z-index:0;pointer-events:none;opacity:.1}
-.glow-violet{top:-200px;left:-200px;background:#8b5cf6}
-.glow-indigo{bottom:-200px;right:-200px;background:#6366f1}
+    --font-display:"Fraunces","Songti SC","SimSun",serif;
+    --font-sans:"Hanken Grotesk","PingFang SC","Microsoft YaHei",sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,monospace;
 
-/* Glass */
-.glass{background:rgba(24,24,27,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:1rem}
-.glass-nav{background:rgba(9,9,11,.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
+    --max:1240px;
+  }
 
-/* Nav */
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:56px}
-.nav-inner{max-width:1100px;margin:0 auto;padding:0 16px;height:100%;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.nav-brand{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:#fafafa;white-space:nowrap;flex-shrink:0;text-decoration:none}
-.nav-links{display:flex;gap:2px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex:1;justify-content:center}
-.nav-links::-webkit-scrollbar{display:none}
-.nav-link{padding:8px 12px;border-radius:8px;font-size:.8125rem;font-weight:500;color:#71717a;border:none;background:none;cursor:pointer;white-space:nowrap;min-height:40px;display:flex;align-items:center;flex-shrink:0;transition:all .2s}
-.nav-link:hover,.nav-link.active{color:#a78bfa;background:rgba(139,92,246,.1)}
-.nav-actions{display:flex;gap:6px;flex-shrink:0}
-.nav-btn{width:40px;height:40px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(24,24,27,.5);color:#71717a;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
-.nav-btn:hover{background:rgba(139,92,246,.1);color:#a78bfa;border-color:rgba(139,92,246,.2)}
-.nav-btn svg{width:16px;height:16px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-sans);
+    font-size:16px;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
 
-/* Hero */
-.hero{padding:100px 16px 48px;max-width:1100px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:1}
-.status-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:9999px;font-size:.75rem;font-weight:500;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:#a78bfa;margin-bottom:20px}
-.status-badge .dot{width:6px;height:6px;border-radius:50%;background:#a78bfa;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:2rem;font-weight:700;color:#fafafa;letter-spacing:-.5px;margin-bottom:8px;line-height:1.2}
-.hero h1 .accent{background:linear-gradient(135deg,#a78bfa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero .subtitle{font-size:1rem;color:#71717a;margin-bottom:12px}
-.hero .tagline{font-size:.875rem;color:#52525b;max-width:600px;margin-bottom:24px;line-height:1.8}
-.hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
-.cta-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-size:.8125rem;font-weight:600;cursor:pointer;transition:all .2s;min-height:44px;border:none}
-.cta-primary{background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff}
-.cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,92,246,.3)}
-.cta-secondary{background:rgba(24,24,27,.5);border:1px solid rgba(255,255,255,.1);color:#a1a1aa}
-.cta-secondary:hover{border-color:rgba(139,92,246,.3);color:#a78bfa;transform:translateY(-1px)}
-.cta-btn svg{width:16px;height:16px}
-.hero-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.badge{padding:4px 12px;border-radius:9999px;font-size:.7rem;font-weight:500;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:#71717a}
+  /* atmosphere */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(60% 50% at 80% 0%, rgba(255,122,24,0.10), transparent 60%),
+      radial-gradient(50% 40% at 0% 100%, rgba(255,195,77,0.06), transparent 60%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 
-/* Section */
-.section{padding:40px 16px;max-width:1100px;margin:0 auto;position:relative;z-index:1}
-.section-label{font-size:.75rem;font-weight:600;color:#8b5cf6;letter-spacing:.5px;margin-bottom:8px}
-.section-title{font-size:1.5rem;font-weight:700;color:#fafafa;margin-bottom:24px}
+  .wrap{ position:relative; z-index:1; }
+  .container{ max-width:var(--max); margin:0 auto; padding:0 32px; }
 
-/* Highlights */
-.highlights{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.highlight-card{background:rgba(24,24,27,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:20px;text-align:center;transition:all .3s cubic-bezier(.4,0,.2,1)}
-.highlight-card:hover{transform:translateY(-3px);border-color:rgba(139,92,246,.2);box-shadow:0 0 24px rgba(139,92,246,.08)}
-.highlight-num{font-size:1.875rem;font-weight:700;background:linear-gradient(135deg,#a78bfa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.highlight-label{font-size:.75rem;color:#52525b;margin-top:6px}
+  /* nav */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    backdrop-filter:blur(12px);
+    background:rgba(11,11,13,0.55);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ font-family:var(--font-display); font-size:20px; font-weight:500; letter-spacing:-0.01em; }
+  .brand em{ font-style:italic; color:var(--accent); }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{
+    color:var(--muted); text-decoration:none; font-size:13px;
+    font-family:var(--font-mono); letter-spacing:0.05em;
+    transition:color .3s;
+  }
+  .nav-links a:hover{ color:var(--ink); }
+  .status{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.12em;
+    color:var(--accent); border:1px solid rgba(255,122,24,0.4);
+    padding:6px 12px; border-radius:999px; display:flex; align-items:center; gap:8px;
+  }
+  .status::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent); }
+  @media (max-width:760px){ .nav-links{ display:none; } }
 
-/* Tabs */
-.tab-nav{display:flex;gap:2px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.tab-nav::-webkit-scrollbar{display:none}
-.tab-btn{padding:10px 16px;border:none;background:none;cursor:pointer;font-size:.8125rem;font-weight:500;color:#52525b;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;white-space:nowrap;min-height:44px;display:flex;align-items:center;gap:6px}
-.tab-btn:hover{color:#a1a1aa}
-.tab-btn.active{color:#a78bfa;border-bottom-color:#8b5cf6}
-.tab-btn svg{width:15px;height:15px}
-.tab-panel{display:none;animation:fadeIn .3s ease}
-.tab-panel.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  /* hero */
+  .hero{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:140px 0 80px; position:relative; }
+  .hero .eyebrow{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:28px; display:flex; align-items:center; gap:14px;
+  }
+  .hero .eyebrow span{ width:40px; height:1px; background:var(--line-strong); }
+  .hero h1{
+    font-family:var(--font-display); font-weight:300;
+    font-size:clamp(64px, 13vw, 196px); line-height:0.92; letter-spacing:-0.04em;
+    margin-bottom:24px;
+  }
+  .hero h1 .gw{ font-style:italic; font-weight:300; color:var(--accent); }
+  .hero .tagline{
+    font-family:var(--font-display); font-style:italic; font-weight:300;
+    font-size:clamp(22px,3vw,34px); color:var(--ink); margin-bottom:36px;
+  }
+  .hero .sub{
+    font-family:var(--font-mono); font-size:13px; letter-spacing:0.1em;
+    color:var(--muted); margin-bottom:32px;
+  }
+  .hero .sub b{ color:var(--accent-2); font-weight:500; }
+  .hero .intro{
+    max-width:620px; color:var(--muted); font-size:17px; line-height:1.7; margin-bottom:40px;
+  }
+  .hero .ctas{ display:flex; gap:16px; flex-wrap:wrap; }
+  .btn{
+    font-family:var(--font-mono); font-size:13px; letter-spacing:0.08em;
+    padding:14px 26px; border-radius:6px; text-decoration:none; cursor:pointer;
+    border:1px solid var(--line-strong); color:var(--ink); background:transparent;
+    transition:all .3s; display:inline-flex; align-items:center; gap:10px;
+  }
+  .btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:#1a1100; }
+  .btn.primary:hover{ background:var(--accent-2); border-color:var(--accent-2); color:#1a1100; }
+  .btn .arrow{ transition:transform .3s; }
+  .btn:hover .arrow{ transform:translateX(4px); }
 
-/* Timeline */
-.timeline{position:relative;padding-left:24px}
-.timeline::before{content:'';position:absolute;left:0;top:4px;bottom:0;width:2px;background:linear-gradient(180deg,#8b5cf6,#6366f1);border-radius:1px}
-.timeline-item{position:relative;margin-bottom:24px}
-.timeline-item::before{content:'';position:absolute;left:-28px;top:8px;width:10px;height:10px;border-radius:50%;background:#8b5cf6;box-shadow:0 0 0 4px rgba(139,92,246,.15)}
-.timeline-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.timeline-title{font-size:1rem;font-weight:600;color:#fafafa;display:flex;align-items:center;gap:8px}
-.timeline-title svg{width:16px;height:16px;color:#a78bfa}
-.timeline-meta{font-size:.75rem;color:#52525b;display:flex;gap:12px;align-items:center}
-.timeline-body ul{list-style:none;padding:0}
-.timeline-body li{position:relative;padding-left:16px;margin-bottom:8px;font-size:.8125rem;color:#71717a;line-height:1.7}
-.timeline-body li::before{content:'';position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:#8b5cf6}
+  .scroll-hint{
+    position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--faint); display:flex; flex-direction:column; align-items:center; gap:12px;
+  }
+  .scroll-hint .line{ width:1px; height:48px; background:linear-gradient(var(--accent),transparent); animation:drop 2s ease-in-out infinite; }
+  @keyframes drop{ 0%{ transform:scaleY(0); transform-origin:top; } 50%{ transform:scaleY(1); transform-origin:top; } 51%{ transform-origin:bottom; } 100%{ transform:scaleY(0); transform-origin:bottom; } }
 
-/* Projects */
-.project-grid{display:grid;grid-template-columns:1fr;gap:16px}
-.project-card{background:rgba(24,24,27,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:20px;transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;cursor:pointer}
-.project-card:hover{transform:translateY(-3px);border-color:rgba(139,92,246,.2);box-shadow:0 0 24px rgba(139,92,246,.08)}
-.project-card h4{font-size:1rem;font-weight:600;color:#fafafa;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.project-card h4 svg{width:18px;height:18px;color:#a78bfa}
-.project-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.pill{padding:3px 10px;border-radius:6px;font-size:.7rem;font-weight:500;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.15);color:#c4b5fd}
-.project-card p{font-size:.8125rem;color:#52525b;flex:1;line-height:1.7}
+  /* section */
+  .section{ padding:14vh 0; position:relative; }
+  .sec-head{ display:flex; align-items:baseline; gap:20px; margin-bottom:72px; }
+  .sec-idx{ font-family:var(--font-mono); font-size:13px; color:var(--accent); letter-spacing:0.1em; }
+  .sec-label{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted); }
+  .sec-title{
+    font-family:var(--font-display); font-weight:400;
+    font-size:clamp(34px,5.5vw,68px); line-height:1.02; letter-spacing:-0.03em;
+    margin-top:14px; max-width:14ch;
+  }
+  .sec-title em{ font-style:italic; color:var(--accent); }
+  .sec-desc{ color:var(--muted); max-width:46ch; font-size:15px; margin-top:18px; }
 
-/* Skills */
-.skills-grid{display:grid;grid-template-columns:1fr;gap:16px}
-.skill-category{background:rgba(24,24,27,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:20px}
-.skill-category h4{font-size:.9375rem;font-weight:600;color:#fafafa;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.skill-category h4 svg{width:18px;height:18px;color:#a78bfa}
-.skill-bar-wrap{margin-bottom:12px}
-.skill-bar-header{display:flex;justify-content:space-between;font-size:.8125rem;margin-bottom:6px}
-.skill-bar-label{font-weight:500;color:#a1a1aa}
-.skill-bar-pct{color:#52525b}
-.skill-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
-.skill-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#8b5cf6,#6366f1);width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
+  /* ===== reveal mechanism (shader-style) ===== */
+  .reveal{ position:relative; overflow:hidden; border:1px solid var(--line); background:var(--surface); border-radius:14px; }
+  .reveal-inner{ position:relative; z-index:1; padding:26px; filter:grayscale(100%) brightness(0.5); opacity:0.12; will-change:filter,opacity; }
+  .reveal-grid{
+    position:absolute; inset:0; z-index:2; display:grid; pointer-events:none;
+    background:transparent;
+  }
+  .tile{
+    background:var(--tile);
+    border:1px solid rgba(0,0,0,0.4);
+    transform-origin:center; will-change:transform,opacity;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.015);
+  }
 
-/* Education & Certs */
-.edu-grid{display:grid;grid-template-columns:1fr;gap:16px}
-.edu-card,.cert-card{background:rgba(24,24,27,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:20px;transition:all .3s cubic-bezier(.4,0,.2,1)}
-.cert-card:hover{transform:translateY(-2px);border-color:rgba(139,92,246,.2);box-shadow:0 0 20px rgba(139,92,246,.06)}
-.edu-card h4,.cert-card h4{font-size:1rem;font-weight:600;color:#fafafa;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.edu-card h4 svg,.cert-card h4 svg{width:18px;height:18px;color:#a78bfa}
-.edu-card .meta,.cert-card .meta{font-size:.75rem;color:#52525b;margin-bottom:8px}
-.edu-courses{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.course-tag{padding:3px 10px;border-radius:6px;font-size:.7rem;font-weight:500;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.12);color:#a5b4fc}
-.cert-thumb{position:relative;display:block;margin:-20px -20px 12px;overflow:hidden;border-radius:1rem 1rem 0 0;max-height:200px;cursor:pointer;background:linear-gradient(135deg,#18181b,#27272a)}
-.cert-thumb img{width:100%;height:200px;object-fit:cover;object-position:center top;transition:transform .4s cubic-bezier(.4,0,.2,1)}
-.cert-thumb:hover img{transform:scale(1.04)}
-.cert-badge{position:absolute;top:10px;right:10px;z-index:2;padding:3px 10px;border-radius:6px;font-size:.65rem;font-weight:600;background:rgba(139,92,246,.15);color:#c4b5fd;backdrop-filter:blur(6px);border:1px solid rgba(139,92,246,.2)}
-.cert-expiry{display:inline-block;margin-top:8px;font-size:.7rem;font-weight:500;padding:3px 10px;border-radius:9999px;background:rgba(139,92,246,.06);color:#a78bfa}
+  /* skills */
+  .skill-group{ margin-bottom:56px; }
+  .skill-group-head{ display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+  .skill-group-head .gname{ font-family:var(--font-display); font-size:24px; font-weight:400; }
+  .skill-group-head .gtag{ font-family:var(--font-mono); font-size:11px; color:var(--accent); border:1px solid rgba(255,122,24,0.35); padding:3px 10px; border-radius:999px; }
+  .skill-group-head .gline{ flex:1; height:1px; background:var(--line); }
+  .skill-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media (max-width:820px){ .skill-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .skill-grid{ grid-template-columns:1fr; } }
 
-/* Cert expand */
-.cert-expand{position:fixed;inset:0;z-index:2000;display:none;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px}
-.cert-expand.show{display:flex;animation:fadeIn .2s ease}
-.cert-expand img{max-width:95vw;max-height:92vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.cert-expand-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,.1);color:#fff;border:none;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.cert-expand-close:hover{background:rgba(255,255,255,.2)}
+  /* skill cards: no frame at all — content floats on the page bg */
+  .skill-grid .reveal{ border:none; background:transparent; }
 
-/* Footer */
-.footer{text-align:center;padding:32px 16px;font-size:.75rem;color:#3f3f46;border-top:1px solid rgba(255,255,255,.04);margin-top:32px;position:relative;z-index:1}
+  .skill{ }
+  .skill .s-top{ display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:8px; margin-bottom:16px; }
+  .skill .s-name{ font-size:19px; color:#fff; font-weight:600; line-height:1.25; letter-spacing:-0.01em; text-align:center; }
+  .skill .s-pct{ font-family:var(--font-mono); font-size:28px; color:var(--accent); font-weight:600; line-height:1; }
+  .skill .s-pct .small{ font-size:15px; color:var(--accent-2); margin-left:1px; }
+  .skill .bar{ height:4px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; }
+  .skill .bar i{ display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; }
 
-/* Back to top */
-.back-top{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:8px;background:rgba(24,24,27,.8);backdrop-filter:blur(12px);border:1px solid rgba(139,92,246,.15);color:#a78bfa;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(20px);transition:all .2s;pointer-events:none;z-index:999}
-.back-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
-.back-top:hover{background:rgba(139,92,246,.1);box-shadow:0 0 20px rgba(139,92,246,.15)}
-.back-top svg{width:20px;height:20px}
+  /* credentials */
+  .cert-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media (max-width:820px){ .cert-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .cert-grid{ grid-template-columns:1fr; } }
 
-/* Toast */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(24,24,27,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(139,92,246,.2);color:#a78bfa;padding:10px 24px;border-radius:8px;font-size:.8125rem;font-weight:500;opacity:0;pointer-events:none;transition:all .3s ease;z-index:1001}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .cert{ }
+  .cert .c-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px; }
+  .cert .c-tag{ font-family:var(--font-mono); font-size:10px; letter-spacing:0.15em; color:var(--accent); border:1px solid rgba(255,122,24,0.35); padding:4px 9px; border-radius:4px; white-space:nowrap; }
+  .cert .c-idx{ font-family:var(--font-mono); font-size:11px; color:var(--faint); }
+  .cert .c-name{ font-family:var(--font-display); font-size:18px; font-weight:400; line-height:1.3; margin-bottom:16px; min-height:2.6em; }
+  .cert .c-issuer{ font-size:13px; color:var(--ink); margin-bottom:4px; }
+  .cert .c-meta{ font-family:var(--font-mono); font-size:11px; color:var(--muted); display:flex; flex-direction:column; gap:2px; }
+  .cert .c-meta .ok{ color:var(--accent-2); }
 
-/* Scroll reveal */
-.reveal{opacity:0;transform:translateY(20px);transition:all .5s cubic-bezier(.4,0,.2,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
+  .edu{ grid-column:span 2; }
+  @media (max-width:820px){ .edu{ grid-column:span 2; } }
+  @media (max-width:560px){ .edu{ grid-column:span 1; } }
+  .edu .e-name{ font-family:var(--font-display); font-size:26px; font-weight:400; margin-bottom:8px; }
+  .edu .e-major{ color:var(--accent-2); font-family:var(--font-mono); font-size:13px; margin-bottom:18px; }
+  .edu .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+  .edu .chip{ font-size:12px; color:var(--muted); border:1px solid var(--line); padding:5px 11px; border-radius:999px; }
 
-/* Scrollbar */
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(139,92,246,.15);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:rgba(139,92,246,.3)}
+  /* footer */
+  .footer{ padding:80px 0 60px; border-top:1px solid var(--line); margin-top:8vh; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; }
+  .footer h3{ font-family:var(--font-display); font-weight:300; font-size:clamp(40px,8vw,96px); line-height:1; letter-spacing:-0.03em; }
+  .footer h3 em{ font-style:italic; color:var(--accent); }
+  .footer .meta{ font-family:var(--font-mono); font-size:12px; color:var(--faint); letter-spacing:0.08em; }
 
-/* Print */
-@media print{.nav,.back-top,.glow{display:none!important}body{background:#fff;color:#000}.glass,.highlight-card,.project-card,.skill-category,.edu-card,.cert-card{background:#fff!important;border:1px solid #ccc!important;backdrop-filter:none!important}.section-title,.hero h1,.timeline-title,.project-card h4,.skill-category h4,.edu-card h4,.cert-card h4{color:#000!important}.highlight-num{background:none!important;-webkit-text-fill-color:#000!important}.timeline-body li,.project-card p{color:#333!important}.tab-panel{display:block!important}.pill,.course-tag,.cert-expiry,.cert-badge{border:1px solid #999!important;color:#333!important}}
+  /* reveal-on-load for hero */
+  .reveal-up{ opacity:0; transform:translateY(20px); }
 
-/* Reduced motion */
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:instant!important}}
+  /* ===== cert "view detail" button — in-flow, develops with the card ===== */
+  .cert .c-view{
+    margin-top:20px; display:flex; align-items:center; justify-content:center; gap:9px; width:100%; box-sizing:border-box;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em;
+    color:var(--accent); background:rgba(255,122,24,0.06);
+    border:1px solid rgba(255,122,24,0.32); border-radius:10px;
+    padding:11px 14px; cursor:pointer; user-select:none;
+    transition:background .25s,color .25s,transform .2s,border-color .25s,box-shadow .25s;
+  }
+  .cert .c-view:hover,.cert .c-view:focus-visible{
+    background:var(--accent); color:#1a1100; border-color:var(--accent);
+    transform:translateY(-1px); box-shadow:0 8px 22px rgba(255,122,24,0.2); outline:none;
+  }
+  .cert .c-view .c-ic{ width:14px; height:14px; flex:none; }
+  .cert .c-view .arr{ transition:transform .25s; display:inline-block; margin-left:1px; }
+  .cert .c-view:hover .arr{ transform:translate(2px,-2px); }
 
-/* Desktop */
-@media(min-width:768px){
-  .nav{height:64px}
-  .nav-brand{font-size:1.125rem}
-  .nav-link{padding:6px 14px;font-size:.875rem;min-height:auto}
-  .nav-btn{width:36px;height:36px}
-  .hero{padding:120px 24px 60px}
-  .hero h1{font-size:2.75rem;letter-spacing:-1px}
-  .hero .subtitle{font-size:1.125rem}
-  .hero .tagline{font-size:1rem}
-  .hero-cta{gap:12px;margin-bottom:28px}
-  .cta-btn{padding:12px 24px;font-size:.875rem;min-height:auto}
-  .badge{padding:5px 14px;font-size:.75rem}
-  .section{padding:60px 24px}
-  .section-title{font-size:1.875rem;margin-bottom:32px}
-  .highlights{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-  .highlight-card{padding:24px}
-  .highlight-num{font-size:2.25rem}
-  .highlight-label{font-size:.875rem}
-  .tab-btn{padding:10px 20px;font-size:.875rem;min-height:auto}
-  .timeline{padding-left:28px}
-  .timeline-item::before{left:-32px}
-  .timeline-title{font-size:1.125rem}
-  .timeline-meta{font-size:.8125rem}
-  .timeline-body li{font-size:.875rem}
-  .project-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-  .project-card{padding:24px}
-  .project-card h4{font-size:1.0625rem}
-  .project-card p{font-size:.875rem}
-  .skills-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-  .skill-category{padding:24px}
-  .skill-category h4{font-size:1rem}
-  .skill-bar-header{font-size:.875rem}
-  .edu-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-  .edu-card,.cert-card{padding:24px}
-  .edu-card h4,.cert-card h4{font-size:1.0625rem}
-  .edu-card .meta,.cert-card .meta{font-size:.8125rem}
-  .cert-thumb{margin:-24px -24px 16px;max-height:220px}
-  .cert-thumb img{height:220px}
-  .cert-badge{top:12px;right:12px;padding:4px 10px;font-size:.7rem}
-  .cert-expiry{font-size:.75rem}
-  .footer{padding:40px 24px;font-size:.8125rem}
-  .back-top{bottom:30px;right:30px}
-  .toast{font-size:.875rem}
-}
+  /* ===== lightbox ===== */
+  .lb{ position:fixed; inset:0; z-index:100; display:none; }
+  .lb.open{ display:block; }
+  .lb-backdrop{ position:absolute; inset:0; background:rgba(8,8,10,0.86); backdrop-filter:blur(10px); opacity:0; transition:opacity .3s; }
+  .lb.open .lb-backdrop{ opacity:1; }
+  .lb-dialog{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:72px 32px 44px; pointer-events:none; }
+  .lb-stage{ position:relative; max-width:min(940px,92vw); display:flex; align-items:center; justify-content:center; transform:scale(.96); opacity:0; transition:transform .4s cubic-bezier(.2,.7,.2,1),opacity .35s; pointer-events:none; }
+  .lb.open .lb-stage{ transform:scale(1); opacity:1; }
+  .lb-img{ max-width:min(940px,92vw); max-height:76vh; border-radius:10px; box-shadow:0 30px 80px rgba(0,0,0,0.65); border:1px solid var(--line-strong); pointer-events:auto; filter:grayscale(1) brightness(.45); transition:filter .9s ease; }
+  .lb-img.developed{ filter:none; }
+  .lb-fallback{ pointer-events:auto; text-align:center; }
+  .lb-fb-inner{ padding:46px 42px; border:1px dashed var(--line-strong); border-radius:12px; background:var(--surface); max-width:480px; }
+  .lb-fb-icon{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.15em; color:var(--accent); margin-bottom:16px; }
+  .lb-fb-title{ font-family:var(--font-display); font-size:22px; color:var(--ink); margin-bottom:8px; }
+  .lb-fb-name{ font-size:14px; color:var(--accent-2); margin-bottom:20px; line-height:1.5; }
+  .lb-fb-path{ font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-bottom:4px; word-break:break-all; }
+  .lb-fb-path code{ color:var(--accent); background:var(--surface-2); padding:6px 10px; border-radius:6px; }
+  .lb-fb-hint{ font-size:12px; color:var(--muted); margin-top:20px; line-height:1.7; max-width:34ch; margin-left:auto; margin-right:auto; }
+  .lb-caption{ margin-top:22px; font-family:var(--font-display); font-size:16px; color:var(--ink); text-align:center; max-width:640px; line-height:1.5; pointer-events:auto; }
+  .lb-count{ margin-top:8px; font-family:var(--font-mono); font-size:11px; color:var(--faint); letter-spacing:0.15em; pointer-events:auto; }
+  .lb-close,.lb-nav{ position:absolute; border:1px solid var(--line-strong); background:rgba(20,20,23,0.72); color:var(--ink); cursor:pointer; border-radius:50%; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(6px); transition:border-color .25s,color .25s,background .25s; }
+  .lb-close{ top:22px; right:22px; width:44px; height:44px; font-size:22px; line-height:1; z-index:3; }
+  .lb-nav{ top:50%; transform:translateY(-50%); width:48px; height:48px; font-size:26px; line-height:1; z-index:3; }
+  .lb-prev{ left:22px; } .lb-next{ right:22px; }
+  .lb-close:hover,.lb-nav:hover{ border-color:var(--accent); color:var(--accent); background:rgba(255,122,24,0.12); }
+  @media (max-width:600px){ .lb-nav{ display:none; } .lb-dialog{ padding:60px 14px 28px; } }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="glow glow-violet"></div>
-<div class="glow glow-indigo"></div>
-
-<nav class="nav glass-nav" id="nav">
-  <div class="nav-inner">
-    <a href="#hero" class="nav-brand">瞿德旺</a>
-    <div class="nav-links" id="navLinks">
-      <button class="nav-link active" data-target="hero">首页</button>
-      <button class="nav-link" data-target="highlights">亮点</button>
-      <button class="nav-link" data-target="experience">经历</button>
-      <button class="nav-link" data-target="projects">项目</button>
-      <button class="nav-link" data-target="skills">技能</button>
-      <button class="nav-link" data-target="education">教育</button>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">瞿德旺 <em>/</em> Felix Chu</div>
+      <div class="nav-links">
+        <a href="#hero">首页</a>
+        <a href="#skills">技能</a>
+        <a href="#credentials">教育</a>
+      </div>
+      <div class="status">可承接项目</div>
     </div>
-    <div class="nav-actions">
-      <button class="nav-btn" id="printBtn" title="打印简历"><i data-lucide="printer"></i></button>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="hero">
+    <div class="container">
+      <div class="eyebrow reveal-up"><span></span>视觉设计 · AI 应用实践者</div>
+      <h1 class="reveal-up">瞿德<span class="gw">旺</span></h1>
+      <div class="tagline reveal-up">把信息，显影成可视的叙事。</div>
+      <div class="sub reveal-up">PPT设计 <b>·</b> AI工具 <b>·</b> 视觉叙事 <b>·</b> 团队协作</div>
+      <p class="intro reveal-up">中南林业科技大学在读本科生，热衷于将视觉设计美学与 AI 前沿技术深度融合。擅长通过 PPT 视觉叙事、提示词工程与 AI 辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，持续提升团队内容生产效率与数字化表达能力。</p>
+      <div class="ctas reveal-up">
+        <a class="btn primary" href="#skills">查看技能矩阵 <span class="arrow">→</span></a>
+        <a class="btn" href="#credentials">教育与证书</a>
+        <a class="btn" href="tel:19720817095">联系我 · 19720817095</a>
+      </div>
     </div>
+    <div class="scroll-hint">向下滚动 · 见证显影<div class="line"></div></div>
+  </header>
+
+  <!-- SKILLS -->
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <div class="sec-idx">02 / SKILLS</div>
+          <h2 class="sec-title">技能<em>矩阵</em></h2>
+        </div>
+      </div>
+
+      <!-- group: 设计工具 -->
+      <div class="skill-group">
+        <div class="skill-group-head">
+          <span class="gname">设计工具</span>
+          <span class="gtag">DESIGN</span>
+          <span class="gline"></span>
+        </div>
+        <div class="skill-grid">
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">PPT 设计与视觉叙事</span><span class="s-pct">90<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="90"></i></div>
+          </div></div>
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">信息层级规划</span><span class="s-pct">85<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="85"></i></div>
+          </div></div>
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">数据可视化</span><span class="s-pct">80<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="80"></i></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- group: AI与工具 -->
+      <div class="skill-group">
+        <div class="skill-group-head">
+          <span class="gname">AI 与工具</span>
+          <span class="gtag">AI</span>
+          <span class="gline"></span>
+        </div>
+        <div class="skill-grid">
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">提示词工程 Prompt Engineering</span><span class="s-pct">88<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="88"></i></div>
+          </div></div>
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">千问 / AI 辅助工作流</span><span class="s-pct">85<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="85"></i></div>
+          </div></div>
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">AI 数据标注与模型训练</span><span class="s-pct">75<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="75"></i></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- group: 软技能 -->
+      <div class="skill-group">
+        <div class="skill-group-head">
+          <span class="gname">软技能</span>
+          <span class="gtag">SOFT</span>
+          <span class="gline"></span>
+        </div>
+        <div class="skill-grid">
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">团队协作与跨部门沟通</span><span class="s-pct">90<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="90"></i></div>
+          </div></div>
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">自我管理与目标导向</span><span class="s-pct">88<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="88"></i></div>
+          </div></div>
+          <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner skill">
+            <div class="s-top"><span class="s-name">经验分享与团队赋能</span><span class="s-pct">85<span class="small">%</span></span></div>
+            <div class="bar"><i data-pct="85"></i></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS -->
+  <section class="section" id="credentials">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <div class="sec-idx">03 / CREDENTIALS</div>
+          <h2 class="sec-title">教育与<em>证书</em></h2>
+        </div>
+      </div>
+
+      <div class="cert-grid">
+        <!-- education -->
+        <div class="reveal edu" data-cols="8" data-rows="4"><div class="reveal-inner">
+          <div class="c-top"><span class="c-tag">EDU · 学历</span><span class="c-idx">01</span></div>
+          <div class="e-name">中南林业科技大学</div>
+          <div class="e-major">环境工程 · 2026 年入学</div>
+          <div class="chips">
+            <span class="chip">高等数学</span>
+            <span class="chip">大学化学</span>
+            <span class="chip">环境学导论</span>
+            <span class="chip">生态学基础</span>
+            <span class="chip">环境工程导论</span>
+            <span class="chip">大学英语</span>
+            <span class="chip">Python 程序设计</span>
+          </div>
+        </div></div>
+
+        <!-- 8 certificates -->
+        <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner cert">
+          <div class="c-top"><span class="c-tag">证书</span><span class="c-idx">02</span></div>
+          <div class="c-name">人工智能训练师证书<span style="color:var(--muted)">（初级）</span></div>
+          <div class="c-issuer">阿里云达摩院</div>
+          <div class="c-meta"><span>2026.08.03 取得</span><span class="ok">有效期至 2027.08.03</span></div>
+        </div></div>
+
+        <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner cert">
+          <div class="c-top"><span class="c-tag">证书</span><span class="c-idx">03</span></div>
+          <div class="c-name">人工智能训练师证书<span style="color:var(--muted)">（高级）</span></div>
+          <div class="c-issuer">阿里云达摩院</div>
+          <div class="c-meta"><span>2026.08.09 取得</span><span class="ok">有效期至 2027.08.09</span></div>
+        </div></div>
+
+        <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner cert">
+          <div class="c-top"><span class="c-tag">证书</span><span class="c-idx">04</span></div>
+          <div class="c-name">Apsara Clouder · VISION 人工智能设计<span style="color:var(--muted)">（入门）</span></div>
+          <div class="c-issuer">阿里云</div>
+          <div class="c-meta"><span>2026.08.25 取得</span><span class="ok">有效期至 2028.08.25</span></div>
+        </div></div>
+
+        <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner cert">
+          <div class="c-top"><span class="c-tag">证书</span><span class="c-idx">05</span></div>
+          <div class="c-name">Apsara Clouder · VISION 人工智能设计<span style="color:var(--muted)">（进阶）</span></div>
+          <div class="c-issuer">阿里云</div>
+          <div class="c-meta"><span>2026.08.25 取得</span><span class="ok">有效期至 2028.08.25</span></div>
+        </div></div>
+
+        <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner cert">
+          <div class="c-top"><span class="c-tag">证书</span><span class="c-idx">06</span></div>
+          <div class="c-name">Apsara Clouder · RAG 应用构建及优化</div>
+          <div class="c-issuer">阿里云</div>
+          <div class="c-meta"><span>2026.08.26 取得</span><span class="ok">有效期至 2028.08.26</span></div>
+        </div></div>
+
+        <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner cert">
+          <div class="c-top"><span class="c-tag">证书</span><span class="c-idx">07</span></div>
+          <div class="c-name">Apsara Clouder · 基于百炼平台构建智能体应用</div>
+          <div class="c-issuer">阿里云</div>
+          <div class="c-meta"><span>2026.08.25 取得</span><span class="ok">有效期至 2028.08.25</span></div>
+        </div></div>
+
+        <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner cert">
+          <div class="c-top"><span class="c-tag">证书</span><span class="c-idx">08</span></div>
+          <div class="c-name">Apsara Clouder · 基于 PAI ArtLab 的 AIGC 设计基础</div>
+          <div class="c-issuer">阿里云</div>
+          <div class="c-meta"><span>2026.08.26 取得</span><span class="ok">有效期至 2028.08.26</span></div>
+        </div></div>
+
+        <div class="reveal" data-cols="6" data-rows="4"><div class="reveal-inner cert">
+          <div class="c-top"><span class="c-tag">证书</span><span class="c-idx">09</span></div>
+          <div class="c-name">Apsara Clouder · 利用大模型提升内容生产能力</div>
+          <div class="c-issuer">阿里云</div>
+          <div class="c-meta"><span>2026.08.15 取得</span><span class="ok">有效期至 2028.08.15</span></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <h3>把复杂，<em>显影</em>为简单。</h3>
+      <div class="meta">
+        瞿德旺 · 19720817095<br>
+        QQ 邮箱：2655732386@qq.com<br>
+        视觉设计 + AI 应用 · 持续显影中
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lightbox" aria-hidden="true">
+  <div class="lb-backdrop" data-close></div>
+  <div class="lb-dialog">
+    <div class="lb-stage">
+      <img class="lb-img" alt="证书大图" />
+      <div class="lb-fallback" hidden>
+        <div class="lb-fb-inner">
+          <div class="lb-fb-icon">CERT · 待接入图片</div>
+          <div class="lb-fb-title">证书图片待添加</div>
+          <div class="lb-fb-name" data-fb-name></div>
+          <div class="lb-fb-path">建议文件名：<code data-fb-path></code></div>
+          <div class="lb-fb-hint">把你的真实证书图片放入项目根目录下的 <code>certs/</code> 文件夹并使用上述文件名，刷新后即可在此显影；或直接把图片发给我，我来接入。</div>
+        </div>
+      </div>
+    </div>
+    <div class="lb-caption" data-cap></div>
+    <div class="lb-count" data-count></div>
   </div>
-</nav>
-
-<section class="hero" id="hero">
-  <div class="status-badge"><span class="dot"></span>可承接项目</div>
-  <h1>瞿德旺 <span class="accent">视觉设计与AI应用实践者</span></h1>
-  <p class="subtitle">PPT设计 · AI工具 · 视觉叙事 · 团队协作</p>
-  <p class="tagline">中南林业科技大学在读本科生，热衷于将视觉设计美学与AI前沿技术深度融合。擅长通过PPT视觉叙事、提示词工程与AI辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，持续提升团队内容生产效率与数字化表达能力。</p>
-  <div class="hero-cta">
-    <button class="cta-btn cta-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})"><i data-lucide="folder-git-2"></i>查看作品集</button>
-    <button class="cta-btn cta-secondary" data-copy="2655732386@qq.com"><i data-lucide="mail"></i>联系我</button>
-    <button class="cta-btn cta-secondary" data-copy="19720817095"><i data-lucide="smartphone"></i>19720817095</button>
-  </div>
-  <div class="hero-badges" id="heroBadges"></div>
-</section>
-
-<section class="section" id="highlights">
-  <div class="section-label reveal">HIGHLIGHTS</div>
-  <h2 class="section-title reveal">亮点成果</h2>
-  <div class="highlights" id="highlightsGrid"></div>
-</section>
-
-<section class="section" id="experience">
-  <div class="section-label reveal">EXPERIENCE</div>
-  <h2 class="section-title reveal">经历</h2>
-  <div class="tab-nav" role="tablist" id="expTabs">
-    <button class="tab-btn active" role="tab" data-tab="campus" aria-selected="true"><i data-lucide="users"></i>校园实践</button>
-    <button class="tab-btn" role="tab" data-tab="course" aria-selected="false"><i data-lucide="book-open"></i>课程项目</button>
-  </div>
-  <div class="tab-panel active" id="panel-campus" role="tabpanel"></div>
-  <div class="tab-panel" id="panel-course" role="tabpanel"></div>
-</section>
-
-<section class="section" id="projects">
-  <div class="section-label reveal">PROJECTS</div>
-  <h2 class="section-title reveal">项目经历</h2>
-  <div class="project-grid" id="projectGrid"></div>
-</section>
-
-<section class="section" id="skills">
-  <div class="section-label reveal">SKILLS</div>
-  <h2 class="section-title reveal">技能矩阵</h2>
-  <div class="skills-grid" id="skillsGrid"></div>
-</section>
-
-<section class="section" id="education">
-  <div class="section-label reveal">EDUCATION</div>
-  <h2 class="section-title reveal">教育与证书</h2>
-  <div class="edu-grid" id="eduGrid"></div>
-</section>
-
-<footer class="footer">
-  <p>© 2026 瞿德旺 · 视觉设计与AI应用实践者 · 最后更新于 2026年8月</p>
-</footer>
-
-<button class="back-top" id="backTop" title="返回顶部" aria-label="返回顶部"><i data-lucide="chevron-up"></i></button>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <button class="lb-close" data-close aria-label="关闭">×</button>
+  <button class="lb-nav lb-prev" data-prev aria-label="上一张">‹</button>
+  <button class="lb-nav lb-next" data-next aria-label="下一张">›</button>
+</div>
 
 <script>
-const resume={
-  name:"瞿德旺",title:"视觉设计与AI应用实践者",phone:"19720817095",email:"2655732386@qq.com",github:"【待补】",
-  education:{school:"中南林业科技大学",major:"环境工程",degree:"2026年入学",courses:["高等数学","大学化学","环境学导论","生态学基础","环境工程导论","大学英语","Python程序设计"]},
-  highlights:[{num:"10+",label:"场大型活动PPT设计"},{num:"30%",label:"内容筹备周期缩短"},{num:"5+",label:"场内部技能分享会"},{num:"8",label:"阿里云AI专项认证证书"}],
-  skills:{"设计工具":[{name:"PPT设计与视觉叙事",level:90},{name:"信息层级规划",level:85},{name:"数据可视化",level:80}],"AI与工具":[{name:"提示词工程（Prompt Engineering）",level:88},{name:"千问 / AI辅助工作流",level:85},{name:"AI数据标注与模型训练",level:75}],"软技能":[{name:"团队协作与跨部门沟通",level:90},{name:"自我管理与目标导向",level:88},{name:"经验分享与团队赋能",level:85}]},
-  experience:{campus:{title:"校园学术/社团组织",role:"视觉设计与内容策划核心成员",period:"2024年 – 至今",icon:"users",items:["主导视觉呈现与PPT重构：负责社团/班级多场大型活动的宣讲PPT设计与视觉叙事规划，运用信息层级重构技巧，将冗长文字转化为结构化图表，使受众信息接收效率显著提升。","AI赋能内容生产：引入千问等AI工具辅助前期资料搜集与文案初稿撰写，通过精准提示词工程优化输出结果，使团队整体内容筹备周期缩短约30%。","跨部门协作与内容整合：统筹多名成员的文案素材，进行统一的视觉包装与排版美化，确保最终汇报材料风格一致、逻辑严密，获得指导老师高度评价。","经验分享与团队赋能：主动组织多场内部技能分享会，普及AI工具高效使用技巧与PPT设计原则，帮助多名同学解决制作痛点，显著提升团队数字化办公与视觉表达能力。"]},course:{title:"校园课程/创新项目",role:"核心组员",period:"【待补】年 – 【待补】年",icon:"book-open",items:["项目策划与视觉落地：负责整体汇报材料的视觉设计与逻辑梳理，结合动漫镜头语言技巧优化页面转场与视觉引导，使项目汇报的生动性与专业度显著提升。","数据可视化与排版优化：运用设计原则对多复杂数据进行可视化处理，提炼核心洞察并转化为直观图表呈现，辅助团队在最终答辩中取得优异成绩。","团队沟通与进度把控：发挥团队协作优势，积极协调组员分工，跟进项目进度，有效化解团队分歧，确保项目高质量按期交付。"]}},
-  projects:[{name:"AI辅助PPT视觉叙事系统",tags:["PPT设计","AI工具","提示词工程"],icon:"sparkles",desc:"构建了一套结合AI工具与视觉设计原则的PPT制作工作流，从资料搜集、文案生成到视觉排版全流程自动化辅助，大幅提升内容生产效率与视觉呈现质量。"},{name:"二次元视觉风格PPT模板库",tags:["视觉设计","二次元文化","模板设计"],icon:"layers",desc:"融合二次元动漫文化与专业排版设计，设计了一套具有独特视觉风格的PPT模板库，将镜头语言与视觉叙事技巧应用于幻灯片设计中，形成差异化设计优势。"},{name:"团队AI工具技能培训方案",tags:["AI培训","团队协作","知识分享"],icon:"graduation-cap",desc:"设计并实施了一套面向团队的AI工具使用培训方案，涵盖千问提示词工程、AI辅助资料搜集与文案撰写等模块，帮助团队成员快速掌握AI工具高效使用技巧。"}],
-  certificates:[{name:"人工智能训练师证书（初级）",org:"阿里云达摩院 · 2026.08.03",img:"images/cert1-ait-junior",validUntil:"2027.08.03"},{name:"阿里云Apsara Clouder · VISION人工智能设计（入门）",org:"阿里云 · 2026.08.25",img:"images/cert2-clouder-vision",validUntil:"2028.08.25"},{name:"阿里云Apsara Clouder · RAG应用构建及优化",org:"阿里云 · 2026.08.26",img:"images/cert3-clouder-rag",validUntil:"2028.08.26"},{name:"阿里云Apsara Clouder · 基于百炼平台构建智能体应用",org:"阿里云 · 2026.08.25",img:"images/cert4-clouder-bailian",validUntil:"2028.08.25"},{name:"人工智能训练师证书（高级）",org:"阿里云达摩院 · 2026.08.09",img:"images/cert5-ait-advanced",validUntil:"2027.08.09"},{name:"阿里云Apsara Clouder · VISION人工智能设计（进阶）",org:"阿里云 · 2026.08.25",img:"images/cert6-clouder-vision-advanced",validUntil:"2028.08.25"},{name:"阿里云Apsara Clouder · 基于PAI ArtLab的AIGC设计基础",org:"阿里云 · 2026.08.26",img:"images/cert7-clouder-pai-aigc",validUntil:"2028.08.26"},{name:"阿里云Apsara Clouder · 利用大模型提升内容生产能力",org:"阿里云 · 2026.08.15",img:"images/cert8-clouder-llm-content",validUntil:"2028.08.15"}]
-};
+(function(){
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const skillIcons={"设计工具":"palette","AI与工具":"cpu","软技能":"heart"};
+  // ===== Lenis smooth scroll + GSAP integration =====
+  let lenis = null;
+  if(!reduced && window.Lenis){
+    lenis = new Lenis({ duration:1.1, smoothWheel:true, wheelMultiplier:0.9 });
+    if(window.gsap && window.ScrollTrigger){
+      gsap.registerPlugin(ScrollTrigger);
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((t)=> lenis.raf(t*1000));
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } else if(window.gsap && window.ScrollTrigger){
+    gsap.registerPlugin(ScrollTrigger);
+  }
 
-function refreshIcons(){if(window.lucide)lucide.createIcons()}
+  // expose lenis so the lightbox can pause smooth-scroll while open
+  window.__lenis = lenis;
 
-function renderHeroBadges(){const t=resume.skills,e=document.getElementById("heroBadges"),a=[];Object.values(t).forEach(r=>r.forEach(s=>a.push(s.name.split("（")[0].split("/")[0].trim())));e.innerHTML=[...new Set(a.slice(0,8))].map(s=>`<span class="badge">${s}</span>`).join("")}
+  const clamp = (v,a,b)=> v<a?a:(v>b?b:v);
+  const smoothstep = (e0,e1,x)=>{ const t=clamp((x-e0)/(e1-e0),0,1); return t*t*(3-2*t); };
 
-function renderHighlights(){document.getElementById("highlightsGrid").innerHTML=resume.highlights.map(h=>`<div class="highlight-card reveal"><div class="highlight-num">${h.num}</div><div class="highlight-label">${h.label}</div></div>`).join("")}
-
-function renderExperience(){
-  const c=resume.experience.campus,co=resume.experience.course;
-  document.getElementById("panel-campus").innerHTML=`<div class="timeline-item"><div class="timeline-header"><div><div class="timeline-title"><i data-lucide="${c.icon}"></i>${c.title}</div><div class="timeline-meta"><span>${c.role}</span></div></div><div class="timeline-meta"><span>${c.period}</span></div></div><div class="timeline-body"><ul>${c.items.map(i=>`<li>${i}</li>`).join("")}</ul></div></div>`;
-  document.getElementById("panel-course").innerHTML=`<div class="timeline-item"><div class="timeline-header"><div><div class="timeline-title"><i data-lucide="${co.icon}"></i>${co.title}</div><div class="timeline-meta"><span>${co.role}</span></div></div><div class="timeline-meta"><span>${co.period}</span></div></div><div class="timeline-body"><ul>${co.items.map(i=>`<li>${i}</li>`).join("")}</ul></div></div>`;
-}
-
-function renderProjects(){document.getElementById("projectGrid").innerHTML=resume.projects.map(p=>`<div class="project-card reveal"><h4><i data-lucide="${p.icon}"></i>${p.name}</h4><div class="project-tags">${p.tags.map(t=>`<span class="pill">${t}</span>`).join("")}</div><p>${p.desc}</p></div>`).join("")}
-
-function renderSkills(){document.getElementById("skillsGrid").innerHTML=Object.entries(resume.skills).map(([cat,skills])=>`<div class="skill-category reveal"><h4><i data-lucide="${skillIcons[cat]||'code'}"></i>${cat}</h4>${skills.map(s=>`<div class="skill-bar-wrap"><div class="skill-bar-header"><span class="skill-bar-label">${s.name}</span><span class="skill-bar-pct">${s.level}%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-width="${s.level}"></div></div></div>`).join("")}</div>`).join("")}
-
-function renderEducation(){
-  const e=resume.education;
-  const cards=resume.certificates.map(c=>`<div class="cert-card reveal"><div class="cert-thumb" data-cert-img="${c.img}.jpg"><picture><source type="image/webp" srcset="${c.img}.webp"><source type="image/jpeg" srcset="${c.img}.jpg"><img src="${c.img}.jpg" alt="${c.name}" loading="lazy" decoding="async"></picture><span class="cert-badge">证书</span></div><h4>${c.name}</h4><div class="meta">${c.org}</div><span class="cert-expiry">有效期至 ${c.validUntil}</span></div>`).join("");
-  document.getElementById("eduGrid").innerHTML=`<div class="edu-card reveal"><h4><i data-lucide="graduation-cap"></i>${e.school}</h4><div class="meta">${e.major} · ${e.degree}</div><div class="edu-courses">${e.courses.map(c=>`<span class="course-tag">${c}</span>`).join("")}</div></div>${cards}`;
-}
-
-function initCertExpand(){
-  const thumbs=document.querySelectorAll(".cert-thumb");
-  let overlay=document.querySelector(".cert-expand");
-  if(!overlay){overlay=document.createElement("div");overlay.className="cert-expand";overlay.innerHTML='<button class="cert-expand-close" aria-label="关闭">✕</button><img alt="证书大图">';document.body.appendChild(overlay)}
-  const overlayImg=overlay.querySelector("img"),closeBtn=overlay.querySelector(".cert-expand-close");
-  thumbs.forEach(thumb=>thumb.addEventListener("click",()=>{overlayImg.src=thumb.dataset.certImg;overlay.classList.add("show")}));
-  const close=()=>{overlay.classList.remove("show");overlayImg.src=""};
-  closeBtn.addEventListener("click",close);
-  overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
-}
-
-function initTabs(){
-  const btns=document.querySelectorAll(".tab-btn");
-  btns.forEach(btn=>btn.addEventListener("click",()=>{
-    btns.forEach(b=>{b.classList.remove("active");b.setAttribute("aria-selected","false")});
-    document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
-    btn.classList.add("active");btn.setAttribute("aria-selected","true");
-    document.getElementById("panel-"+btn.dataset.tab).classList.add("active");
-    refreshIcons();
-  }));
-}
-
-function initNavScroll(){
-  const sections=document.querySelectorAll("section[id]"),links=document.querySelectorAll(".nav-link");
-  let ticking=false;
-  window.addEventListener("scroll",()=>{
-    if(ticking)return;ticking=true,requestAnimationFrame(()=>{
-      let cur="";sections.forEach(s=>{if(window.scrollY>=s.offsetTop-80)cur=s.id});
-      links.forEach(l=>l.classList.toggle("active",l.dataset.target===cur));ticking=false
-    })},{passive:true});
-}
-
-function initBackTop(){
-  const btn=document.getElementById("backTop");let ticking=false;
-  window.addEventListener("scroll",()=>{
-    if(ticking)return;ticking=true,requestAnimationFrame(()=>{
-      btn.classList.toggle("visible",window.scrollY>400);ticking=false
-    })},{passive:true});
-  btn.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
-}
-
-function initPrint(){document.getElementById("printBtn").addEventListener("click",()=>window.print())}
-
-function initCopy(){
-  const toast=document.getElementById("toast");
-  document.querySelectorAll("[data-copy]").forEach(btn=>btn.addEventListener("click",()=>{
-    const text=btn.dataset.copy;
-    navigator.clipboard.writeText(text).then(()=>{
-      toast.textContent="已复制："+text;toast.classList.add("show");
-      setTimeout(()=>toast.classList.remove("show"),2e3);
-    }).catch(()=>{
-      toast.textContent="复制失败，请手动复制";toast.classList.add("show");
-      setTimeout(()=>toast.classList.remove("show"),2e3);
-    });
-  }));
-}
-
-function initReveal(){
-  const obs=new IntersectionObserver(es=>{
-    es.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.classList.add("visible");
-        e.target.querySelectorAll(".skill-bar-fill").forEach(b=>b.style.width=b.dataset.width+"%");
+  // ===== Build tile grids =====
+  function buildTiles(card){
+    const grid = card.querySelector('.reveal-grid') || (()=>{
+      const g=document.createElement('div'); g.className='reveal-grid';
+      card.appendChild(g); return g;
+    })();
+    grid.innerHTML='';
+    const cols = parseInt(card.dataset.cols||6,10);
+    const rows = parseInt(card.dataset.rows||4,10);
+    grid.style.gridTemplateColumns = `repeat(${cols},1fr)`;
+    grid.style.gridTemplateRows = `repeat(${rows},1fr)`;
+    const tiles=[];
+    const maxD = Math.sqrt(2)/2; // corner distance from center (normalized coords -1..1)
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const t=document.createElement('span'); t.className='tile';
+        const nx = cols>1 ? (c-(cols-1)/2)/((cols-1)/2) : 0; // -1..1
+        const ny = rows>1 ? (r-(rows-1)/2)/((rows-1)/2) : 0;
+        const dist = Math.sqrt(nx*nx+ny*ny)/maxD; // 0 center .. ~1 corner
+        t.dataset.thresh = (dist*0.32).toFixed(3); // scale so even corner tiles (dist=2) fully clear by p=1
+        grid.appendChild(t);
+        tiles.push(t);
       }
-    });
-  },{threshold:.15});
-  document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
-}
+    }
+    return tiles;
+  }
 
-document.addEventListener("DOMContentLoaded",()=>{
-  renderHeroBadges();renderHighlights();renderExperience();renderProjects();renderSkills();renderEducation();
-  initCertExpand();initTabs();initNavScroll();initBackTop();initPrint();initCopy();initReveal();
-  refreshIcons();
-  setTimeout(refreshIcons,200);
-});
+  function applyReveal(card, p){
+    const inner = card.querySelector('.reveal-inner');
+    const tiles = card._tiles;
+    const bar = card.querySelector('.bar i');
+    // color / brightness curve (slower start, like shader pow 5.8 but tuned)
+    const pc = Math.pow(p,1.7);
+    if(inner){
+      const gray = (1-pc)*100;
+      const bright = 0.5 + 0.5*pc;
+      inner.style.filter = `grayscale(${gray}%) brightness(${bright})`;
+      inner.style.opacity = (0.12 + 0.88*pc).toFixed(3);
+    }
+    if(bar){
+      const pct = parseFloat(bar.dataset.pct||'0');
+      bar.style.width = (pct*pc).toFixed(1)+'%';
+    }
+    // tile mask: center (low thresh) disappears first
+    for(let i=0;i<tiles.length;i++){
+      const th = tiles[i]._th;
+      let op = 1 - smoothstep(th, th+0.36, p);
+      tiles[i].style.opacity = op;
+      const sc = 0.55 + 0.45*op;
+      tiles[i].style.transform = `scale(${sc})`;
+    }
+  }
+
+  function initReveal(card){
+    const tiles = buildTiles(card);
+    card._tiles = tiles.map(t=>{ t._th = parseFloat(t.dataset.thresh); return t; });
+    applyReveal(card, 0);
+
+    if(reduced || !window.ScrollTrigger){
+      applyReveal(card,1);
+      return;
+    }
+    ScrollTrigger.create({
+      trigger: card,
+      start: 'top 88%',
+      end: 'top 38%',
+      scrub: 1,
+      onUpdate: self => applyReveal(card, self.progress),
+      onLeaveBack: () => applyReveal(card,0)
+    });
+  }
+
+  document.querySelectorAll('.reveal').forEach(initReveal);
+
+  // ===== Hero staggered entrance =====
+  if(window.gsap && !reduced){
+    gsap.to('.reveal-up', {
+      opacity:1, y:0, duration:1.0, ease:'power3.out',
+      stagger:0.08, delay:0.15
+    });
+  } else {
+    document.querySelectorAll('.reveal-up').forEach(el=>{ el.style.opacity=1; el.style.transform='none'; });
+  }
+
+  // nav smooth anchors via lenis
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const id = a.getAttribute('href');
+      if(id.length<2) return;
+      const el = document.querySelector(id);
+      if(!el) return;
+      e.preventDefault();
+      if(lenis) lenis.scrollTo(el, { offset:-40, duration:1.2 });
+      else el.scrollIntoView({behavior:'smooth'});
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  // ===== certificate lightbox =====
+  const lb = document.getElementById('lightbox');
+  if(!lb) return;
+  const img     = lb.querySelector('.lb-img');
+  const fb      = lb.querySelector('.lb-fallback');
+  const fbName  = lb.querySelector('[data-fb-name]');
+  const fbPath  = lb.querySelector('[data-fb-path]');
+  const capEl   = lb.querySelector('[data-cap]');
+  const countEl = lb.querySelector('[data-count]');
+
+  // cert image registry — order matches the 8 cert cards in the document
+  const certImgs = [
+    { file:'https://alibi0528.github.io/qudewang2/images/cert1-ait-junior.webp', cap:'人工智能训练师证书（初级）· 阿里云达摩院 · 2026.08.03' },
+    { file:'https://alibi0528.github.io/qudewang2/images/cert5-ait-advanced.webp', cap:'人工智能训练师证书（高级）· 阿里云达摩院 · 2026.08.09' },
+    { file:'https://alibi0528.github.io/qudewang2/images/cert2-clouder-vision.webp', cap:'Apsara Clouder · VISION 人工智能设计（入门）· 阿里云 · 2026.08.25' },
+    { file:'https://alibi0528.github.io/qudewang2/images/cert6-clouder-vision-advanced.webp', cap:'Apsara Clouder · VISION 人工智能设计（进阶）· 阿里云 · 2026.08.25' },
+    { file:'https://alibi0528.github.io/qudewang2/images/cert3-clouder-rag.webp', cap:'Apsara Clouder · RAG 应用构建及优化 · 阿里云 · 2026.08.26' },
+    { file:'https://alibi0528.github.io/qudewang2/images/cert4-clouder-bailian.webp', cap:'Apsara Clouder · 基于百炼平台构建智能体应用 · 阿里云 · 2026.08.25' },
+    { file:'https://alibi0528.github.io/qudewang2/images/cert7-clouder-pai-aigc.webp', cap:'Apsara Clouder · 基于 PAI ArtLab 的 AIGC 设计基础 · 阿里云 · 2026.08.26' },
+    { file:'https://alibi0528.github.io/qudewang2/images/cert8-clouder-llm-content.webp', cap:'Apsara Clouder · 利用大模型提升内容生产能力 · 阿里云 · 2026.08.15' }
+  ];
+
+  // inject "view detail" badge + data attributes onto each cert card
+  const certInners = Array.from(document.querySelectorAll('.reveal-inner.cert'));
+  certInners.forEach((inner, i) => {
+    const data = certImgs[i]; if(!data) return;
+    const card = inner.closest('.reveal');
+    card.dataset.img = data.file;
+    card.dataset.cap = data.cap;
+    const badge = document.createElement('div');
+    badge.className = 'c-view';
+    badge.setAttribute('role', 'button');
+    badge.tabIndex = 0;
+    badge.innerHTML = '<svg class="c-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>查看证书详情 <span class="arr">↗</span>';
+    inner.appendChild(badge);
+  });
+
+  const cards = Array.from(document.querySelectorAll('.reveal[data-img]'));
+  const items = cards.map(c => ({
+    img:  c.dataset.img,
+    cap:  c.dataset.cap,
+    name: (c.querySelector('.c-name') || {}).textContent ? c.querySelector('.c-name').textContent.trim() : ''
+  }));
+  let current = -1;
+
+  function show(i){
+    if(!items.length) return;
+    current = ((i % items.length) + items.length) % items.length;
+    const it = items[current];
+    capEl.textContent  = it.cap || it.name;
+    countEl.textContent = (current + 1) + ' / ' + items.length;
+    img.classList.remove('developed');
+    img.style.display = 'none';
+    fb.hidden = true;
+    const tok = Math.random();
+    img._tok = tok;
+    img.onload  = () => { if(img._tok !== tok) return; img.style.display = ''; fb.hidden = true; requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('developed'))); };
+    img.onerror = () => { if(img._tok !== tok) return; img.style.display = 'none'; fb.hidden = false; fbName.textContent = it.name; fbPath.textContent = it.img; };
+    img.src = it.img;
+  }
+  function open(i){
+    show(i);
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if(window.__lenis && window.__lenis.stop) window.__lenis.stop();
+  }
+  function close(){
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if(window.__lenis && window.__lenis.start) window.__lenis.start();
+  }
+
+  lb.addEventListener('click', e => {
+    if(e.target.closest('[data-prev]'))  { show(current - 1); return; }
+    if(e.target.closest('[data-next]'))  { show(current + 1); return; }
+    if(e.target.closest('[data-close]')) { close(); return; }
+  });
+  document.addEventListener('keydown', e => {
+    if(!lb.classList.contains('open')) return;
+    if(e.key === 'Escape')      close();
+    else if(e.key === 'ArrowLeft')  show(current - 1);
+    else if(e.key === 'ArrowRight') show(current + 1);
+  });
+  document.querySelectorAll('.c-view').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.reveal[data-img]');
+      const idx = cards.indexOf(card);
+      if(idx > -1) open(idx);
+    });
+    btn.addEventListener('keydown', e => {
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+    });
+  });
+})();
 </script>
 </body>
 </html>
