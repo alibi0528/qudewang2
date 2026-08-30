@@ -2999,7 +2999,18 @@
   // ---- Badge when panel closed ----
   if (!panel.classList.contains('open')) {
     badge.removeAttribute('hidden');
+  } else {
+    // If panel already open by default in HTML, render initial prompts
+    renderQuick();
+    input.focus();
   }
+  // Always initialize mode defaults & render prompt chips on load
+  (function ensureFirstModeActive(){
+    var anyOn = false;
+    modeBtns.forEach(function(b){ if (b.classList.contains('on')) anyOn = true; });
+    if (!anyOn && modeBtns[0]) { modeBtns[0].classList.add('on'); currentMode = modeBtns[0].dataset.mode || currentMode; }
+  })();
+  if (quickBox.children.length === 0) renderQuick();
 
   // ---- Auto-start onboarding on first open ----
   var started = false;
