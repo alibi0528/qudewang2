@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN" data-ui-template="felix-training-workbench-v01">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Felix Chu 路 Personal Training Workbench</title>
+<title>Felix Chu · Personal Training Workbench</title>
 <style>
   :root{
     --bg:#f6f6f4; --card:#ffffff; --ink:#1a1a1a; --muted:#666666; --faint:#999999;
@@ -442,14 +443,14 @@
   .review-points{display:flex;gap:6px;flex-wrap:wrap;margin-top:13px}.review-point{padding:5px 8px;border:1px solid rgba(0,0,0,.11);border-radius:999px;background:rgba(238,238,235,.72);font-size:9px;color:#555}
   .review-decision{margin-top:15px;padding:11px 12px;border-left:3px solid #111;background:rgba(230,230,227,.62);font-size:10px;line-height:1.55;color:#444}
   .rv .open{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;margin-top:17px;padding-top:13px;border-top:1px solid rgba(0,0,0,.1);color:#111;font-size:10px;font-weight:700}
-  .rv .open:after{content:"鈫?;font-size:15px}.rv .open button{display:none}
+  .rv .open:after{content:"↗";font-size:15px}.rv .open button{display:none}
 
   #setBox{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(0,0,0,.13)}
   #setBox .setrow{display:block;min-height:126px;padding:18px;background:rgba(249,249,247,.88)}
   #setBox .setrow .k{display:block;font-size:9px;font-weight:720;letter-spacing:.12em;text-transform:uppercase}
   #setBox .setrow .v{display:block;max-width:none;margin-top:12px;text-align:left;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
   #ruleBox{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:rgba(0,0,0,.13)}
-  .rule-item{background:rgba(249,249,247,.88)}.rule-item summary{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 19px;cursor:pointer;list-style:none;font-size:13px;font-weight:700}.rule-item summary::-webkit-details-marker{display:none}.rule-item summary:after{content:"锛?;font-size:17px;font-weight:400}.rule-item[open] summary:after{content:"鈥?}.rule-body{padding:0 19px 19px;font-size:11px;line-height:1.75;color:#555}
+  .rule-item{background:rgba(249,249,247,.88)}.rule-item summary{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 19px;cursor:pointer;list-style:none;font-size:13px;font-weight:700}.rule-item summary::-webkit-details-marker{display:none}.rule-item summary:after{content:"＋";font-size:17px;font-weight:400}.rule-item[open] summary:after{content:"—"}.rule-body{padding:0 19px 19px;font-size:11px;line-height:1.75;color:#555}
   #howNote{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;padding:1px;background:rgba(0,0,0,.13);overflow:hidden}
   .how-step{min-height:126px;padding:17px;background:rgba(249,249,247,.88)}.how-step .num{font-size:9px;font-weight:750;letter-spacing:.14em;color:#888}.how-step b{display:block;margin-top:20px;font-size:14px}.how-step p{margin-top:7px;font-size:10px;line-height:1.6;color:#666}
 
@@ -1870,14 +1871,14 @@
 
 <div class="doc-overlay" id="docOverlay" hidden>
   <article class="doc-dialog" role="dialog" aria-modal="true" aria-labelledby="docTitle">
-    <header class="doc-head"><h2 id="docTitle">鍐呭</h2><button class="doc-close" id="docClose" type="button">鍏抽棴</button></header>
+    <header class="doc-head"><h2 id="docTitle">内容</h2><button class="doc-close" id="docClose" type="button">关闭</button></header>
     <div class="doc-body" id="docBody"></div>
-    <footer class="doc-actions"><a id="docObsidian" href="#" hidden>鍦?Obsidian 缂栬緫</a></footer>
+    <footer class="doc-actions"><a id="docObsidian" href="#" hidden>在 Obsidian 编辑</a></footer>
   </article>
 </div>
 
 <div class="appbar">
-  <h1>Felix Chu 路 Training Workbench</h1>
+  <h1>Felix Chu · Training Workbench</h1>
   <span class="chip" id="verChip"></span>
 </div>
 <div class="syncbar" id="syncBar"></div>
@@ -1895,7 +1896,7 @@
   </section>
 
   <section id="m-week">
-    <h2>鍛ㄦ湡杩涘害 <span class="t" id="weekLabel"></span></h2>
+    <h2>周期进度 <span class="t" id="weekLabel"></span></h2>
     <div class="card" id="cycleCard">
       <div class="ringwrap">
         <div class="ring" id="ringBox"></div>
@@ -1903,48 +1904,48 @@
       </div>
       <div class="stages" id="stageBar"></div>
     </div>
-    <h2>鏈懆鍥涚粌鏃?/h2>
+    <h2>本周四练日</h2>
     <div class="days" id="dayGrid"></div>
     <div class="note" id="weekNote"></div>
-    <h2>鏈懆涓婚」 路 <span id="weekMainLabel">W2</span></h2>
+    <h2>本周主项 · <span id="weekMainLabel">W2</span></h2>
     <div class="card wk" id="weekMain"></div>
   </section>
 
   <section id="m-trend">
-    <h2>涓婚」 8 鍛ㄨ礋鑽?/h2>
+    <h2>主项 8 周负荷</h2>
     <div class="card" id="chartBox"></div>
-    <h2>浣撻噸瓒嬪娍</h2>
+    <h2>体重趋势</h2>
     <div class="card" id="bwBox"></div>
     <div class="note" id="bwNote"></div>
-    <h2>鏈€杩?14 澶╂墦鍗?/h2>
+    <h2>最近 14 天打卡</h2>
     <div class="card" id="dotBox"></div>
   </section>
 
   <section id="m-record">
-    <h2>鏈€杩戝鐩?/h2>
+    <h2>最近复盘</h2>
     <div class="card rv" id="reviewBox"></div>
-    <h2>鍏ュ彛</h2>
+    <h2>入口</h2>
     <div class="links" id="linkBox"></div>
-    <div class="note">澶嶇洏鍜岀姸鎬佸唴瀹瑰彲鐩存帴鍦ㄥ伐浣滃彴闃呰锛涘鏋滃綋鍓嶇洰褰曞睘浜?Obsidian 浠撳簱锛岄槄璇诲櫒浼氶澶栨彁渚涘彲閫夌紪杈戝叆鍙ｃ€?/div>
+    <div class="note">复盘和状态内容可直接在工作台阅读；如果当前目录属于 Obsidian 仓库，阅读器会额外提供可选编辑入口。</div>
   </section>
 
   <section id="m-settings">
-    <h2>鎬庝箞鐢?/h2>
+    <h2>怎么用</h2>
     <div class="note" id="howNote"></div>
-    <h2>瑙勫垯瑕佺偣</h2>
+    <h2>规则要点</h2>
     <div class="card" id="ruleBox"></div>
   </section>
 </main>
 
 <nav class="nav" id="navBar"></nav>
 <footer>
-  <span>鏁版嵁婧愶細褰撳墠鍛ㄦ湡 JSON 路 涓汉璁粌绯荤粺</span>
-  <span>鍔ㄦ€佽褰曪細Notion 璁粌绯荤粺</span>
+  <span>数据源：当前周期 JSON · 个人训练系统</span>
+  <span>动态记录：Notion 训练系统</span>
 </footer>
 
-<script id="workbench-data" type="application/json">{"meta":{"updated_at":"2026-08-28","source_version":"Felix v01","athlete":"Felix Chu","total_weeks":8,"current_week":1,"phase":"绉疮","plan_start":"2026-08-24","plan_href":"example-plan-v01.json","title":"Felix Chu 鍥涚粌鏃ヨ缁冭鍒?v01","subtitle":"Felix Chu 涓汉璁粌宸ヤ綔鍙?路 寤虹珛鍩虹嚎锛岀瓑寰?AI 寤烘。鏍″噯 v02 璁″垝","metrics":[{"value":"8 鍛?,"label":"璁粌鍛ㄦ湡"},{"value":"4 缁?,"label":"姣忓懆棰戠巼"},{"value":"W1","label":"褰撳墠鍛ㄦ"}]},"onboarding":{"completed":true,"message":""},"sync":{"status":"stale","reason":"Notion 鏈繛鎺ワ紱杩愯 Felix Chu 闈欐€佸垵濮嬪寲璁″垝","last_success":"2026-08-28"},"system":{"suite":"Felix Chu Training System v01 (portable clone)","mode":"workbench-only"},"status":{"baseline":"baseline/current-training-baseline.md"},"knowledge":{"library":"library/README.md"},"phases":[{"label":"绉疮","start_week":1,"end_week":3},{"label":"鍑忛噺","start_week":4,"end_week":4},{"label":"寮哄害","start_week":5,"end_week":6},{"label":"瀹炵幇","start_week":7,"end_week":7},{"label":"楠岃瘉","start_week":8,"end_week":8}],"days":{"Upper A":{"date":"2026-08-24","role":"鍗ф帹寮哄害 / 璐熼噸寮曚綋瀹归噺","title":"鍗ф帹 + 璐熼噸寮曚綋","theme":"涓婅偄 A锛堝崸鎺ㄥ己搴︼級","label":"W1 涓婅偄A","exercises":[{"name":"鏉犻搩鍗ф帹","w":"40kg","d":"","rpe":"@7","main":true},{"name":"璐熼噸寮曚綋","w":"+0kg","d":"","rpe":"@7","main":false},{"name":"涓婃枩鍝戦搩鍗ф帹","w":"10kg","d":"","rpe":"@7","main":false}]},"Leg B":{"date":"2026-08-25","role":"纭媺寮哄害 / 鍋滈】娣辫共鎶€鏈?,"title":"纭媺 + 鍋滈】娣辫共","theme":"鑵?B锛堢‖鎷変笌鍋滈】娣辫共锛?,"label":"W1 鑵緽","exercises":[{"name":"纭媺","w":"60kg","d":"","rpe":"@7","main":true},{"name":"鍋滈】娣辫共","w":"40kg","d":"","rpe":"@6","main":false},{"name":"鍣ㄦ鑵垮集涓撅紙鑵樼怀鑲岋級","w":"20kg","d":"","rpe":"@7","main":false}]},"Upper B":{"date":"2026-08-27","role":"璐熼噸寮曚綋寮哄害 / 鍗ф帹瀹归噺","title":"璐熼噸寮曚綋 + 鍗ф帹瀹归噺","theme":"涓婅偄 B锛堣礋閲嶅紩浣撳己搴︼級","label":"W1 涓婅偄B","exercises":[{"name":"璐熼噸寮曚綋","w":"+5kg","d":"","rpe":"@7","main":true},{"name":"鏉犻搩鍗ф帹锛堝閲忥級","w":"35kg","d":"","rpe":"@7","main":false},{"name":"鑳告墭鍒掕埞","w":"20kg","d":"","rpe":"@7","main":false}]},"Leg A":{"date":"2026-08-29","role":"娣辫共寮哄害 / 鍚庨摼鍩虹","title":"娣辫共 + 鍚庨摼","theme":"鑵?A锛堟繁韫插己搴︼級","label":"W1 鑵緼","exercises":[{"name":"鏉犻搩娣辫共","w":"50kg","d":"","rpe":"@7","main":true},{"name":"缃楅┈灏间簹纭媺","w":"40kg","d":"","rpe":"@7","main":false},{"name":"鍣ㄦ鑵垮集涓撅紙鑵樼怀鑲岋級","w":"20kg","d":"","rpe":"@7","main":false}]}},"weekday":{"Upper A":"Mon","Leg B":"Tue","Rest":"Fri","Upper B":"Thu","Leg A":"Sat","Weekly review":"Sun"},"timeline":[{"type":"training","date":"2026-08-24","day":"Upper A","title":"鍗ф帹 + 璐熼噸寮曚綋","status":"planned","role":"鍗ф帹寮哄害 / 璐熼噸寮曚綋瀹归噺"},{"type":"training","date":"2026-08-25","day":"Leg B","title":"纭媺 + 鍋滈】娣辫共","status":"planned","role":"纭媺寮哄害 / 鍋滈】娣辫共鎶€鏈?},{"type":"rest","date":"2026-08-26","day":"Rest","title":"鎭㈠ / 杞绘椿鍔?,"status":"planned","role":"姝ヨ涓庣潯鐪犱紭鍏?},{"type":"training","date":"2026-08-27","day":"Upper B","title":"璐熼噸寮曚綋 + 鍗ф帹瀹归噺","status":"planned","role":"璐熼噸寮曚綋寮哄害 / 鍗ф帹瀹归噺"},{"type":"rest","date":"2026-08-28","day":"Rest","title":"鎭㈠ / 杞绘椿鍔?,"status":"planned","role":"姝ヨ涓庡叧鑺傛椿鍔?},{"type":"training","date":"2026-08-29","day":"Leg A","title":"娣辫共 + 鍚庨摼","status":"planned","role":"娣辫共寮哄害 / 鍚庨摼鍩虹"},{"type":"rest","date":"2026-08-30","day":"Weekly review","title":"鎭㈠ / 鍛ㄥ鐩?,"status":"planned","role":"鏁寸悊璁板綍骞跺喅瀹氫笅鍛?}],"calendar":{"0":true,"1":true,"2":true,"3":true,"4":true,"5":true,"6":true},"advice":"Felix v01 鍒濆鍖栬鍒掑凡鍔犺浇銆傛寮忚缁冨墠寤鸿瀹屾垚 AI 鏁欑粌 10 棰樺缓妗ｏ紝鐢熸垚鏍″噯鐗?v02 璁″垝骞跺埛鏂板伐浣滃彴銆?,"done":{},"today_summary":null,"notion":{"sessions":[],"bodyweight":{"plan":{},"actual":{},"baseline_note":"Bodyweight series is empty (no Notion sync configured)."}},"weight_trend":{},"week_main":[{"lift":"鏉犻搩鍗ф帹","day":"Upper A","w":"40kg","note":" / @7"},{"lift":"纭媺","day":"Leg B","w":"60kg","note":" / @7"},{"lift":"璐熼噸寮曚綋","day":"Upper B","w":"+5kg","note":" / @7"},{"lift":"鏉犻搩娣辫共","day":"Leg A","w":"50kg","note":" / @7"}],"reviews":[{"date":"2026-08-28","full_date":"2026-08-28","week":"W1","day":"Init","status":"Pending","verdict":"Felix Chu 鍒濆鍖栧熀绾匡紱绀轰緥閲嶉噺涓嶆槸瀹為檯璁粌浜嬪疄銆?,"workbench_title":"W1 Felix Init Record","workbench_lead":"宸ヤ綔鍙板凡鎼缓瀹屾垚锛涚瓑寰?Felix Chu 绗竴娆℃寮忚缁冭褰曘€?,"workbench_points":["Felix v01 璁″垝宸插姞杞斤紙AI 寤烘。瀹屾垚鍚庢浛鎹负 v02 鏍″噯鐗堬級","鎵ц鍩虹嚎寤虹珛瀹屾瘯","鑳屾櫙绱犳潗锛堝惈 MP4锛夊凡杩佺Щ鑷虫湰鍦?/assets"],"workbench_decision":"Felix 瀹屾垚棣栨璁粌鍚庯紝浠ョ湡瀹炲鐩樿鐩栨鍒濆鍖栬褰曘€?,"content_markdown":"# W1 Felix Chu 鍒濆鍖栬褰昞r\n\r\nThis file is NOT a training record. It only creates the initial traceable week slot for Felix's workbench. Real training weights come from completed onboarding + calibrated plan JSON.\r\n","file_path":"review/2026-08-28-W1-init-record.md"}],"documents":{"review_index":{"title":"Training review index","file_path":"review/INDEX.md","content_markdown":"# Training review index\r\n\r\n| Date | Week | Day | Main verdict | Status | File |\r\n| --- | --- | --- | --- | --- | --- |\r\n| 2026-08-28 | W1 | Init | Waiting for first real training record | Pending | [[2026-08-28-W1-init-record]] |\r\n"},"status_index":{"title":"Athlete status archive","file_path":"status/INDEX.md","content_markdown":"# Status archive index\r\n\r\nNo personal status saved yet. Before formal planning, capture goals, experience, equipment, time windows, recovery and health limits (the 10 onboarding questions required by the Felix training plan module).\r\n"}},"links":{"notion_url":""},"rules":["Warmup and form: 5-10 min warmup required before compound lifts; stop or deload if form breaks; do not ad-hoc add weight.","Top-set progression: if top set hits target RPE with good form, increase by minimum planned increment next week; otherwise keep weight.","Backoff set progression: execute backoffs at planned deload; recovery quality overrides heavier weight.","Deload / Test / Review: deload week intensity -10 to -15%; deload week captures baseline and writes review; never skip review.","RPE and execution: execute at prescribed RPE; if perceived RPE is 1+ level higher, deload or drop a set; record honestly.","Daily core: at least 2 short core sessions per week (8-12 min) at training end or rest days.","Missed sessions and interruptions: do NOT makeup a missed day on the fly; 2+ misses trigger downgrade or return protocol.","Pain and stop rule: sharp joint pain, chest pain or breathlessness means STOP; if not resolved within 24h, log to status index and deload or seek care.","Sleep and recovery: if sleep <6h AND low readiness, execute the low-readiness variant or convert to light activity.","Records and archive: lifts, bodyweight and reviews must be traceable; plans and reviews use versioned or dated filenames."]}</script>
+<script id="workbench-data" type="application/json" charset="UTF-8">{"meta":{"updated_at":"2026-08-28","source_version":"Felix v01","athlete":"Felix Chu","total_weeks":8,"current_week":1,"phase":"积累","plan_start":"2026-08-24","plan_href":"example-plan-v01.json","title":"Felix Chu 四练日训练计划 v01","subtitle":"Felix Chu 个人训练工作台 · 建立基线，等待 AI 建档校准 v02 计划","metrics":[{"value":"8 周","label":"训练周期"},{"value":"4 练","label":"每周频率"},{"value":"W1","label":"当前周次"}]},"onboarding":{"completed":true,"message":""},"sync":{"status":"stale","reason":"Notion 未连接；运行 Felix Chu 静态初始化计划","last_success":"2026-08-28"},"system":{"suite":"Felix Chu Training System v01 (portable clone)","mode":"workbench-only"},"status":{"baseline":"baseline/current-training-baseline.md"},"knowledge":{"library":"library/README.md"},"phases":[{"label":"积累","start_week":1,"end_week":3},{"label":"减量","start_week":4,"end_week":4},{"label":"强度","start_week":5,"end_week":6},{"label":"实现","start_week":7,"end_week":7},{"label":"验证","start_week":8,"end_week":8}],"days":{"Upper A":{"date":"2026-08-24","role":"卧推强度 / 负重引体容量","title":"卧推 + 负重引体","theme":"上肢 A（卧推强度）","label":"W1 上肢A","exercises":[{"name":"杠铃卧推","w":"40kg","d":"","rpe":"@7","main":true},{"name":"负重引体","w":"+0kg","d":"","rpe":"@7","main":false},{"name":"上斜哑铃卧推","w":"10kg","d":"","rpe":"@7","main":false}]},"Leg B":{"date":"2026-08-25","role":"硬拉强度 / 停顿深蹲技术","title":"硬拉 + 停顿深蹲","theme":"腿 B（硬拉与停顿深蹲）","label":"W1 腿B","exercises":[{"name":"硬拉","w":"60kg","d":"","rpe":"@7","main":true},{"name":"停顿深蹲","w":"40kg","d":"","rpe":"@6","main":false},{"name":"器械腿弯举（腘绳肌）","w":"20kg","d":"","rpe":"@7","main":false}]},"Upper B":{"date":"2026-08-27","role":"负重引体强度 / 卧推容量","title":"负重引体 + 卧推容量","theme":"上肢 B（负重引体强度）","label":"W1 上肢B","exercises":[{"name":"负重引体","w":"+5kg","d":"","rpe":"@7","main":true},{"name":"杠铃卧推（容量）","w":"35kg","d":"","rpe":"@7","main":false},{"name":"胸托划船","w":"20kg","d":"","rpe":"@7","main":false}]},"Leg A":{"date":"2026-08-29","role":"深蹲强度 / 后链基础","title":"深蹲 + 后链","theme":"腿 A（深蹲强度）","label":"W1 腿A","exercises":[{"name":"杠铃深蹲","w":"50kg","d":"","rpe":"@7","main":true},{"name":"罗马尼亚硬拉","w":"40kg","d":"","rpe":"@7","main":false},{"name":"器械腿弯举（腘绳肌）","w":"20kg","d":"","rpe":"@7","main":false}]}},"weekday":{"Upper A":"Mon","Leg B":"Tue","Rest":"Fri","Upper B":"Thu","Leg A":"Sat","Weekly review":"Sun"},"timeline":[{"type":"training","date":"2026-08-24","day":"Upper A","title":"卧推 + 负重引体","status":"planned","role":"卧推强度 / 负重引体容量"},{"type":"training","date":"2026-08-25","day":"Leg B","title":"硬拉 + 停顿深蹲","status":"planned","role":"硬拉强度 / 停顿深蹲技术"},{"type":"rest","date":"2026-08-26","day":"Rest","title":"恢复 / 轻活动","status":"planned","role":"步行与睡眠优先"},{"type":"training","date":"2026-08-27","day":"Upper B","title":"负重引体 + 卧推容量","status":"planned","role":"负重引体强度 / 卧推容量"},{"type":"rest","date":"2026-08-28","day":"Rest","title":"恢复 / 轻活动","status":"planned","role":"步行与关节活动"},{"type":"training","date":"2026-08-29","day":"Leg A","title":"深蹲 + 后链","status":"planned","role":"深蹲强度 / 后链基础"},{"type":"rest","date":"2026-08-30","day":"Weekly review","title":"恢复 / 周复盘","status":"planned","role":"整理记录并决定下周"}],"calendar":{"0":true,"1":true,"2":true,"3":true,"4":true,"5":true,"6":true},"advice":"Felix v01 初始化计划已加载。正式训练前建议完成 AI 教练 10 题建档，生成校准版 v02 计划并刷新工作台。","done":{},"today_summary":null,"notion":{"sessions":[],"bodyweight":{"plan":{},"actual":{},"baseline_note":"Bodyweight series is empty (no Notion sync configured)."}},"weight_trend":{},"week_main":[{"lift":"杠铃卧推","day":"Upper A","w":"40kg","note":" / @7"},{"lift":"硬拉","day":"Leg B","w":"60kg","note":" / @7"},{"lift":"负重引体","day":"Upper B","w":"+5kg","note":" / @7"},{"lift":"杠铃深蹲","day":"Leg A","w":"50kg","note":" / @7"}],"reviews":[{"date":"2026-08-28","full_date":"2026-08-28","week":"W1","day":"Init","status":"Pending","verdict":"Felix Chu 初始化基线；示例重量不是实际训练事实。","workbench_title":"W1 Felix Init Record","workbench_lead":"工作台已搭建完成；等待 Felix Chu 第一次正式训练记录。","workbench_points":["Felix v01 计划已加载（AI 建档完成后替换为 v02 校准版）","执行基线建立完毕","背景素材（含 MP4）已迁移至本地 /assets"],"workbench_decision":"Felix 完成首次训练后，以真实复盘覆盖此初始化记录。","content_markdown":"# W1 Felix Chu 初始化记录\r\n\r\nThis file is NOT a training record. It only creates the initial traceable week slot for Felix's workbench. Real training weights come from completed onboarding + calibrated plan JSON.\r\n","file_path":"review/2026-08-28-W1-init-record.md"}],"documents":{"review_index":{"title":"Training review index","file_path":"review/INDEX.md","content_markdown":"# Training review index\r\n\r\n| Date | Week | Day | Main verdict | Status | File |\r\n| --- | --- | --- | --- | --- | --- |\r\n| 2026-08-28 | W1 | Init | Waiting for first real training record | Pending | [[2026-08-28-W1-init-record]] |\r\n"},"status_index":{"title":"Athlete status archive","file_path":"status/INDEX.md","content_markdown":"# Status archive index\r\n\r\nNo personal status saved yet. Before formal planning, capture goals, experience, equipment, time windows, recovery and health limits (the 10 onboarding questions required by the Felix training plan module).\r\n"}},"links":{"notion_url":""},"rules":["Warmup and form: 5-10 min warmup required before compound lifts; stop or deload if form breaks; do not ad-hoc add weight.","Top-set progression: if top set hits target RPE with good form, increase by minimum planned increment next week; otherwise keep weight.","Backoff set progression: execute backoffs at planned deload; recovery quality overrides heavier weight.","Deload / Test / Review: deload week intensity -10 to -15%; deload week captures baseline and writes review; never skip review.","RPE and execution: execute at prescribed RPE; if perceived RPE is 1+ level higher, deload or drop a set; record honestly.","Daily core: at least 2 short core sessions per week (8-12 min) at training end or rest days.","Missed sessions and interruptions: do NOT makeup a missed day on the fly; 2+ misses trigger downgrade or return protocol.","Pain and stop rule: sharp joint pain, chest pain or breathlessness means STOP; if not resolved within 24h, log to status index and deload or seek care.","Sleep and recovery: if sleep <6h AND low readiness, execute the low-readiness variant or convert to light activity.","Records and archive: lifts, bodyweight and reviews must be traceable; plans and reviews use versioned or dated filenames."]}</script>
 
-<script>
+<script charset="UTF-8">
 (function(){
   function safe(obj,k){ return (obj&&typeof obj==='object'&&Object.prototype.hasOwnProperty.call(obj,k)&&obj[k]!=null) ? obj[k] : null; }
   var D = JSON.parse(document.getElementById('workbench-data').textContent);
@@ -1978,9 +1979,9 @@
     var full=String(value==null?'':value).replace(/\s+/g,' ').trim();
     if(full.length<=max)return full;
     var min=Math.floor(max*.62),cut=-1;
-    ['锛?,'銆?,'锛?,'锝?].forEach(function(mark){var at=full.lastIndexOf(mark,max);if(at>=min&&at>cut)cut=at+1;});
+    ['；','。','，','｜'].forEach(function(mark){var at=full.lastIndexOf(mark,max);if(at>=min&&at>cut)cut=at+1;});
     if(cut<min)cut=max;
-    return full.slice(0,cut).replace(/[锛涖€傦紝锝溿€乗s]+$/,'')+'鈥?;
+    return full.slice(0,cut).replace(/[；。，｜、\s]+$/,'')+'…';
   }
   function compactNode(tag,cls,value,max){
     var full=String(value==null?'':value).replace(/\s+/g,' ').trim(),short=compactText(full,max);
@@ -1991,20 +1992,20 @@
   function pad(n){ return n<10?'0'+n:''+n; }
 
   try{
-    document.getElementById('verChip').textContent = '鏉ユ簮 v' + String(m.source_version||'').replace('v','') + ' 路 鏇存柊浜?' + String(m.updated_at||'');
-  }catch(e){ try{ document.getElementById('verChip').textContent = '宸ヤ綔鍙板凡鍚姩'; }catch(e2){} }
+    document.getElementById('verChip').textContent = '来源 v' + String(m.source_version||'').replace('v','') + ' · 更新于 ' + String(m.updated_at||'');
+  }catch(e){ try{ document.getElementById('verChip').textContent = '工作台已启动'; }catch(e2){} }
 
   var sync = D.sync || { status:'unknown', reason:null, stale_fields:[] };
   var syncBar = document.getElementById('syncBar');
   if(sync.status === 'ok'){
     syncBar.className = 'syncbar ok';
-    syncBar.innerHTML = '<span>鏁版嵁宸插悓姝?/span><span>' + (sync.last_success || '') + '</span>';
+    syncBar.innerHTML = '<span>数据已同步</span><span>' + (sync.last_success || '') + '</span>';
   } else if(sync.status === 'stale'){
     syncBar.className = 'syncbar stale';
-    syncBar.innerHTML = '<b>鏁版嵁寰呭悓姝?/b><span>' + (sync.reason || 'Notion 鏈繛鎺?) + '</span>';
+    syncBar.innerHTML = '<b>数据待同步</b><span>' + (sync.reason || 'Notion 未连接') + '</span>';
   } else if(sync.status === 'failed'){
     syncBar.className = 'syncbar failed';
-    syncBar.innerHTML = '<b>鍚屾澶辫触</b><span>' + (sync.reason || '鏈煡鍘熷洜') + '锝滄湭鍒锋柊锛? + (sync.stale_fields||[]).join('銆?) + '</span>';
+    syncBar.innerHTML = '<b>同步失败</b><span>' + (sync.reason || '未知原因') + '｜未刷新：' + (sync.stale_fields||[]).join('、') + '</span>';
   } else {
     syncBar.style.display = 'none';
   }
@@ -2015,7 +2016,7 @@
   var timeline = D.timeline || [];
   var todayEvent = timeline.filter(function(x){return x.date===todayIso;})[0] || null;
   var todayName = (todayEvent && todayEvent.type==='training') ? todayEvent.day : null;
-  var todayWd = ['鍛ㄦ棩','鍛ㄤ竴','鍛ㄤ簩','鍛ㄤ笁','鍛ㄥ洓','鍛ㄤ簲','鍛ㄥ叚'][now.getDay()];
+  var todayWd = ['周日','周一','周二','周三','周四','周五','周六'][now.getDay()];
 
   function dayNum(){
     var s = new Date(m.plan_start);
@@ -2035,14 +2036,14 @@
   var todayNote = document.getElementById('todayNote');
   var hh = now.getHours();
   document.querySelector('.hero').setAttribute('data-week',m.current_week);
-  var greet = hh<6?'澶滄繁浜?: hh<12?'鏃╀笂濂?: hh<14?'涓崍濂?: hh<18?'涓嬪崍濂?:'鏅氫笂濂?;
+  var greet = hh<6?'夜深了': hh<12?'早上好': hh<14?'中午好': hh<18?'下午好':'晚上好';
 
   function renderExCard(e){
     var card = el('div','ex' + (e.main?' main':''));
     var l = el('div','l'); l.appendChild(el('div','n',e.name));
-    if(e.weight_source) l.appendChild(compactNode('div','s','閲嶉噺渚濇嵁锛?+e.weight_source,34));
+    if(e.weight_source) l.appendChild(compactNode('div','s','重量依据：'+e.weight_source,34));
     var r = el('div','r');
-    r.appendChild(el('div','w', e.w || '鈥?));
+    r.appendChild(el('div','w', e.w || '—'));
     if(e.d) r.appendChild(compactNode('div','d',e.d,42));
     if(e.rpe) r.appendChild(compactNode('div','rpe',e.rpe,44));
     card.appendChild(l); card.appendChild(r);
@@ -2057,33 +2058,33 @@
     var wrap=el('div','next-plan-wrap');
     var head=el('div','next-plan-head');
     var heading=el('div',null);
-    heading.appendChild(el('div','next-plan-kicker','NEXT WEEK / 涓嬩竴鍛ㄥ畨鎺?));
-    heading.appendChild(el('div','next-plan-title','W'+plan.week+' 路 '+(plan.phase||'涓嬩竴闃舵')));
+    heading.appendChild(el('div','next-plan-kicker','NEXT WEEK / 下一周安排'));
+    heading.appendChild(el('div','next-plan-title','W'+plan.week+' · '+(plan.phase||'下一阶段')));
     head.appendChild(heading);
-    head.appendChild(el('span','next-plan-phase',plan.phase ? plan.phase+'鍛? : '寰呮墽琛?));
+    head.appendChild(el('span','next-plan-phase',plan.phase ? plan.phase+'周' : '待执行'));
     wrap.appendChild(head);
     var table=el('div','next-plan-table');
     (plan.sessions||[]).forEach(function(session){
       var row=el('div','next-plan-row');
       var date=el('div','next-plan-date');
-      date.appendChild(el('span','next-plan-label','鏃ユ湡'));
+      date.appendChild(el('span','next-plan-label','日期'));
       date.appendChild(el('b',null,(session.date||'').slice(5)));
       var day=el('div','next-plan-day');
-      day.appendChild(el('span','next-plan-label',session.weekday||'璁粌鏃?));
-      day.appendChild(el('b',null,session.day||'寰呮帓鏈?));
+      day.appendChild(el('span','next-plan-label',session.weekday||'训练日'));
+      day.appendChild(el('b',null,session.day||'待排期'));
       var main=el('div','next-plan-main');
-      main.appendChild(el('span','next-plan-label','涓婚」瀹夋帓'));
+      main.appendChild(el('span','next-plan-label','主项安排'));
       (session.items||[]).forEach(function(item){
         var lift=el('div','next-plan-lift');
-        lift.appendChild(el('b',null,item.lift+(item.role?' 路 '+item.role:'')));
-        lift.appendChild(el('span',null,item.prescription||'寰呯‘璁?));
+        lift.appendChild(el('b',null,item.lift+(item.role?' · '+item.role:'')));
+        lift.appendChild(el('span',null,item.prescription||'待确认'));
         main.appendChild(lift);
       });
       var focus=el('div','next-plan-focus');
-      focus.appendChild(el('span','next-plan-label','鏈棩閲嶇偣'));
+      focus.appendChild(el('span','next-plan-label','本日重点'));
       var criteria=[];
       (session.items||[]).forEach(function(item){if(item.criterion&&criteria.indexOf(item.criterion)<0)criteria.push(item.criterion);});
-      focus.appendChild(compactNode('span',null,criteria.join('锛?)||'鎸夋仮澶嶆儏鍐垫墽琛岋紝涓嶄复鍦哄姞鐮?,46));
+      focus.appendChild(compactNode('span',null,criteria.join('；')||'按恢复情况执行，不临场加码',46));
       row.appendChild(date);row.appendChild(day);row.appendChild(main);row.appendChild(focus);
       table.appendChild(row);
     });
@@ -2093,11 +2094,11 @@
   function renderToday(name){
     pills.innerHTML=''; advice.innerHTML=''; todayList.innerHTML=''; advice.classList.remove('has-next-plan');
     if(!onboarding.completed){
-      heroHi.textContent = '寰呭缓妗?;
-      heroSub.textContent = onboarding.message || '鍏堢‘璁ょ洰鏍囥€佽缁冮鐜囥€佸櫒姊颁笌褰撳墠鐘舵€併€?;
-      pills.appendChild(el('span','pill','鏈樉绀烘寮忚缁冮噸閲?));
-      advice.innerHTML = '<b>涓嬩竴姝?/b><div>瀹屾垚闂瘖鍜屾寮忚鍒掔‘璁ゅ悗锛屽伐浣滃彴鎵嶄細鏄剧ず鍙墽琛岄噸閲忎笌浠婃棩澶勬柟銆?/div>';
-      todayNote.textContent = '褰撳墠浠呬负瀹夊叏鍒濆鍖栫姸鎬侊紱椤甸潰涓嶄細鎶婄ず渚嬫暟鎹綋鎴愯缁冧簨瀹炪€?;
+      heroHi.textContent = '待建档';
+      heroSub.textContent = onboarding.message || '先确认目标、训练频率、器械与当前状态。';
+      pills.appendChild(el('span','pill','未显示正式训练重量'));
+      advice.innerHTML = '<b>下一步</b><div>完成问诊和正式计划确认后，工作台才会显示可执行重量与今日处方。</div>';
+      todayNote.textContent = '当前仅为安全初始化状态；页面不会把示例数据当成训练事实。';
       return;
     }
     var isDefault = name===todayName || (!todayName && !name);
@@ -2106,47 +2107,47 @@
     var reviewedToday = completedToday && summary && summary.date===todayIso && summary.day===name;
     var upcoming = nextEvent();
     if(name){
-      heroHi.textContent = completedToday ? '浠婃棩宸插畬鎴?路 ' + name : (isDefault ? '浠婃棩璁粌 路 ' + name : name + ' 路 ' + (((safe(D.days,name)&&D.days[name].date)||(safe(D.weekday,name)&&D.weekday[name])||'鎺掓湡涓?)));
-      heroSub.textContent = 'W' + m.current_week + ' / ' + m.phase + '鏈?路 ' + ((safe(D.days,name)&&D.days[name].role)||'鎸夎鍒掓墽琛?);
+      heroHi.textContent = completedToday ? '今日已完成 · ' + name : (isDefault ? '今日训练 · ' + name : name + ' · ' + (((safe(D.days,name)&&D.days[name].date)||(safe(D.weekday,name)&&D.weekday[name])||'排期中')));
+      heroSub.textContent = 'W' + m.current_week + ' / ' + m.phase + '期 · ' + ((safe(D.days,name)&&D.days[name].role)||'按计划执行');
     } else {
-      heroHi.textContent = '浠婃棩鎭㈠';
-      heroSub.textContent = 'W' + m.current_week + ' / ' + m.phase + '鏈?路 ' + (todayEvent ? todayEvent.role : '鏈畨鎺掓寮忚缁?);
+      heroHi.textContent = '今日恢复';
+      heroSub.textContent = 'W' + m.current_week + ' / ' + m.phase + '期 · ' + (todayEvent ? todayEvent.role : '未安排正式训练');
     }
     function pill(t){ pills.appendChild(el('span','pill',t)); }
     var dt = daysToTest();
-    pill('W' + m.current_week + ' / ' + m.total_weeks + ' 路 ' + m.phase + '鏈?);
-    pill(dt>0 ? '楠岃瘉鍊掕鏃?' + dt + ' 澶? : '楠岃瘉鍛?);
-    if(name && !isDefault) pill(((safe(D.weekday,name)&&D.weekday[name])||'鍛ㄥ巻') + ' 路 ' + (((safe(D.days,name)&&D.days[name].date))||'寰呮帓鏈?));
+    pill('W' + m.current_week + ' / ' + m.total_weeks + ' · ' + m.phase + '期');
+    pill(dt>0 ? '验证倒计时 ' + dt + ' 天' : '验证周');
+    if(name && !isDefault) pill(((safe(D.weekday,name)&&D.weekday[name])||'周历') + ' · ' + (((safe(D.days,name)&&D.days[name].date))||'待排期'));
     var adv = el('div',null);
     if(reviewedToday){
-      adv.innerHTML = '<div class="today-status"><div><div class="eyebrow">浠婃棩鍏抽敭缁撴灉</div><div class="result">' +
-        esc(summary.result || '璁粌璁板綍宸插悓姝ワ紝璇︾粏缁撴灉瑙佷笅鏂广€?) + '</div><div class="next">' +
-        esc(summary.next || (upcoming ? '涓嬩竴瀹夋帓锛? + upcoming.date.slice(5) + ' 路 ' + (upcoming.day || upcoming.title) : '绛夊緟涓嬩竴娆″畨鎺?)) +
-        '</div></div><span class="mark">宸插鐩?/span></div>';
+      adv.innerHTML = '<div class="today-status"><div><div class="eyebrow">今日关键结果</div><div class="result">' +
+        esc(summary.result || '训练记录已同步，详细结果见下方。') + '</div><div class="next">' +
+        esc(summary.next || (upcoming ? '下一安排：' + upcoming.date.slice(5) + ' · ' + (upcoming.day || upcoming.title) : '等待下一次安排')) +
+        '</div></div><span class="mark">已复盘</span></div>';
     } else if(completedToday){
-      adv.innerHTML = '<div class="today-status"><div><div class="eyebrow">璁粌宸插畬鎴?/div><div class="result">瀹屾垚鐘舵€佸凡鍚屾锛屽皻鏈壘鍒颁笌浠婂ぉ鏃ユ湡鍜岃缁冩棩瀹屽叏鍖归厤鐨勫鐩樸€?/div><div class="next">鍐欏叆澶嶇洏鍚庯紝浠婃棩鍏抽敭缁撴灉浼氳嚜鍔ㄦ浛鎹㈣繖閲屻€?/div></div><span class="mark">寰呭鐩?/span></div>';
+      adv.innerHTML = '<div class="today-status"><div><div class="eyebrow">训练已完成</div><div class="result">完成状态已同步，尚未找到与今天日期和训练日完全匹配的复盘。</div><div class="next">写入复盘后，今日关键结果会自动替换这里。</div></div><span class="mark">待复盘</span></div>';
     } else {
       if(!name && !upcoming && D.next_week && (D.next_week.sessions||[]).length){
         renderNextWeekSchedule(adv,D.next_week);
       }else{
-        adv.appendChild(el('b',null, name ? (isDefault ? '浠婃棩澶勬柟' : '褰撴棩澶勬柟') : '鎭㈠瀹夋帓'));
-        adv.appendChild(el('div',null, name ? '浠ヤ笅涓哄綋澶╁畬鏁村鏂癸紱鎵€鏈夐噸閲忓潎鏉ヨ嚜褰撳墠 ' + m.source_version + ' 鎴?Notion 鏈€杩戝悓鍔ㄤ綔璁板綍銆? : (upcoming ? '涓嬩竴娆★細' + upcoming.date.slice(5) + ' 路 ' + (upcoming.day || upcoming.title) : D.advice)));
+        adv.appendChild(el('b',null, name ? (isDefault ? '今日处方' : '当日处方') : '恢复安排'));
+        adv.appendChild(el('div',null, name ? '以下为当天完整处方；所有重量均来自当前 ' + m.source_version + ' 或 Notion 最近同动作记录。' : (upcoming ? '下一次：' + upcoming.date.slice(5) + ' · ' + (upcoming.day || upcoming.title) : D.advice)));
       }
     }
     var act = el('div','act');
     if(name){
-      var idleButtonText = completedToday?'澶嶅埗鏈璁板綍':'澶嶅埗缁冨悗璁板綍妯℃澘';
+      var idleButtonText = completedToday?'复制本次记录':'复制练后记录模板';
       var btn = el('button',null,idleButtonText);
       btn.onclick = function(){
-        var lines = ['浠婂ぉ缁冧簡 ' + name + '锛? + m.source_version + ' 路 W' + m.current_week + '锛夛細'];
+        var lines = ['今天练了 ' + name + '（' + m.source_version + ' · W' + m.current_week + '）：'];
         (safe(D.days,name)&&D.days[name].exercises||[]).forEach(function(e){
-          var prescription = [e.w || '', e.d || '寰呯‘璁?].filter(Boolean).join(' ');
-          lines.push('鈻?' + e.name + ' 澶勬柟 ' + prescription + ' 鈫?瀹為檯锛?);
+          var prescription = [e.w || '', e.d || '待确认'].filter(Boolean).join(' ');
+          lines.push('□ ' + e.name + ' 处方 ' + prescription + ' → 实际：');
         });
-        lines.push('浣撻噸锛歘___ 锝?鐫＄湢锛歘___ 锝?寮傚父閰哥棝锛歘___');
+        lines.push('体重：____ ｜ 睡眠：____ ｜ 异常酸痛：____');
         var txt = lines.join('\n');
-        function fb(){ var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); btn.textContent='宸插鍒?; setTimeout(function(){btn.textContent=idleButtonText;},1600); }
-        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){btn.textContent='宸插鍒?; setTimeout(function(){btn.textContent=idleButtonText;},1600);}).catch(fb); } else { fb(); }
+        function fb(){ var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); btn.textContent='已复制'; setTimeout(function(){btn.textContent=idleButtonText;},1600); }
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){btn.textContent='已复制'; setTimeout(function(){btn.textContent=idleButtonText;},1600);}).catch(fb); } else { fb(); }
       };
       act.appendChild(btn);
     }
@@ -2155,10 +2156,10 @@
     if(name && safe(D.days,name) && D.days[name].exercises){
       D.days[name].exercises.forEach(function(e){ todayList.appendChild(renderExCard(e)); });
     }
-    var eventState = name && safe(D.days,name) ? (D.done[name] || ('璁″垝 ' + (D.days[name].date||'寰呮帓鏈?))) : '';
-    todayNote.textContent = (name ? (eventState + ' 路 ') : '') + '鎸夊疄闄呮棩鏈熷尮閰?路 褰撳墠 W' + m.current_week + ' 路 鍛ㄦ浠ュ鐩樼储寮曟垨宸茬‘璁ゆ帓绋嬩负鍑?;
+    var eventState = name && safe(D.days,name) ? (D.done[name] || ('计划 ' + (D.days[name].date||'待排期'))) : '';
+    todayNote.textContent = (name ? (eventState + ' · ') : '') + '按实际日期匹配 · 当前 W' + m.current_week + ' · 周次以复盘索引或已确认排程为准';
     var hint = el('div','hint');
-    hint.textContent = '鍚屾宸ヤ綔鍙帮細鍒锋柊鏁版嵁 路 鍙戝竷宸ヤ綔鍙帮細鏇存柊鍦ㄧ嚎鐗?;
+    hint.textContent = '同步工作台：刷新数据 · 发布工作台：更新在线版';
     advice.appendChild(hint);
   }
   renderToday(todayName);
@@ -2175,29 +2176,29 @@
   var pct = Math.min(1,(completedWeeks + weekDone/weekTotal) / m.total_weeks);
   var C = 2*Math.PI*40;
   ringBox.innerHTML = '<svg viewBox="0 0 92 92" aria-hidden="true"><circle cx="46" cy="46" r="40" fill="none" stroke="#dededb" stroke-width="7"/><circle cx="46" cy="46" r="40" fill="none" stroke="#111" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (C*pct).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg>' +
-    '<div class="num"><span class="w">' + Math.round(pct*100) + '%</span><span class="ph">鍛ㄦ湡瀹屾垚</span></div>';
+    '<div class="num"><span class="w">' + Math.round(pct*100) + '%</span><span class="ph">周期完成</span></div>';
   var ringInfo = document.getElementById('ringInfo');
   function timelineTraining(name){
     var target=safe(D.days,name)&&D.days[name].date;
     return timeline.filter(function(x){return x.type==='training'&&x.day===name&&(!target||x.date===target);})[0]||null;
   }
   function eventPrescription(x){
-    if(!x||!x.day||!safe(D.days,x.day)) return x ? (x.date?x.date.slice(5)+' ':'')+(x.title||'寰呭畨鎺?) : '绛夊緟涓嬩竴娆″畨鎺?;
+    if(!x||!x.day||!safe(D.days,x.day)) return x ? (x.date?x.date.slice(5)+' ':'')+(x.title||'待安排') : '等待下一次安排';
     var ex=D.days[x.day].exercises||[];
     var mains=ex.filter(function(e){return e.main;});
     if(!mains.length) mains=ex.filter(function(e){return e.w;}).slice(0,1);
-    var brief=mains.slice(0,2).map(function(e){return (e.name||'').replace('鏉犻搩','').replace('锛堝閲忥級','')+' '+(e.w||'瑙佽鍒?);}).join(' / ');
-    return (x.date?x.date.slice(5)+' ':'')+x.day+(brief?' 路 '+brief:'');
+    var brief=mains.slice(0,2).map(function(e){return (e.name||'').replace('杠铃','').replace('（容量）','')+' '+(e.w||'见计划');}).join(' / ');
+    return (x.date?x.date.slice(5)+' ':'')+x.day+(brief?' · '+brief:'');
   }
   var nextGates=timeline.filter(function(x){return x.type==='training'&&x.status!=='done'&&x.date>=todayIso;}).slice(0,2);
-  [['褰撳墠闃舵', m.phase + '鏈燂紙W' + m.current_week + '锛?],['鏈懆杩涘害',weekDone + '/' + weekTotal + ' 娆″凡瀹屾垚'],['鏈懆涓嬩竴鍏?,nextGates.length?nextGates.map(eventPrescription).join(' 鈫?'):'鏈懆澶勬柟宸插畬鎴?]].forEach(function(x){
+  [['当前阶段', m.phase + '期（W' + m.current_week + '）'],['本周进度',weekDone + '/' + weekTotal + ' 次已完成'],['本周下一关',nextGates.length?nextGates.map(eventPrescription).join(' → '):'本周处方已完成']].forEach(function(x){
     var r = el('div','row'); r.appendChild(el('span','k',x[0])); r.appendChild(el('span','v',x[1])); ringInfo.appendChild(r);
   });
   var stageBar = document.getElementById('stageBar');
   D.phases.forEach(function(p){
     var s = el('div','stg' + (p.start_week<=m.current_week && m.current_week<=p.end_week ? ' cur':''));
     s.style.flex = Math.max(1,p.end_week-p.start_week+1);
-    s.innerHTML = '<span><b>' + p.label + '</b><em>W' + p.start_week + (p.end_week!==p.start_week ? '鈥? + p.end_week : '') + '</em></span>';
+    s.innerHTML = '<span><b>' + p.label + '</b><em>W' + p.start_week + (p.end_week!==p.start_week ? '–' + p.end_week : '') + '</em></span>';
     stageBar.appendChild(s);
   });
 
@@ -2205,10 +2206,10 @@
   var order = ['Upper A','Leg B','Upper B','Leg A'];
   function daySummary(name){
     var d = D.days[name];
-    if(!d || !d.exercises){ return '<span class="day-main"><b>鈥?/b><strong>鈥?/strong></span>'; }
+    if(!d || !d.exercises){ return '<span class="day-main"><b>—</b><strong>—</strong></span>'; }
     var mains = d.exercises.filter(function(e){return e.main;});
     if(!mains.length){ mains=d.exercises.filter(function(e){return e.w;}).slice(0,2); }
-    return mains.map(function(e){return '<span class="day-main"><b>'+esc((e.name||'').replace('鏉犻搩','').replace('锛堝閲忥級',''))+'</b><strong>'+esc(e.w||'瑙佽鍒?)+'</strong></span>';}).join('');
+    return mains.map(function(e){return '<span class="day-main"><b>'+esc((e.name||'').replace('杠铃','').replace('（容量）',''))+'</b><strong>'+esc(e.w||'见计划')+'</strong></span>';}).join('');
   }
   order.forEach(function(name,index){
     var dayEvent=timelineTraining(name);
@@ -2217,11 +2218,11 @@
     day.dataset.index='0'+(index+1);
     var reading=el('div','day-reading');
     var dn = el('div','dn'); dn.appendChild(el('span',null,name));
-    var stateTxt=(done?'宸叉墽琛?':'寰呮墽琛?')+(((safe(D.days,name)&&D.days[name].date)||(safe(D.weekday,name)&&D.weekday[name])||'--/--').slice(-5));
+    var stateTxt=(done?'已执行 ':'待执行 ')+(((safe(D.days,name)&&D.days[name].date)||(safe(D.weekday,name)&&D.weekday[name])||'--/--').slice(-5));
     dn.appendChild(el('span','st',stateTxt));
     reading.appendChild(dn);
-    var dayRole=(safe(D.days,name)&&(D.days[name].title||D.days[name].role))||'璁粌瀹夋帓';
-    var ddTxt=((safe(D.days,name)&&D.days[name].date) ? D.days[name].date.slice(5) : ((safe(D.weekday,name)&&D.weekday[name])||'鍛ㄥ嚑')) + ' 路 ' + dayRole;
+    var dayRole=(safe(D.days,name)&&(D.days[name].title||D.days[name].role))||'训练安排';
+    var ddTxt=((safe(D.days,name)&&D.days[name].date) ? D.days[name].date.slice(5) : ((safe(D.weekday,name)&&D.weekday[name])||'周几')) + ' · ' + dayRole;
     reading.appendChild(compactNode('div','dd',ddTxt,42));
     reading.appendChild(el('div','m',daySummary(name)));
     day.appendChild(reading);
@@ -2239,28 +2240,28 @@
   var weekNote=document.getElementById('weekNote');
   function latestActual(name){
     var rows=((D.charts&&D.charts[name]&&D.charts[name].actual)||[]);
-    if(!rows.length) return '灏氭棤鍙牳楠岃褰?;
+    if(!rows.length) return '尚无可核验记录';
     var a=rows[rows.length-1];
-    return (a.detail||((a.value!=null?a.value:'鈥?)+'kg'))+(a.date?' 路 '+a.date:'');
+    return (a.detail||((a.value!=null?a.value:'—')+'kg'))+(a.date?' · '+a.date:'');
   }
-  weekNote.innerHTML='<div><div class="insight-label">W'+m.current_week+' / WEEK SIGNAL</div><div class="insight-lead">鏈懆宸插畬鎴?'+weekDone+' / '+weekTotal+'锛岀户缁寜闂ㄦ楠岃瘉</div></div><div class="insight-points">'+
-    '<div class="insight-point"><b>寮曚綋 路 鏈€杩戣褰?/b><span class="insight-value">'+esc(latestActual('璐熼噸寮曚綋'))+'</span></div>'+
-    '<div class="insight-point"><b>鍗ф帹 路 鏈€杩戣褰?/b><span class="insight-value">'+esc(latestActual('鍗ф帹'))+'</span></div>'+
-    '<div class="insight-point"><b>娣辫共 路 鏈€杩戣褰?/b><span class="insight-value">'+esc(latestActual('娣辫共'))+'</span></div></div>';
+  weekNote.innerHTML='<div><div class="insight-label">W'+m.current_week+' / WEEK SIGNAL</div><div class="insight-lead">本周已完成 '+weekDone+' / '+weekTotal+'，继续按门槛验证</div></div><div class="insight-points">'+
+    '<div class="insight-point"><b>引体 · 最近记录</b><span class="insight-value">'+esc(latestActual('负重引体'))+'</span></div>'+
+    '<div class="insight-point"><b>卧推 · 最近记录</b><span class="insight-value">'+esc(latestActual('卧推'))+'</span></div>'+
+    '<div class="insight-point"><b>深蹲 · 最近记录</b><span class="insight-value">'+esc(latestActual('深蹲'))+'</span></div></div>';
 
   var weekMain = document.getElementById('weekMain');
   (D.week || []).forEach(function(w){
-    var parts=w.v.split('锛?);
-    var prescription=parts.slice(0,2).join('锛?);
-    var criterion=parts.slice(2).join('锛?);
-    var role=w.k==='纭媺'?'浣庨鏆撮湶':(w.k==='娣辫共'?'寮哄害 / 鎶€鏈?:'寮哄害 / 瀹归噺');
+    var parts=w.v.split('；');
+    var prescription=parts.slice(0,2).join('；');
+    var criterion=parts.slice(2).join('；');
+    var role=w.k==='硬拉'?'低频暴露':(w.k==='深蹲'?'强度 / 技术':'强度 / 容量');
     var r = el('div','row');
     r.appendChild(el('span','k',w.k));
     r.appendChild(el('div','plan-meta','<span class="plan-tag">'+role+'</span><span class="plan-tag">W'+m.current_week+'</span>'));
     r.appendChild(el('div','plan-prescription',esc(prescription||w.v)));
     if(criterion){
-      var criterionShort=compactText(criterion,68),criterionNode=el('div','plan-criterion','<b>杈炬爣鏉′欢</b> 路 '+esc(criterionShort));
-      if(criterionShort!==criterion){criterionNode.title=criterion;criterionNode.setAttribute('aria-label','杈炬爣鏉′欢锛?+criterion);}
+      var criterionShort=compactText(criterion,68),criterionNode=el('div','plan-criterion','<b>达标条件</b> · '+esc(criterionShort));
+      if(criterionShort!==criterion){criterionNode.title=criterion;criterionNode.setAttribute('aria-label','达标条件：'+criterion);}
       r.appendChild(criterionNode);
     }
     weekMain.appendChild(r);
@@ -2301,15 +2302,15 @@
     var executedPath=executedD?'<path d="'+executedD+'" fill="none" stroke="#080808" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>':'';
     var futurePath=futureD?'<path d="'+futureD+'" fill="none" stroke="#171717" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="'+planDash+'"/>':'';
     var planDots=pts.filter(function(p){return p.week>lastExecuted;}).map(function(p){
-      var prefix=name==='璐熼噸寮曚綋'?'+':'';
-      var label='W'+p.week+' 路 '+prefix+p.v+'kg 路 鍚庣画璁″垝';
+      var prefix=name==='负重引体'?'+':'';
+      var label='W'+p.week+' · '+prefix+p.v+'kg · 后续计划';
       return '<g class="chart-point plan-point" data-point-label="'+escAttr(label)+'"><circle class="point-hit" cx="'+X(p.week).toFixed(1)+'" cy="'+Y(p.v).toFixed(1)+'" r="13" fill="transparent"/><circle class="point-dot" cx="'+X(p.week).toFixed(1)+'" cy="'+Y(p.v).toFixed(1)+'" r="4.3" fill="#f7f7f3" stroke="#111" stroke-width="2.5"/><title>'+esc(label)+'</title></g>';
     }).join('');
     var actualDots=actualRaw.map(function(p){
       var href=p.review_href||'';
-      var prefix=name==='璐熼噸寮曚綋'?'+':'';
+      var prefix=name==='负重引体'?'+':'';
       var detail=p.detail||prefix+p.value+'kg';
-      var label='W'+p.week+' 路 '+detail+(href?' 路 鐐瑰嚮鎵撳紑璁粌澶嶇洏':' 路 澶嶇洏閾炬帴寰呰ˉ鍏?);
+      var label='W'+p.week+' · '+detail+(href?' · 点击打开训练复盘':' · 复盘链接待补充');
       var focus=href?' tabindex="0" role="link" aria-label="'+escAttr(label)+'"':'';
       return '<g class="chart-point actual-point'+(href?' has-review':'')+'"'+focus+' data-point-label="'+escAttr(label)+'" data-review-href="'+escAttr(href)+'"><circle class="point-hit" cx="'+X(p.week).toFixed(1)+'" cy="'+Y(p.value).toFixed(1)+'" r="14" fill="transparent"/><circle class="point-dot" cx="'+X(p.week).toFixed(1)+'" cy="'+Y(p.value).toFixed(1)+'" r="4.8" fill="#080808" stroke="#f8f8f5" stroke-width="2.2"/><title>'+esc(label)+'</title></g>';
     }).join('');
@@ -2318,7 +2319,7 @@
     actualRaw.forEach(function(p){labelPoints[p.week]={week:p.week,value:p.value};});
     var valueLabels=Object.keys(labelPoints).map(Number).sort(function(a,b){return a-b;}).map(function(w){
       var p=labelPoints[w], a=actualByWeek[p.week], executed=!!a, value=executed?a.value:p.value;
-      var prefix=name==='璐熼噸寮曚綋'?'+':'';
+      var prefix=name==='负重引体'?'+':'';
       return '<text class="chart-value-label" x="'+X(p.week).toFixed(1)+'" y="'+(Y(value)-11).toFixed(1)+'" text-anchor="middle" font-size="10" font-weight="'+(executed?'750':'700')+'" fill="#111">'+esc(prefix+value+'kg')+'</text>';
     }).join('');
     var labels='';
@@ -2347,7 +2348,7 @@
       }
       axes='<g class="chart-axes">'+axisLines+yTicks+xTicks+
         '<text class="chart-axis-label" x="'+pl+'" y="'+(pt-12)+'" text-anchor="start" font-size="9" font-weight="760" fill="#171717">kg</text>'+
-        '<text class="chart-axis-label" x="'+(W-pr)+'" y="'+(H-pb-8)+'" text-anchor="end" font-size="9" font-weight="760" fill="#171717">鍛ㄦ</text></g>';
+        '<text class="chart-axis-label" x="'+(W-pr)+'" y="'+(H-pb-8)+'" text-anchor="end" font-size="9" font-weight="760" fill="#171717">周次</text></g>';
     }
     return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+axes+pathHalos+futurePath+executedPath+planDots+actualDots+valueLabels+labels+'</svg>';
   }
@@ -2357,7 +2358,7 @@
   var chartModalClosing=false;
   var chartModal=el('div','chart-modal');
   chartModal.id='chartModal'; chartModal.setAttribute('aria-hidden','true'); chartModal.setAttribute('role','dialog'); chartModal.setAttribute('aria-modal','true');
-  chartModal.innerHTML='<div class="chart-modal-panel"><div class="chart-modal-head"><div><div class="chart-modal-kicker">EXPANDED VIEW / 璐熻嵎缁嗚妭</div><div class="chart-modal-title" id="chartModalTitle"></div><div class="chart-modal-cap" id="chartModalCap"></div></div><button class="chart-modal-close" type="button" aria-label="鍏抽棴鏀惧ぇ鏇茬嚎">脳</button></div><div class="chart-modal-plot"></div><div class="chart-modal-note"><b>鎮仠鎴栬仛鐒﹁妭鐐瑰彲鏌ョ湅缁嗚妭锛涘凡鎵ц鐨勫疄蹇冪偣鍙墦寮€瀵瑰簲璁粌澶嶇洏銆?/b><span>Esc 鎴栫偣鍑昏儗鏅叧闂?/span></div></div>';
+  chartModal.innerHTML='<div class="chart-modal-panel"><div class="chart-modal-head"><div><div class="chart-modal-kicker">EXPANDED VIEW / 负荷细节</div><div class="chart-modal-title" id="chartModalTitle"></div><div class="chart-modal-cap" id="chartModalCap"></div></div><button class="chart-modal-close" type="button" aria-label="关闭放大曲线">×</button></div><div class="chart-modal-plot"></div><div class="chart-modal-note"><b>悬停或聚焦节点可查看细节；已执行的实心点可打开对应训练复盘。</b><span>Esc 或点击背景关闭</span></div></div>';
   document.body.appendChild(chartModal);
   var chartModalPanel=chartModal.querySelector('.chart-modal-panel');
   var modalPlot=chartModal.querySelector('.chart-modal-plot');
@@ -2451,13 +2452,13 @@
     var t = el('div','ttl'); t.appendChild(el('span','n',name));
     var chartData = D.charts[name] || {};
     var tools=el('div','chart-tools'); tools.appendChild(el('span','cap',chartData.cap||''));
-    var expand=el('button','chart-expand','鏀惧ぇ');expand.type='button';expand.setAttribute('aria-label','鏀惧ぇ'+name+'鏇茬嚎');
+    var expand=el('button','chart-expand','放大');expand.type='button';expand.setAttribute('aria-label','放大'+name+'曲线');
     expand.onclick=function(){openExpandedChart(name,chartData,expand);};tools.appendChild(expand);t.appendChild(tools);
     c.appendChild(t);
     c.appendChild(el('div','plot',svgChart(name, chartData)));
     var lg = el('div','lg');
     var executedCount=(chartData.actual||[]).length;
-    lg.innerHTML = '<span><i></i>宸叉墽琛?/span><span><i class="plan"></i>鍚庣画璁″垝</span><span class="stat">宸茶褰?'+executedCount+' 鍛?路 褰撳墠 W'+m.current_week+'</span>';
+    lg.innerHTML = '<span><i></i>已执行</span><span><i class="plan"></i>后续计划</span><span class="stat">已记录 '+executedCount+' 周 · 当前 W'+m.current_week+'</span>';
     c.appendChild(lg);
     var actuals = el('div','actuals');
     (chartData.actual||[]).forEach(function(p){ actuals.appendChild(compactNode('span','actual','W'+p.week+' '+p.detail,28)); });
@@ -2492,22 +2493,22 @@
     return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet"><path d="'+seg+'" fill="none" stroke="#161616" stroke-width="1.6"/>'+dots+labels+'</svg>';
   }
   var weightTable=el('div','weight-table');
-  weightTable.appendChild(el('div','weight-row header','<div class="weight-cell">鏃ユ湡</div><div class="weight-cell">璁板綍绫诲瀷</div><div class="weight-cell" style="text-align:right">浣撻噸</div><div class="weight-cell" style="text-align:right">鏁版嵁鐘舵€?/div>'));
+  weightTable.appendChild(el('div','weight-row header','<div class="weight-cell">日期</div><div class="weight-cell">记录类型</div><div class="weight-cell" style="text-align:right">体重</div><div class="weight-cell" style="text-align:right">数据状态</div>'));
   bw.forEach(function(b){
     var r=el('div','weight-row');
-    r.appendChild(el('div','weight-cell weight-date',esc(b.date||'鈥?)));
-    r.appendChild(el('div','weight-cell weight-source',esc(b.note||'Notion 瀹炴祴')));
-    r.appendChild(el('div','weight-cell weight-value',b.kg!=null?b.kg.toFixed(1)+' kg':'鈥?));
-    r.appendChild(el('div','weight-cell weight-status','<span>宸叉牳楠?/span>'));
+    r.appendChild(el('div','weight-cell weight-date',esc(b.date||'—')));
+    r.appendChild(el('div','weight-cell weight-source',esc(b.note||'Notion 实测')));
+    r.appendChild(el('div','weight-cell weight-value',b.kg!=null?b.kg.toFixed(1)+' kg':'—'));
+    r.appendChild(el('div','weight-cell weight-status','<span>已核验</span>'));
     weightTable.appendChild(r);
   });
   var base=el('div','weight-row');
-  base.appendChild(el('div','weight-cell weight-date','鈥?));
-  base.appendChild(el('div','weight-cell weight-source',esc((D.notion&&D.notion.baseline_note)||'褰撳墠璁″垝鍩虹嚎')));
-  base.appendChild(el('div','weight-cell weight-value',(D.notion&&D.notion.baseline_kg!=null)?D.notion.baseline_kg+' kg':'鈥?));
-  base.appendChild(el('div','weight-cell weight-status','<span>绛夊緟鏂板疄娴?/span>'));
+  base.appendChild(el('div','weight-cell weight-date','—'));
+  base.appendChild(el('div','weight-cell weight-source',esc((D.notion&&D.notion.baseline_note)||'当前计划基线')));
+  base.appendChild(el('div','weight-cell weight-value',(D.notion&&D.notion.baseline_kg!=null)?D.notion.baseline_kg+' kg':'—'));
+  base.appendChild(el('div','weight-cell weight-status','<span>等待新实测</span>'));
   weightTable.appendChild(base); bwBox.appendChild(weightTable);
-  var bwNoteFull=((D.notion&&D.notion.note) || '') + ((D.notion&&D.notion.last_sync) ? ' 锝?鏁版嵁鎴嚦 ' + D.notion.last_sync : ' 锝?鏁版嵁寰呭悓姝?);
+  var bwNoteFull=((D.notion&&D.notion.note) || '') + ((D.notion&&D.notion.last_sync) ? ' ｜ 数据截至 ' + D.notion.last_sync : ' ｜ 数据待同步');
   var bwNote=document.getElementById('bwNote');bwNote.textContent=compactText(bwNoteFull,86);if(bwNote.textContent!==bwNoteFull)bwNote.title=bwNoteFull;
 
   var dotBox = document.getElementById('dotBox');
@@ -2520,20 +2521,20 @@
     var cell = el('div','dot');
     var filled = sMap[key];
     var cls = filled ? 'train' : (D.calendar[String(d.getDay())] ? 'miss' : 'rest');
-    cell.appendChild(el('div','c ' + cls, filled ? '缁? : ''));
+    cell.appendChild(el('div','c ' + cls, filled ? '练' : ''));
     cell.appendChild(el('span','d', pad(d.getDate())));
     dots.appendChild(cell);
   }
   dotBox.appendChild(dots);
   var lg = el('div','dotlegend');
-  lg.innerHTML = '<span class="b"><i></i>宸茬粌</span><span><i></i>浼戞伅</span><span class="m"><i></i>璁粌鏃ユ湭缁?/span>';
+  lg.innerHTML = '<span class="b"><i></i>已练</span><span><i></i>休息</span><span class="m"><i></i>训练日未练</span>';
   dotBox.appendChild(lg);
 
   var reviewBox = document.getElementById('reviewBox');
   function reviewSummary(rv){
-    var segments=(rv.verdict||'').split(/[锛?]/).map(function(x){return x.trim();}).filter(Boolean);
-    var title=rv.workbench_title||rv.week+' 路 '+rv.day+' 璁粌澶嶇洏';
-    var lead=rv.workbench_lead||segments[0]||'璁粌浜嬪疄宸茶褰?;
+    var segments=(rv.verdict||'').split(/[；;]/).map(function(x){return x.trim();}).filter(Boolean);
+    var title=rv.workbench_title||rv.week+' · '+rv.day+' 训练复盘';
+    var lead=rv.workbench_lead||segments[0]||'训练事实已记录';
     var points=(rv.workbench_points||segments.slice(1,3)).slice(0,3);
     return {title:title,lead:lead,points:points,decision:rv.workbench_decision||rv.status};
   }
@@ -2559,7 +2560,7 @@
   var docOverlay=document.getElementById('docOverlay'),docTitle=document.getElementById('docTitle'),docBody=document.getElementById('docBody'),docObsidian=document.getElementById('docObsidian');
   function openDocument(doc){
     if(!doc||!doc.content_markdown) return;
-    docTitle.textContent=doc.title||'鍐呭';
+    docTitle.textContent=doc.title||'内容';
     docBody.innerHTML='<div class="md-raw">'+esc(doc.content_markdown)+'</div>';
     var editHref=obsidianLocalHref(doc.file_path||'');
     docObsidian.hidden=!editHref; docObsidian.href=editHref||'#';
@@ -2579,16 +2580,16 @@
       r.onclick=function(){openDocument({title:summary.title,file_path:rv.file_path,content_markdown:rv.content_markdown});};
       r.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();r.click();}};
     }
-    r.appendChild(el('div','review-kicker','<span>'+esc(rv.full_date||rv.date)+'</span><span>'+(rv.day==='鍛ㄨ缁冮樁娈??'闃舵澶嶇洏':'鍗曟澶嶇洏')+'</span>'));
+    r.appendChild(el('div','review-kicker','<span>'+esc(rv.full_date||rv.date)+'</span><span>'+(rv.day==='周训练阶段'?'阶段复盘':'单次复盘')+'</span>'));
     r.appendChild(el('div','review-title',esc(summary.title)));
     r.appendChild(compactNode('div','review-lead',summary.lead,64));
     if(summary.points.length){
       var ps=el('div','review-points'); summary.points.forEach(function(p){ps.appendChild(compactNode('span','review-point',p,34));}); r.appendChild(ps);
     }
-    var decisionShort=compactText(summary.decision,72),decisionNode=el('div','review-decision','<b>澶勬柟鍐冲畾</b><br>'+esc(decisionShort));
-    if(decisionShort!==summary.decision){decisionNode.title=summary.decision;decisionNode.setAttribute('aria-label','澶勬柟鍐冲畾锛?+summary.decision);}
+    var decisionShort=compactText(summary.decision,72),decisionNode=el('div','review-decision','<b>处方决定</b><br>'+esc(decisionShort));
+    if(decisionShort!==summary.decision){decisionNode.title=summary.decision;decisionNode.setAttribute('aria-label','处方决定：'+summary.decision);}
     r.appendChild(decisionNode);
-    if(hasContent){r.appendChild(el('div','open','鐩存帴闃呰瀹屾暣澶嶇洏'));}
+    if(hasContent){r.appendChild(el('div','open','直接阅读完整复盘'));}
     reviewBox.appendChild(r);
   });
   var linkBox = document.getElementById('linkBox');
@@ -2601,37 +2602,37 @@
   }
   var links=D.links||{};
   var docs=D.documents||{};
-  linkBox.appendChild(linkCard('瀹屾暣璁粌璁″垝', m.plan_href, '鐩存帴鎵撳紑 ' + m.source_version, true));
-  linkBox.appendChild(linkCard('璁粌澶嶇洏绱㈠紩','',docs.review_index?'鐩存帴鍦ㄥ伐浣滃彴闃呰':'澶嶇洏绱㈠紩灏氭湭寤虹珛',false,docs.review_index?function(){openDocument(docs.review_index);}:null));
-  linkBox.appendChild(linkCard('鐘舵€佹。妗?,'',docs.status_index?'鐩存帴鍦ㄥ伐浣滃彴闃呰':'鐘舵€佹。妗堝皻鏈缓绔?,false,docs.status_index?function(){openDocument(docs.status_index);}:null));
-  linkBox.appendChild(linkCard('Notion 璁粌绯荤粺', links.notion_url||'', links.notion_url?'璁粌璁板綍 / 浣撻噸锛堝姩鎬佹暟鎹級':'鏈厤缃?Notion 閾炬帴', true));
+  linkBox.appendChild(linkCard('完整训练计划', m.plan_href, '直接打开 ' + m.source_version, true));
+  linkBox.appendChild(linkCard('训练复盘索引','',docs.review_index?'直接在工作台阅读':'复盘索引尚未建立',false,docs.review_index?function(){openDocument(docs.review_index);}:null));
+  linkBox.appendChild(linkCard('状态档案','',docs.status_index?'直接在工作台阅读':'状态档案尚未建立',false,docs.status_index?function(){openDocument(docs.status_index);}:null));
+  linkBox.appendChild(linkCard('Notion 训练系统', links.notion_url||'', links.notion_url?'训练记录 / 体重（动态数据）':'未配置 Notion 链接', true));
 
   var ruleBox = document.getElementById('ruleBox');
   function ruleHighlights(body){
-    var parts=(body||'').split(/[锛涖€俔/).map(function(x){return x.trim();}).filter(function(x){return x.length>7;});
+    var parts=(body||'').split(/[；。]/).map(function(x){return x.trim();}).filter(function(x){return x.length>7;});
     var scored=parts.map(function(x,i){
-      var score=(/RPE|kg|W\d|\d+%|\d+鈥?\d*\s*(娆缁剕鍒嗛挓)/.test(x)?4:0)+(/鍋滄|涓嶅緱|涓嶈拷琛淇濇寔|澧炲姞|闄嶄綆|鍑忛噺|娴嬭瘯|璁板綍|浼戞伅|杈炬爣/.test(x)?3:0)-i*.08;
+      var score=(/RPE|kg|W\d|\d+%|\d+—?\d*\s*(次|组|分钟)/.test(x)?4:0)+(/停止|不得|不追补|保持|增加|降低|减量|测试|记录|休息|达标/.test(x)?3:0)-i*.08;
       return {text:x,score:score};
     }).sort(function(a,b){return b.score-a.score;});
     var picked=[]; scored.forEach(function(x){if(picked.length<3&&picked.indexOf(x.text)<0)picked.push(x.text);});
-    return picked.map(function(x){return x.length>58?x.slice(0,58)+'鈥?:x;});
+    return picked.map(function(x){return x.length>58?x.slice(0,58)+'…':x;});
   }
   function rulePriority(rule,index){
     var score=0;
-    if(/W3 瀹為檯|褰撳墠|鍙岃建鍐插埡|v10/.test(rule))score=120;
-    else if(/鏈畬鎴恷閫€琛寍閿愮棝|鍋滄|涓嶅緱/.test(rule))score=110;
-    else if(/椤剁粍娓愯繘/.test(rule))score=100;
-    else if(/鍥為€€缁勬笎杩?.test(rule))score=90;
-    else if(/鐑韩涓庡姩浣滄爣鍑?.test(rule))score=80;
-    else if(/鍑忛噺銆佹祴璇曚笌澶嶇洏/.test(rule))score=70;
-    else if(/鏃ュ父鏍稿績/.test(rule))score=30;
-    else if(/鍘嗗彶 PR|鏍″噯/.test(rule))score=20;
+    if(/W3 实际|当前|双轨冲刺|v10/.test(rule))score=120;
+    else if(/未完成|退行|锐痛|停止|不得/.test(rule))score=110;
+    else if(/顶组渐进/.test(rule))score=100;
+    else if(/回退组渐进/.test(rule))score=90;
+    else if(/热身与动作标准/.test(rule))score=80;
+    else if(/减量、测试与复盘/.test(rule))score=70;
+    else if(/日常核心/.test(rule))score=30;
+    else if(/历史 PR|校准/.test(rule))score=20;
     return score-index*.01;
   }
   (D.rules||[]).map(function(rule,index){return {rule:rule,index:index,score:rulePriority(rule,index)};})
   .sort(function(a,b){return b.score-a.score;}).forEach(function(entry){
     var rule=entry.rule,index=entry.index;
-    var pos=rule.indexOf('锛?), title=pos>0?rule.slice(0,pos):('瑙勫垯 '+(index+1)), body=pos>0?rule.slice(pos+1):rule;
+    var pos=rule.indexOf('：'), title=pos>0?rule.slice(0,pos):('规则 '+(index+1)), body=pos>0?rule.slice(pos+1):rule;
     var item=el('details','rule-item');
     var head=el('span','rule-head'); head.appendChild(el('span','rule-title',esc(title)));
     var preview=el('span','rule-preview'); ruleHighlights(body).forEach(function(p){preview.appendChild(el('span',null,esc(p)));}); head.appendChild(preview);
@@ -2639,13 +2640,13 @@
     item.appendChild(el('div','rule-body',esc(body))); ruleBox.appendChild(item);
   });
   document.getElementById('howNote').innerHTML =
-    '<div class="how-step"><span class="num">01 / TRAIN</span><b>鏌ョ湅璁粌</b><p>鍦ㄣ€岃缁冦€嶇‘璁ゅ綋澶╁姩浣溿€侀噸閲忋€佺粍娆″拰 RPE銆?/p></div>'+
-    '<div class="how-step"><span class="num">02 / RECORD</span><b>璁板綍缁撴灉</b><p>澶嶅埗缁冨悗妯℃澘锛屽～鍏ュ疄闄呰〃鐜板拰韬綋鍙嶉銆?/p></div>'+
-    '<div class="how-step"><span class="num">03 / SYNC</span><b>鍚屾鏁版嵁</b><p>瀵?AI 璇淬€屽悓姝ュ伐浣滃彴銆嶏紝鎷夊彇 Notion 鏈€鏂拌褰曘€?/p></div>'+
-    '<div class="how-step"><span class="num">04 / REVIEW</span><b>杩涘叆澶嶇洏</b><p>宸ヤ綔鍙扮湅閲嶇偣锛屼篃鑳界洿鎺ラ槄璇诲畬鏁村鐩橈紱Obsidian 浠呯敤浜庡彲閫夌紪杈戙€?/p></div>';
+    '<div class="how-step"><span class="num">01 / TRAIN</span><b>查看训练</b><p>在「训练」确认当天动作、重量、组次和 RPE。</p></div>'+
+    '<div class="how-step"><span class="num">02 / RECORD</span><b>记录结果</b><p>复制练后模板，填入实际表现和身体反馈。</p></div>'+
+    '<div class="how-step"><span class="num">03 / SYNC</span><b>同步数据</b><p>对 AI 说「同步工作台」，拉取 Notion 最新记录。</p></div>'+
+    '<div class="how-step"><span class="num">04 / REVIEW</span><b>进入复盘</b><p>工作台看重点，也能直接阅读完整复盘；Obsidian 仅用于可选编辑。</p></div>';
 
   var navBar = document.getElementById('navBar');
-  var navs = [['today','璁粌','浠婃棩璁粌'],['week','璁″垝','鍛ㄦ湡璁″垝'],['trend','璐熻嵎','璐熻嵎瓒嬪娍'],['record','澶嶇洏','璁粌澶嶇洏'],['settings','鎸囧崡','浣跨敤鎸囧崡涓庤鍒?]];
+  var navs = [['today','训练','今日训练'],['week','计划','周期计划'],['trend','负荷','负荷趋势'],['record','复盘','训练复盘'],['settings','指南','使用指南与规则']];
   function setNav(k){
     document.querySelectorAll('.nav a').forEach(function(a){ a.classList.toggle('on', a.dataset.k===k); });
   }
@@ -2668,36 +2669,37 @@
 </script>
 
 <!-- ===== AI Chat Panel ===== -->
-<div id="aiFab" class="ai-fab" title="AI 鏁欑粌">
+<div id="aiFab" class="ai-fab" title="AI 教练">
   <svg viewBox="0 0 24 24"><path d="M12 2L13.09 8.26L19 7L17.74 12.91L24 14L17.74 15.09L19 21L13.09 19.74L12 26L10.91 19.74L5 21L6.26 15.09L0 14L6.26 12.91L5 7L10.91 8.26L12 2Z" transform="scale(0.75) translate(4,-1)"/><circle cx="12" cy="14" r="3" fill="#fff" opacity=".9"/></svg>
   <span class="badge" id="aiBadge" hidden>1</span>
 </div>
 <div id="aiPanel" class="ai-panel">
   <div class="ai-hdr">
-    <span class="ttl"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z"/></svg> AI 鏁欑粌</span>
+    <span class="ttl"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z"/></svg> AI 教练</span>
     <div class="acts">
-      <button id="aiClose" title="鍏抽棴">脳</button>
+      <button id="aiClose" title="关闭">×</button>
     </div>
   </div>
   <div class="ai-modes">
-    <button data-mode="onboard" class="on">寤烘。</button>
-    <button data-mode="qa">闂瓟</button>
-    <button data-mode="review">澶嶇洏</button>
+    <button data-mode="onboard" class="on">建档</button>
+    <button data-mode="qa">问答</button>
+    <button data-mode="review">复盘</button>
   </div>
   <div id="aiMessages" class="ai-msgs"></div>
   <div class="ai-quick" id="aiQuick"></div>
   <div class="ai-input-area">
-    <textarea id="aiInput" rows="1" placeholder="杈撳叆娑堟伅锛孍nter 鍙戦€?.."></textarea>
-    <button id="aiSend">鉃?/button>
+    <textarea id="aiInput" rows="1" placeholder="输入消息，Enter 发送..."></textarea>
+    <button id="aiSend">➤</button>
   </div>
 </div>
 
-<script>
+<script charset="UTF-8">
 (function(){
   'use strict';
 
-  // ===== 閮ㄧ讲閰嶇疆 =====
-  // 鏈湴寮€鍙戯細鐣欑┖锛堜娇鐢ㄥ悓婧?/api/chat锛岀敱鏈湴 serve-ai.ps1 浠ｇ悊锛?  // 绾夸笂閮ㄧ讲锛氭敼涓轰綘鐨?Cloudflare Worker URL锛屼緥濡傦細
+  // ===== 部署配置 =====
+  // 本地开发：留空（使用同源 /api/chat，由本地 serve-ai.ps1 代理）
+  // 线上部署：改为你的 Cloudflare Pages Functions URL（已绕过 workers.dev DNS 污染）
   //   var API_BASE = 'https://fitness-ai.your-name.workers.dev';
   var API_BASE = 'https://felixfitnessai.pages.dev';
 
@@ -2719,54 +2721,54 @@
   // ---- System Prompts ----
   var SYS = {
     onboard: [
-      '浣犳槸涓€鍚嶄笓涓氬仴韬暀缁冿紝姝ｅ湪閫氳繃 Felix Chu 璁粌宸ヤ綔鍙扮郴缁熶负鐢ㄦ埛杩涜寤烘。闂瘖銆?,
-      '璇锋寜浠ヤ笅瑙勫垯杩涜锛?,
-      '1. 姣忚疆鍙拷闂細褰卞搷璁粌璁″垝鐨勪俊鎭紝涓嶉噸澶嶅凡纭鐨勪簨瀹炪€?,
-      '2. 闇€瑕佹敹闆嗙殑 10 椤逛俊鎭細',
-      '   - 璁粌鐩爣锛堝鑲?鍑忚剛/鍔涢噺鎻愬崌/缁煎悎浣撹兘锛?,
-      '   - 璁粌缁忛獙锛堟柊鎵?鏈夊熀纭€/涓骇/楂樼骇锛岃缁冨勾闄愶級',
-      '   - 姣忓懆鍙缁冮鐜囷紙姣忓懆鍑犳锛夊拰鍗曟鏃堕暱',
-      '   - 鍙敤鍣ㄦ鍜屽満鍦帮紙鍟嗕笟鍋ヨ韩鎴?绀惧尯鍋ヨ韩鎴?灞呭/寰掓墜锛?,
-      '   - 鐫＄湢璐ㄩ噺锛堟椂闀裤€佹槸鍚﹁寰嬶級',
-      '   - 鎭㈠鑳藉姏锛堢柌鍔虫劅銆佽倢鑲夐吀鐥涙仮澶嶉€熷害锛?,
-      '   - 鍋ュ悍闄愬埗鎴栦激鐥咃紙鍏宠妭闂銆佹參鎬х梾銆佹墜鏈彶锛?,
-      '   - 褰撳墠浣撻噸鍜岃韩楂?,
-      '   - 宸叉湁璁粌璁板綍锛堟渶杩?3 涓湀鐨勯噸閲忋€佹鏁帮級',
-      '   - 鍋忓ソ鐨勮缁冨姩浣滄垨涓嶅枩娆㈢殑鍔ㄤ綔',
-      '3. 鍥炲鏍煎紡锛?,
-      '   > **宸茬‘璁?*\\n> {{宸叉敹闆嗙殑淇℃伅}}\\n>\\n> **杩樼己灏戜粈涔?*\\n> {{缂哄け淇℃伅}}\\n>\\n> **璇峰洖绛?*\\n> {{鏈疆鏈€灏戝繀瑕侀棶棰榼}',
-      '4. 鏀堕泦瀹屾墍鏈変俊鎭悗锛屾眹鎬诲苟鍛婄煡鐢ㄦ埛鍙互鐢熸垚璁粌璁″垝锛岃闂槸鍚︾‘璁ょ敓鎴愩€?,
-      '5. 濡傛灉鐢ㄦ埛鎻愬埌閿愮棝銆侀夯鏈ㄣ€佹斁灏勭棝銆佹檿鍘ョ瓑鐥囩姸锛岀珛鍗冲缓璁氨鍖伙紝涓嶈繘鍏ラ珮寮哄害澶勬柟銆?,
-      '璇风敤涓枃鍥炲锛岃姘斾笓涓氫絾鍙嬪ソ銆傜幇鍦ㄨ寮€濮嬪缓妗ｏ紝鍚戠敤鎴蜂粙缁嶆祦绋嬪苟鎻愬嚭绗竴涓棶棰樸€?
+      '你是一名专业健身教练，正在通过 Felix Chu 训练工作台系统为用户进行建档问诊。',
+      '请按以下规则进行：',
+      '1. 每轮只追问会影响训练计划的信息，不重复已确认的事实。',
+      '2. 需要收集的 10 项信息：',
+      '   - 训练目标（增肌/减脂/力量提升/综合体能）',
+      '   - 训练经验（新手/有基础/中级/高级，训练年限）',
+      '   - 每周可训练频率（每周几次）和单次时长',
+      '   - 可用器械和场地（商业健身房/社区健身房/居家/徒手）',
+      '   - 睡眠质量（时长、是否规律）',
+      '   - 恢复能力（疲劳感、肌肉酸痛恢复速度）',
+      '   - 健康限制或伤病（关节问题、慢性病、手术史）',
+      '   - 当前体重和身高',
+      '   - 已有训练记录（最近 3 个月的重量、次数）',
+      '   - 偏好的训练动作或不喜欢的动作',
+      '3. 回复格式：',
+      '   > **已确认**\\n> {{已收集的信息}}\\n>\\n> **还缺少什么**\\n> {{缺失信息}}\\n>\\n> **请回答**\\n> {{本轮最少必要问题}}',
+      '4. 收集完所有信息后，汇总并告知用户可以生成训练计划，询问是否确认生成。',
+      '5. 如果用户提到锐痛、麻木、放射痛、晕厥等症状，立即建议就医，不进入高强度处方。',
+      '请用中文回复，语气专业但友好。现在请开始建档，向用户介绍流程并提出第一个问题。'
     ].join('\\n'),
 
     qa: [
-      '浣犳槸涓€鍚嶄笓涓氬仴韬暀缁冿紝鐢ㄦ埛姝ｅ湪浣跨敤 Felix Chu 璁粌宸ヤ綔鍙般€?,
-      '浠ヤ笅鏄敤鎴风殑褰撳墠璁粌鏁版嵁锛?,
+      '你是一名专业健身教练，用户正在使用 Felix Chu 训练工作台。',
+      '以下是用户的当前训练数据：',
       '{WORKBENCH_DATA}',
-      '璇锋牴鎹敤鎴风殑闂鍜屽綋鍓嶈缁冩暟鎹紝鎻愪緵涓撲笟銆佸畨鍏ㄣ€佸彲鎵ц鐨勮缁冨缓璁€?,
-      '瑙勫垯锛?,
-      '- 鍥炵瓟绠€娲佸疄鐢紝涓嶈澶暱',
-      '- 閲嶉噺寤鸿鍩轰簬鐢ㄦ埛褰撳墠璁″垝鏁版嵁锛屼笉瑕侀殢鎰忔帹鑽愯秴鍑鸿鍒掕寖鍥寸殑閲嶉噺',
-      '- 娑夊強鍔ㄤ綔鎶€鏈椂缁欏嚭鍏蜂綋瑕佺偣',
-      '- 濡傛灉涓嶇‘瀹氱敤鎴风殑韬綋鐘跺喌锛屽厛纭鍐嶅缓璁?,
-      '璇风敤涓枃鍥炲銆?
+      '请根据用户的问题和当前训练数据，提供专业、安全、可执行的训练建议。',
+      '规则：',
+      '- 回答简洁实用，不要太长',
+      '- 重量建议基于用户当前计划数据，不要随意推荐超出计划范围的重量',
+      '- 涉及动作技术时给出具体要点',
+      '- 如果不确定用户的身体状况，先确认再建议',
+      '请用中文回复。'
     ].join('\\n'),
 
     review: [
-      '浣犳槸涓€鍚嶄笓涓氬仴韬暀缁冿紝姝ｅ湪甯敤鎴疯繘琛岃缁冨鐩樸€?,
-      '浠ヤ笅鏄敤鎴蜂粖澶╃殑璁粌瀹夋帓锛?,
+      '你是一名专业健身教练，正在帮用户进行训练复盘。',
+      '以下是用户今天的训练安排：',
       '{TODAY_DATA}',
-      '璇峰紩瀵肩敤鎴锋姤鍛婅缁冪粨鏋滐細',
-      '1. 姣忎釜鍔ㄤ綔鐨勫疄闄呴噸閲忋€佺粍娆?,
-      '2. 鎰熺煡寮哄害锛圧PE 1-10锛?0涓哄姏绔級',
-      '3. 韬綋鍙嶉锛堢柤鐥涖€佺柌鍔炽€佺潯鐪狅級',
-      '鏀跺埌鎶ュ憡鍚庯細',
-      '- 鍒嗘瀽璁粌瀹屾垚璐ㄩ噺',
-      '- 鍒ゆ柇鏄惁闇€瑕佽皟鏁翠笅娆″鏂?,
-      '- 缁欏嚭涓嬩竴娆¤缁冪殑鏄庣‘寤鸿',
-      '- 濡傛灉鏈夊紓甯镐俊鍙凤紙閿愮棝銆佽繃搴︾柌鍔筹級锛屽缓璁噺閲忔垨浼戞伅',
-      '璇风敤涓枃鍥炲锛岃姘斾笓涓氫絾榧撳姳銆傜幇鍦ㄨ寮曞鐢ㄦ埛寮€濮嬪鐩樸€?
+      '请引导用户报告训练结果：',
+      '1. 每个动作的实际重量、组次',
+      '2. 感知强度（RPE 1-10，10为力竭）',
+      '3. 身体反馈（疼痛、疲劳、睡眠）',
+      '收到报告后：',
+      '- 分析训练完成质量',
+      '- 判断是否需要调整下次处方',
+      '- 给出下一次训练的明确建议',
+      '- 如果有异常信号（锐痛、过度疲劳），建议减量或休息',
+      '请用中文回复，语气专业但鼓励。现在请引导用户开始复盘。'
     ].join('\\n')
   };
 
@@ -2775,11 +2777,11 @@
     try {
       var D = JSON.parse(document.getElementById('workbench-data').textContent);
       var m = D.meta || {};
-      var sum = '杩愬姩鍛? ' + (m.athlete||'鏈煡') + '\\n';
-      sum += '褰撳墠鍛ㄦ: W' + (m.current_week||1) + ' / ' + (m.total_weeks||8) + ' (' + (m.phase||'绉疮') + '鏈?\\n';
-      sum += '璁″垝寮€濮? ' + (m.plan_start||'') + '\\n\\n';
+      var sum = '运动员: ' + (m.athlete||'未知') + '\\n';
+      sum += '当前周次: W' + (m.current_week||1) + ' / ' + (m.total_weeks||8) + ' (' + (m.phase||'积累') + '期)\\n';
+      sum += '计划开始: ' + (m.plan_start||'') + '\\n\\n';
       if (D.days) {
-        sum += '璁粌鏃ュ畨鎺?\\n';
+        sum += '训练日安排:\\n';
         Object.keys(D.days).forEach(function(k){
           var d = D.days[k];
           if (d && d.exercises) {
@@ -2791,7 +2793,7 @@
         });
       }
       return sum;
-    } catch(e) { return '鏃犳硶璇诲彇宸ヤ綔鍙版暟鎹?; }
+    } catch(e) { return '无法读取工作台数据'; }
   }
 
   function getTodayData(){
@@ -2801,28 +2803,28 @@
       var today = new Date().toISOString().slice(0,10);
       var tl = D.timeline || [];
       var ev = tl.filter(function(x){ return x.date === today; })[0];
-      var sum = '鏃ユ湡: ' + today + '\\n';
+      var sum = '日期: ' + today + '\\n';
       if (ev) {
-        sum += '浠婃棩瀹夋帓: ' + (ev.day||'') + ' (' + (ev.title||ev.role||'') + ')\\n';
+        sum += '今日安排: ' + (ev.day||'') + ' (' + (ev.title||ev.role||'') + ')\\n';
         if (ev.day && D.days && D.days[ev.day]) {
           var d = D.days[ev.day];
-          sum += '鍔ㄤ綔鍒楄〃:\\n';
+          sum += '动作列表:\\n';
           (d.exercises||[]).forEach(function(e){
             sum += '  - ' + (e.name||'') + ' ' + (e.sets||'') + ' ' + (e.target||'') + '\\n';
           });
         }
       } else {
-        sum += '浠婃棩涓轰紤鎭棩\\n';
+        sum += '今日为休息日\\n';
       }
       return sum;
-    } catch(e) { return '鏃犳硶璇诲彇浠婃棩鏁版嵁'; }
+    } catch(e) { return '无法读取今日数据'; }
   }
 
   // ---- Quick prompts per mode ----
   var QUICK = {
-    onboard: ['鎴戞兂澧炶倢', '鎴戞兂鍑忚剛', '鎴戞槸鍋ヨ韩鏂版墜', '鎴戞湁鑶濈洊浼?],
-    qa: ['浠婂ぉ缁冧粈涔堬紵', '娣辫共鎶€鏈鐐?, 'RPE 鏄粈涔堟剰鎬?, '閲嶉噺涓婁笉鍘讳簡鎬庝箞鍔?],
-    review: ['浠婂ぉ璁粌瀹屾垚浜?, '娣辫共鎰熻寰堥噸', '寮曚綋鍋氬埌鍔涚浜?, '浠婂ぉ鐘舵€佷笉濂?]
+    onboard: ['我想增肌', '我想减脂', '我是健身新手', '我有膝盖伤'],
+    qa: ['今天练什么？', '深蹲技术要点', 'RPE 是什么意思', '重量上不去了怎么办'],
+    review: ['今天训练完成了', '深蹲感觉很重', '引体做到力竭了', '今天状态不好']
   };
 
   // ---- UI Logic ----
@@ -2908,11 +2910,11 @@
   }
 
   async function startConversation(){
-    appendMessage('bot', '姝ｅ湪鍒濆鍖栧缓妗ｅ璇?..');
+    appendMessage('bot', '正在初始化建档对话...');
     var sysPrompt = buildSystemPrompt();
     chatHistory[currentMode] = [
       { role: 'system', content: sysPrompt },
-      { role: 'user', content: '寮€濮嬪缓妗ｏ紝璇锋寜鐓т綘鐨勬祦绋嬪紩瀵兼垜銆? }
+      { role: 'user', content: '开始建档，请按照你的流程引导我。' }
     ];
     await sendMessage('');
   }
@@ -2945,7 +2947,7 @@
 
       if (!resp.ok) {
         var errText = await resp.text();
-        appendMessage('error', 'API 閿欒 (' + resp.status + '): ' + errText.slice(0, 200));
+        appendMessage('error', 'API 错误 (' + resp.status + '): ' + errText.slice(0, 200));
         return;
       }
 
@@ -2955,18 +2957,18 @@
         return;
       }
 
-      var reply = data.content || '锛堟棤鍥炲鍐呭锛?;
+      var reply = data.content || '（无回复内容）';
       appendMessage('bot', reply);
       chatHistory[currentMode].push({ role: 'assistant', content: reply });
 
       // Check if plan generation is suggested
-      if (currentMode === 'onboard' && /鐢熸垚.*璁″垝|plan.*json|纭鐢熸垚/i.test(reply)) {
+      if (currentMode === 'onboard' && /生成.*计划|plan.*json|确认生成/i.test(reply)) {
         // Could trigger plan generation here in the future
       }
 
     } catch(e) {
       removeTyping();
-      appendMessage('error', '璇锋眰澶辫触: ' + e.message);
+      appendMessage('error', '请求失败: ' + e.message);
     } finally {
       isSending = false;
       sendBtn.disabled = false;
