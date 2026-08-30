@@ -2880,7 +2880,7 @@
   function formatContent(text){
     // Basic markdown: **bold**, `code`, > blockquote
     var esc = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    esc = esc.replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>');
+    esc = esc.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     esc = esc.replace(/`([^`]+)`/g, '<code>$1</code>');
     return esc;
   }
