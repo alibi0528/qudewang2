@@ -1810,7 +1810,8 @@
   .rv .row[role="button"],button.link{cursor:pointer}button.link{width:100%;font:inherit;text-align:left}
 
   /* ===== AI Chat Panel ===== */
-  .ai-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6c5ce7,#a29bfe);box-shadow:0 4px 20px rgba(108,92,231,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9998;transition:transform .3s,box-shadow .3s}
+  .ai-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6c5ce7,#a29bfe);box-shadow:0 4px 20px rgba(108,92,231,.5);display:flex;align-items:center;justify-content:center;cursor:grab;z-index:9998;transition:transform .3s,box-shadow .3s;touch-action:none;-webkit-user-select:none;user-select:none}
+  .ai-fab.is-dragging{cursor:grabbing;transition:none!important;z-index:99999!important;box-shadow:0 10px 34px rgba(108,92,231,.55)!important;transform:scale(1.06)!important}
   .ai-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(108,92,231,.6)}
   .ai-fab svg{width:26px;height:26px;fill:#fff}
   .ai-fab .badge{position:absolute;top:-4px;right:-4px;width:20px;height:20px;border-radius:50%;background:#e74c3c;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
@@ -3139,10 +3140,145 @@
 
   // ---- UI Logic ----
   function togglePanel(force){
+    if (fab._isDraggingJustNow) { fab._isDraggingJustNow = false; return; }
     var open = force !== undefined ? force : !panel.classList.contains('open');
     panel.classList.toggle('open', open);
     if (open) { badge.setAttribute('hidden',''); input.focus(); renderQuick(); }
   }
+
+  // ===== AI FAB 自主拖动 / 持久化（fxts:aifab） Felix Chu Public Workbench =====
+  (function bindFabDrag(){
+    try {
+      var FAB_KEY = 'aifab';
+      var NS = (window.__FX_PUBLIC__ && window.__FX_PUBLIC__.ns) ? window.__FX_PUBLIC__.ns : 'fxts:';
+      function fxGet(k,fb){ try{ var s=localStorage.getItem(NS+k); return s==null?fb:JSON.parse(s); }catch(e){ return fb; } }
+      function fxSet(k,v){ try{ localStorage.setItem(NS+k, JSON.stringify(v)); }catch(e){} }
+
+      var W_MARGIN = 6;   // 左右安全边距 px
+      var TOP_MARGIN = 40;
+      var NAV_RESERVE_H = 56; // 底部导航预留，避免挡住
+      var DRAG_THRESHOLD = 5; // px
+      var MOVE_MIN = 6;       // 判定「真的拖了」避免 tap 误触
+
+      function clampToView(x,y,w,h){
+        var vw = window.innerWidth || document.documentElement.clientWidth;
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        try {
+          // iPhone 底部安全区（给 FAB 留 2px 余量）
+          var s = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sat') || 0);
+          if (!s) {
+            var probe = document.createElement('div');
+            probe.style.cssText = 'position:fixed;left:-9999px;bottom:0px;padding-bottom:env(safe-area-inset-bottom);height:0px;';
+            document.body.appendChild(probe);
+            s = probe.offsetHeight || 0;
+            document.body.removeChild(probe);
+            try{ document.documentElement.style.setProperty('--sat', s+'px'); }catch(_){}
+          }
+          NAV_RESERVE_H = (document.querySelector('.nav') ? 64 : 10) + s + 6;
+        } catch(_) {}
+        x = Math.max(W_MARGIN, Math.min(vw - w - W_MARGIN, x));
+        y = Math.max(TOP_MARGIN, Math.min(vh - h - NAV_RESERVE_H, y));
+        return { x: Math.round(x), y: Math.round(y) };
+      }
+      function normalizePosition(){
+        // 把 bottom/right 定位切换为 left/top，避免首次拖动跳变（参考 Experience 395816）
+        var rect = fab.getBoundingClientRect();
+        var cur = clampToView(rect.left, rect.top, rect.width, rect.height);
+        fab.style.bottom = '';
+        fab.style.right  = '';
+        fab.style.left   = cur.x + 'px';
+        fab.style.top    = cur.y + 'px';
+        return { rect: { left: cur.x, top: cur.y, width: rect.width, height: rect.height }, cur: cur };
+      }
+      function applySaved(){
+        try {
+          var saved = fxGet(FAB_KEY, null);
+          if (!saved || typeof saved !== 'object') return;
+          var testEl = fab; var w = testEl.offsetWidth || 50, h = testEl.offsetHeight || 50;
+          if (typeof saved.x === 'number' && typeof saved.y === 'number') {
+            var pos = clampToView(saved.x, saved.y, w, h);
+            fab.style.bottom = ''; fab.style.right = '';
+            fab.style.left = pos.x + 'px'; fab.style.top  = pos.y + 'px';
+          }
+        } catch(_) {}
+      }
+
+      var drag = null;
+      function onDown(e){
+        if (e.button !== undefined && e.button !== 0) return;
+        // 只允许左键 / 触摸：防止右键/中键触发拖动
+        var n = normalizePosition();
+        try { fab.setPointerCapture && fab.setPointerCapture(e.pointerId); } catch(_) {}
+        drag = {
+          id: e.pointerId,
+          startX: e.clientX, startY: e.clientY,
+          startLeft: n.cur.x, startTop: n.cur.y,
+          moved: 0, movedAny: false,
+          w: n.rect.width, h: n.rect.height
+        };
+        fab.classList.add('is-dragging');
+        try { document.body.style.userSelect = 'none'; document.body.style.webkitUserSelect='none'; }catch(_){}
+      }
+      function onMove(e){
+        if (!drag || e.pointerId !== drag.id) return;
+        var dx = e.clientX - drag.startX;
+        var dy = e.clientY - drag.startY;
+        var dist = Math.max(Math.abs(dx), Math.abs(dy));
+        if (dist < DRAG_THRESHOLD) return;
+        drag.movedAny = true;
+        drag.moved = Math.max(drag.moved, dist);
+        var pos = clampToView(drag.startLeft + dx, drag.startTop + dy, drag.w, drag.h);
+        fab.style.left = pos.x + 'px';
+        fab.style.top  = pos.y + 'px';
+        if (e.cancelable) try{ e.preventDefault(); }catch(_){}
+      }
+      function onUp(e){
+        if (!drag) return;
+        if (e && e.pointerId !== undefined && e.pointerId !== drag.id) return;
+        try { fab.releasePointerCapture && fab.releasePointerCapture(drag.id); } catch(_){}
+        fab.classList.remove('is-dragging');
+        try { document.body.style.userSelect = ''; document.body.style.webkitUserSelect=''; }catch(_){}
+        var wasDrag = drag.movedAny && drag.moved >= MOVE_MIN;
+        if (wasDrag) {
+          // 拖动过：不触发面板开关，并持久化
+          fab._isDraggingJustNow = true;
+          setTimeout(function(){ fab._isDraggingJustNow = false; }, 0);
+          var pos = clampToView(parseFloat(fab.style.left)||0, parseFloat(fab.style.top)||0, drag.w, drag.h);
+          fab.style.left = pos.x + 'px'; fab.style.top = pos.y + 'px';
+          fxSet(FAB_KEY, { x: pos.x, y: pos.y });
+        }
+        drag = null;
+      }
+
+      // 用 Pointer Events：一套同时覆盖触摸 + 鼠标 + 触控笔
+      fab.addEventListener('pointerdown', onDown);
+      fab.addEventListener('pointermove', onMove);
+      fab.addEventListener('pointerup',   onUp);
+      fab.addEventListener('pointercancel', onUp);
+      // 松手兜底：指针离开窗口也结束
+      document.addEventListener('pointerup', onUp, true);
+      document.addEventListener('pointercancel', onUp, true);
+
+      // 初始化：先归一，再应用持久化位置，再在 resize/orientationchange 时做边界吸附
+      try {
+        normalizePosition();
+        applySaved();
+      } catch(_) {}
+      var reTick = null;
+      function onLayoutChange(){
+        if (reTick) clearTimeout(reTick);
+        reTick = setTimeout(function(){
+          var n = normalizePosition();
+          fxSet(FAB_KEY, { x: n.cur.x, y: n.cur.y });
+        }, 120);
+      }
+      window.addEventListener('resize', onLayoutChange, { passive: true });
+      window.addEventListener('orientationchange', onLayoutChange, { passive: true });
+    } catch(err) {
+      // 任何失败都不影响原有点击打开 AI 的能力（降级为固定位置）
+      try { console.warn('[AIFAB drag 已降级为固定位置]', err && err.message ? err.message : String(err)); }catch(_){}
+    }
+  })();
 
   fab.addEventListener('click', function(){ togglePanel(); });
   closeBtn.addEventListener('click', function(){ togglePanel(false); });
