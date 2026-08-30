@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN" data-ui-template="felix-training-workbench-v01">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -2932,9 +2932,12 @@
     <span class="ttl"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z"/></svg> AI 教练</span>
     <div class="acts">
       <button id="aiFabReset" title="复位 AI 球到默认右下角位置">↺</button>
+      <button id="aiExportPlan" title="导出我的计划 JSON（保存到微信/云盘，换设备再导入）">💾</button>
+      <button id="aiImportPlan" title="导入 JSON（从微信/文件里选择导出过的计划 JSON 即可恢复）">📥</button>
       <button id="aiClose" title="关闭">×</button>
     </div>
   </div>
+  <input id="planImport" type="file" accept=".json,application/json,text/plain" hidden/>
   <div class="ai-modes">
     <button data-mode="onboard" class="on">建档</button>
     <button data-mode="qa">问答</button>
@@ -2963,6 +2966,9 @@
   var fab = document.getElementById('aiFab');
   var closeBtn = document.getElementById('aiClose');
   var resetBtn = document.getElementById('aiFabReset');
+  var exportBtn = document.getElementById('aiExportPlan');
+  var importBtn = document.getElementById('aiImportPlan');
+  var planImportInput = document.getElementById('planImport');
   var msgsBox = document.getElementById('aiMessages');
   var input = document.getElementById('aiInput');
   var sendBtn = document.getElementById('aiSend');
@@ -3300,6 +3306,280 @@
           });
         }
       } catch(_) {}
+      // ===== 导出 / 导入 计划 JSON（AI 教练头栏 💾 / 📥） Felix Chu Public Workbench =====
+      (function bindPlanIO(){
+        try {
+          var api = window.__FX_PUBLIC__;
+          var fxNS = (api && api.ns) ? api.ns : 'fxts:';
+          function _fxGet(k,fb){ try{ var s=localStorage.getItem(fxNS+k); return s==null?fb:JSON.parse(s); }catch(e){ return fb; } }
+          function _fxSet(k,v){ try{ localStorage.setItem(fxNS+k,JSON.stringify(v)); }catch(_){} }
+          function _fxRemove(k){ try{ localStorage.removeItem(fxNS+k); }catch(_){} }
+          function _pad(n){ return n<10?'0'+n:''+n; }
+          function _todayStamp(){
+            var d=new Date();
+            return d.getFullYear()+''+_pad(d.getMonth()+1)+''+_pad(d.getDate())+'-'+_pad(d.getHours())+_pad(d.getMinutes());
+          }
+          function _blankBase(){
+            // 和公开模式的 fxBlank() 保持一致：当 AI 生成的 plan 缺少字段时，用空模板补齐
+            if (window.__FX_PUBLIC__ && typeof window.__FX_PUBLIC__._blankTemplate === 'function') return window.__FX_PUBLIC__._blankTemplate();
+            return { meta:{}, onboarding:{}, system:{ mode:'public-import' }, days:{}, phases:[], weekday:{}, timeline:[], calendar:{}, advice:'', weight_trend:{}, week_main:[], reviews:[], documents:{}, links:{}, rules:[] };
+          }
+          function _deepMerge(base, override){
+            if(!override || typeof override !== 'object') return base == null ? override : base;
+            if(!base || typeof base !== 'object') return override;
+            if (Array.isArray(base) || Array.isArray(override)) return override;
+            var out = {};
+            var keys = {}, k;
+            [base, override].forEach(function(o){ for(k in o){ if(Object.prototype.hasOwnProperty.call(o,k)) keys[k]=1; } });
+            for(k in keys){
+              var a = base ? base[k] : undefined;
+              var b = override ? override[k] : undefined;
+              var useB = b !== undefined && b !== null;
+              var useA = !useB && a !== undefined && a !== null;
+              var val = useB ? b : (useA ? a : undefined);
+              if(val && typeof val === 'object' && !Array.isArray(val)){
+                out[k] = _deepMerge((a && typeof a === 'object' && !Array.isArray(a)) ? a : {}, (b && typeof b === 'object' && !Array.isArray(b)) ? b : {});
+              } else {
+                out[k] = val;
+              }
+            }
+            return out;
+          }
+          function _looksLikePlan(p){
+            if (!p || typeof p !== 'object') return false;
+            var hasOnboarding = !!(p.onboarding && typeof p.onboarding === 'object');
+            var hasMetaDays = !!(p.meta && p.days && typeof p.days === 'object');
+            var hasBigPlanField = !!(p.timeline && Array.isArray(p.timeline)) || !!(p.week_main && Array.isArray(p.week_main));
+            return hasOnboarding || hasMetaDays || hasBigPlanField;
+          }
+          function _toast(msg, kind){
+            // 轻量：导入导出的重要提示优先用 alert；成功类消息如环境支持 appendMessage 则追加一条
+            try {
+              if (kind === 'ok') {
+                if (typeof appendMessage === 'function') {
+                  try { appendMessage('bot', '💾 ' + msg); return; } catch(_){}
+                }
+              }
+            } catch(_){}
+            alert(msg);
+          }
+
+          // ========= 导出 =========
+          function exportPlan(opts){
+            try {
+              var plan = api && typeof api.loadPlan === 'function' ? api.loadPlan() : _fxGet('plan', null);
+              if (!plan || typeof plan !== 'object') {
+                _toast('你还没有生成专属计划，导出是空的。\n\n请先完成 AI 教练 10 题建档，等 AI 返回「已自动加载你的专属计划」再导出 👍', 'warn');
+                return false;
+              }
+              var isObj = plan && typeof plan === 'object';
+              var clone = isObj ? JSON.parse(JSON.stringify(plan)) : plan;
+              if (isObj) {
+                clone.__export_schema_version__ = 'fx-plan-v1';
+                clone.exported_at = (function(){ var d=new Date(); return d.getFullYear()+'-'+_pad(d.getMonth()+1)+'-'+_pad(d.getDate())+'T'+_pad(d.getHours())+':'+_pad(d.getMinutes())+':'+_pad(d.getSeconds()); })();
+                clone.exported_from = 'Felix Chu Training · Public Workbench';
+                clone.exported_url = location ? location.href.replace(location.hash,'') : '';
+                try {
+                  if (clone.meta && typeof clone.meta === 'object') {
+                    var athlete = (typeof clone.meta.athlete==='string')?clone.meta.athlete.trim():'';
+                    var src = (typeof clone.meta.source_version==='string')?clone.meta.source_version.replace(/\s+/g,'-').replace(/[^0-9a-zA-Z_\u4e00-\u9fa5-]/g,''):'plan';
+                    clone.__export_filename_hint__ = 'felix-' + (src || 'plan') + (athlete?('-'+athlete.replace(/[^0-9a-zA-Z_\u4e00-\u9fa5]/g,'').slice(0,16)):'') + '-' + _todayStamp() + '.json';
+                  }
+                } catch(_){}
+              }
+              var text = JSON.stringify(clone, null, 2);
+              var blob;
+              try { blob = new Blob([text], { type:'application/json;charset=utf-8' }); }
+              catch(_) { blob = new Blob([text]); }
+              var url = null;
+              try {
+                url = URL && typeof URL.createObjectURL === 'function' ? URL.createObjectURL(blob) : null;
+              } catch(_){ url = null; }
+              var filename = 'felix-plan-' + _todayStamp() + '.json';
+              try {
+                if (clone && clone.__export_filename_hint__ && /^[A-Za-z0-9_\-\u4e00-\u9fa5]+\.json$/.test(clone.__export_filename_hint__)) {
+                  filename = clone.__export_filename_hint__;
+                }
+              } catch(_){}
+              var a = document.createElement('a');
+              a.href = url || ('data:application/json;charset=utf-8,' + encodeURIComponent(text));
+              a.download = filename;
+              a.style.display = 'none';
+              document.body.appendChild(a);
+              var ok = true;
+              try { a.click(); } catch(err){ ok = false; try { console.warn(err); } catch(_){} }
+              setTimeout(function(){
+                try { document.body.removeChild(a); } catch(_){}
+                try { if(url) URL.revokeObjectURL(url); } catch(_){}
+              }, 800);
+              if (ok) {
+                try {
+                  if (typeof appendMessage === 'function') {
+                    var hint = '✅ 已导出计划 JSON，文件名：**' + filename + '**。\n\n建议做法：把这个文件发送到「微信文件传输助手 / 云盘」，换设备后再打开本页面 → 点 📥 导入 JSON 即可完整恢复你的档案与训练计划。\n\n如需跨设备手动移动 JSON：请不要用微信「长按并翻译」，建议直接以文件形式传输。';
+                    appendMessage('bot', hint);
+                  }
+                } catch(_){}
+              } else {
+                _toast('导出失败：你的浏览器不支持自动下载。\n\n请把以下内容全选复制后，粘贴到一个文本文件并另存为 plan.json：\n（如需帮助可直接发我）', 'err');
+              }
+              return true;
+            } catch(err) {
+              var msg = (err && err.message) ? err.message : String(err);
+              try { console.warn('[exportPlan failed]', msg); } catch(_){}
+              _toast('导出失败：' + msg, 'err');
+              return false;
+            }
+          }
+
+          // ========= 导入 =========
+          function cleanPlanJsonText(raw){
+            // 参考 Experience 198909 预清洗策略：BOM + ```json 包裹 + 首尾非 { } 裁剪
+            if (raw == null) return '';
+            var text = String(raw);
+            if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+            text = text.replace(/^[\s\uFEFF\u200B\u200C]+|[\s\u200B\u200C]+$/g, '');
+            // 优先抽取第一段 ```json ... ```
+            try {
+              var fenceMatch = text.match(/```(?:json)?[\s\r\n]*([\s\S]*?)```/i);
+              if (fenceMatch && fenceMatch[1]) {
+                var fenced = String(fenceMatch[1]).replace(/^[\s\uFEFF]+|[\s]+$/g, '');
+                if (fenced.length >= 2) text = fenced;
+              }
+            } catch(_){}
+            // 如果仍然不是以 { / [ 开头，则截第一个 { 到 最后一个 }
+            if (text.length >= 2 && text.charAt(0) !== '{' && text.charAt(0) !== '[') {
+              var s = text.indexOf('{');
+              var e = text.lastIndexOf('}');
+              if (s >= 0 && e > s) text = text.slice(s, e + 1);
+            }
+            return text;
+          }
+          function applyImportedPlan(rawObj, opts){
+            try {
+              if (!rawObj || typeof rawObj !== 'object') throw new Error('导入的不是 JSON 对象');
+              if (!_looksLikePlan(rawObj)) throw new Error('这不像一份 Felix Chu 训练计划 JSON（缺少 meta、onboarding 或 days 字段）。\n请确认你上传的是本页面之前 💾 导出的文件。');
+              var merged = _deepMerge(_blankBase(), rawObj);
+              if (merged && merged.system && typeof merged.system === 'object') {
+                merged.system.imported_at = (function(){ var d=new Date(); return d.getFullYear()+'-'+_pad(d.getMonth()+1)+'-'+_pad(d.getDate()); })();
+                if (!merged.system.suite) merged.system.suite = 'Felix Chu Training System · Public Workbench (Imported)';
+                merged.system.mode = merged.system.mode || 'public-imported';
+              }
+              if (merged && merged.meta && typeof merged.meta === 'object') {
+                merged.meta.updated_at = merged.meta.updated_at || (function(){ var d=new Date(); return d.getFullYear()+'-'+_pad(d.getMonth()+1)+'-'+_pad(d.getDate()); })();
+                if (!merged.meta.source_version) merged.meta.source_version = 'imported-' + _todayStamp();
+              }
+              if (merged && merged.sync && typeof merged.sync === 'object') {
+                merged.sync.status = 'ok';
+                merged.sync.reason = '已从 JSON 导入并加载到当前浏览器本地。如需再次导出，请按 AI 教练头栏 💾。';
+                merged.sync.last_success = merged.sync.last_success || (merged.meta && merged.meta.updated_at ? merged.meta.updated_at : '');
+              }
+              if (!api || typeof api.savePlan !== 'function') {
+                _fxSet('plan', merged);
+              } else {
+                api.savePlan(merged);
+              }
+              var msg = '✅ 导入成功！已切换到你的档案与计划。\n\n页面会自动刷新一次，所有训练视图（今日 / 周期 / 体重 / 复盘）就会对应到这份 JSON 的内容。';
+              try {
+                if (typeof appendMessage === 'function') appendMessage('bot', msg);
+              } catch(_){ alert(msg); }
+              setTimeout(function(){ location.reload(); }, 700);
+              return true;
+            } catch(err) {
+              var m = (err && err.message) ? err.message : String(err);
+              try { console.warn('[applyImportedPlan failed]', m); } catch(_){}
+              _toast('导入失败：' + m, 'err');
+              return false;
+            }
+          }
+          function importJsonText(text, opts){
+            try {
+              var cleaned = cleanPlanJsonText(text);
+              if (!cleaned) throw new Error('文件是空的');
+              var obj = null;
+              try {
+                obj = JSON.parse(cleaned);
+              } catch(parseErr) {
+                var pe = (parseErr && parseErr.message) ? parseErr.message : String(parseErr);
+                throw new Error('无法解析 JSON。' + pe + '\\n\\n如果文件是从 AI 聊天里复制，请先粘贴回记事本，另存为 plan.json 再导入。');
+              }
+              return applyImportedPlan(obj, opts);
+            } catch(err) {
+              var m = (err && err.message) ? err.message : String(err);
+              _toast('导入失败：' + m, 'err');
+              return false;
+            }
+          }
+          function importPlanFromFile(file){
+            try {
+              if (!file) {
+                _toast('没有选择文件。请选择之前 💾 导出的 JSON 文件。', 'warn');
+                return false;
+              }
+              if (/\.heic|\.jpg|\.jpeg|\.png|\.pdf|\.mp4|\.zip$/i.test(file.name || '')) {
+                throw new Error('选择的文件不是 JSON（看起来像图片/压缩包）。\n\n请重新选择之前 💾 导出的 .json 文件。');
+              }
+              var reader = new FileReader();
+              reader.onerror = function(){ _toast('读取文件失败，请重试或换一个浏览器。', 'err'); };
+              reader.onload = function(){
+                try {
+                  var txt = (reader && reader.result) ? String(reader.result) : '';
+                  importJsonText(txt);
+                } catch(err) {
+                  var m = (err && err.message) ? err.message : String(err);
+                  _toast('导入失败：' + m, 'err');
+                }
+              };
+              reader.readAsText(file, 'utf-8');
+              return true;
+            } catch(err) {
+              var m = (err && err.message) ? err.message : String(err);
+              _toast('导入失败：' + m, 'err');
+              return false;
+            }
+          }
+          // 暴露 API（控制台也能调用）
+          if (api) {
+            api.exportPlan = exportPlan;
+            api.importPlan = importPlanFromFile;
+            api.importPlanFromFile = importPlanFromFile;
+            api.importPlanJsonText = importJsonText;
+            api.cleanPlanJsonText = cleanPlanJsonText;
+            api.applyImportedPlan = applyImportedPlan;
+          }
+          // 绑定 UI 按钮
+          try {
+            if (exportBtn) {
+              exportBtn.addEventListener('click', function(e){
+                if (e && e.stopPropagation) e.stopPropagation();
+                exportPlan();
+              });
+            }
+          } catch(_){}
+          try {
+            if (importBtn && planImportInput) {
+              importBtn.addEventListener('click', function(e){
+                if (e && e.stopPropagation) e.stopPropagation();
+                // 每一次重置 value，确保重复导入同一文件时 change 也能触发
+                try { planImportInput.value = ''; } catch(_){}
+                planImportInput.click();
+              });
+              planImportInput.addEventListener('change', function(){
+                var file = (planImportInput.files && planImportInput.files[0]) || null;
+                importPlanFromFile(file);
+              });
+            } else if (importBtn) {
+              // 兜底：老浏览器不支持 file click，提示用户至少可以用控制台
+              importBtn.addEventListener('click', function(){
+                _toast('当前浏览器无法直接弹出文件选择。\n\n备选方案：\n1) 打开控制台（F12）输入 __FX_PUBLIC__.importPlanJsonText(\"粘贴你的 JSON 文本\")；\n2) 或换 Chrome / 手机换系统浏览器试试。', 'warn');
+              });
+            }
+          } catch(_){}
+        } catch(err) {
+          try { console.warn('[planIO 降级，不影响 AI 聊天]', err && err.message ? err.message : String(err)); } catch(_){}
+          if (exportBtn) exportBtn.addEventListener('click', function(){ alert('导出功能初始化失败，请刷新页面重试。'); });
+          if (importBtn) importBtn.addEventListener('click', function(){ alert('导入功能初始化失败，请刷新页面重试。'); });
+        }
+      })();
       try {
         normalizePosition();
         applySaved();
