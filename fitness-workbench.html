@@ -2931,6 +2931,7 @@
   <div class="ai-hdr">
     <span class="ttl"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z"/></svg> AI 教练</span>
     <div class="acts">
+      <button id="aiFabReset" title="复位 AI 球到默认右下角位置">↺</button>
       <button id="aiClose" title="关闭">×</button>
     </div>
   </div>
@@ -2961,6 +2962,7 @@
   var panel = document.getElementById('aiPanel');
   var fab = document.getElementById('aiFab');
   var closeBtn = document.getElementById('aiClose');
+  var resetBtn = document.getElementById('aiFabReset');
   var msgsBox = document.getElementById('aiMessages');
   var input = document.getElementById('aiInput');
   var sendBtn = document.getElementById('aiSend');
@@ -3260,6 +3262,44 @@
       document.addEventListener('pointercancel', onUp, true);
 
       // 初始化：先归一，再应用持久化位置，再在 resize/orientationchange 时做边界吸附
+      function resetFabPos(){
+        try {
+          // 删除持久化
+          try { localStorage.removeItem(NS + FAB_KEY); } catch(_){}
+          // 清掉 JS 写入的 inline left/top，让 CSS 默认的 bottom/right 生效（桌面 24px / 移动端 14px 84px 等断点回退）
+          fab.style.left = ''; fab.style.top = '';
+          fab.style.bottom = ''; fab.style.right = '';
+          // 再做一次 normalize + 安全区吸附（保证在视口内且不压导航）
+          normalizePosition();
+          // 可选：微小动画提示复位
+          try {
+            fab.animate(
+              [{ transform:'scale(1)'}, { transform:'scale(1.2)'}, { transform:'scale(1)'}],
+              { duration: 260, easing: 'ease-out' }
+            );
+          } catch(_){}
+          return true;
+        } catch(err) {
+          try { console.warn('[resetFabPos failed]', err && err.message ? err.message : String(err)); } catch(_){}
+          return false;
+        }
+      }
+      // 暴露到公共 API：控制台输入 __FX_PUBLIC__.resetFab() 也能复位
+      try {
+        if (window.__FX_PUBLIC__) {
+          window.__FX_PUBLIC__.resetFab = resetFabPos;
+          window.__FX_PUBLIC__.resetFabPosition = resetFabPos;
+        }
+      } catch(_) {}
+      // 绑定「复位 AI 球」头栏按钮
+      try {
+        if (resetBtn) {
+          resetBtn.addEventListener('click', function(e){
+            if (e && e.stopPropagation) e.stopPropagation();
+            resetFabPos();
+          });
+        }
+      } catch(_) {}
       try {
         normalizePosition();
         applySaved();
