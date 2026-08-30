@@ -1,0 +1,71 @@
+Felix Fitness AI 鈥?Pages Functions deployment instructions
+===========================================================
+
+This branch (pages-proxy) contains:
+
+  public/           -> wrangler pages deploy public/        (static site: /, /healthz route, /api/chat route static fallthrough)
+  functions/        -> Pages Functions (auto-detected by wrangler when this dir is SIBLING of public/)
+
+Because the GitHub token used for automation does NOT have the "workflow" scope,
+the workflow .github/workflows/deploy-felixfitnessai-pages.yml has to be added manually.
+
+Option A: Add workflow via GitHub Web UI (1 minute)
+  1. Open https://github.com/alibi0528/qudewang2/tree/pages-proxy
+  2. Click "Add file" -> "Create new file"
+  3. Path:    .github/workflows/deploy-felixfitnessai-pages.yml
+  4. Paste the EXACT content below
+  5. Commit to the pages-proxy branch (Commit changes).
+
+------- START workflow YAML (cut here) --------
+name: Deploy Felix Fitness AI to CF Pages Functions
+
+on:
+  push:
+    branches: [pages-proxy]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: pages-proxy
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Show files
+        run: |
+          echo "== root =="; ls -la
+          echo "== public =="; ls -la public || true
+          echo "== functions =="; ls -laR functions || true
+
+      - name: Install wrangler
+        run: npm i -g wrangler@3 2>&1 | tail -n 10
+
+      - name: wrangler pages deploy (Functions auto-included from sibling functions/)
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CF_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN:  ${{ vars.CF_API_TOKEN }}
+        run: |
+          set -e
+          wrangler pages deploy public \
+            --project-name=felixfitnessai \
+            --branch=main
+
+------- END workflow YAML --------
+
+Option B: Give the automation token the workflow scope (you pick)
+  - Create a new token at https://github.com/settings/tokens -> select scopes: repo + workflow
+  - Paste it back to assistant -> then deployment becomes fully automated.
+
+After workflow runs successfully, verify:
+  curl -I https://felixfitnessai.pages.dev/healthz          (expect 200 OK-KEYSET)
+  curl -X POST https://felixfitnessai.pages.dev/api/chat ... (expect {content:...}).

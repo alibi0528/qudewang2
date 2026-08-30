@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Felix Fitness AI Proxy</title>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 40px; color:#1b2233; }
+  h1 { color: #4F6EEB; }
+  code { background: #f2f3fb; padding: 2px 6px; border-radius: 4px; }
+  .endpoints { background:#f9fafe; padding: 16px 24px; border-radius: 10px; border:1px solid #e4e8f7; }
+</style>
+</head>
+<body>
+  <h1>Felix Fitness AI Proxy</h1>
+  <p>Cloudflare Pages Functions 路 AI proxy endpoints for the fitness workbench.</p>
+  <div class="endpoints">
+    <p><strong>Endpoints:</strong></p>
+    <ul>
+      <li><code>GET /healthz</code> &nbsp;expect: <code>OK-KEYSET</code></li>
+      <li><code>POST /api/chat</code> &nbsp;proxies DeepSeek Chat Completions</li>
+    </ul>
+    <p>Frontend config in fitness-workbench.html:</p>
+    <p><code>API_BASE = "https://felixfitnessai.pages.dev"</code></p>
+  </div>
+</body>
+</html>
