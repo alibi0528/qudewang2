@@ -1,0 +1,42 @@
+name: Deploy Felix Fitness AI to CF Pages Functions
+
+on:
+  push:
+    branches: [pages-proxy]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: pages-proxy
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Show files
+        run: |
+          echo "== root =="; ls -la
+          echo "== public =="; ls -la public || true
+          echo "== functions =="; ls -laR functions || true
+
+      - name: Install wrangler
+        run: npm i -g wrangler@3 2>&1 | tail -n 10
+
+      - name: wrangler pages deploy (Functions auto-included)
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CF_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN:  ${{ vars.CF_API_TOKEN }}
+        run: |
+          set -e
+          wrangler pages deploy public \
+            --project-name=felixfitnessai \
+            --branch=main
