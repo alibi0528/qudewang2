@@ -1861,6 +1861,181 @@
   .ai-quick button:hover{border-color:#4F6EEB !important;background:linear-gradient(180deg,#EEF1FF 0%,#DDD6FF 100%) !important;background-color:#DDD6FF !important;color:#11166B !important;transform:translateY(-1px);box-shadow:0 3px 10px rgba(79,110,235,.20), 0 0 0 1px rgba(255,255,255,.7) inset !important}
   .ai-quick button:active{transform:translateY(0);box-shadow:0 1px 3px rgba(79,110,235,.18) !important}
   @media(max-width:600px){.ai-panel{width:100vw}.ai-fab{bottom:16px;right:16px}}
+
+  /* ===== Mobile slim · Felix Chu Training Workbench ===== */
+  /* 700px 以下开始整体紧凑化，主要针对手机横屏 + 大屏手机 */
+  @media (max-width:700px){
+    html{font-size:15px}
+    main{padding:16px 12px 96px!important}
+    body{background-attachment:scroll!important}
+    /* 顶栏 */
+    .appbar{height:52px!important;padding:0 12px!important}
+    .appbar h1{font-size:12.5px!important;letter-spacing:-.01em!important;max-width:72%}
+    .chip{font-size:9px!important;padding:3px 8px!important}
+    /* 同步条 */
+    .syncbar{margin:8px 10px 0!important;padding:7px 10px!important;font-size:11px!important;gap:6px!important;border-radius:9px!important}
+    /* 区块标题 */
+    h2{margin:18px 0 8px!important;font-size:12px!important;letter-spacing:.06em!important}
+    /* Hero（公开版主视觉）*/
+    .hero{min-height:280px!important;padding:20px 16px 18px!important;border-radius:18px!important}
+    .hero .hi{font-size:22px!important;max-width:100%!important;line-height:1.18!important}
+    .hero .sub{font-size:11.5px!important;max-width:100%!important;margin-top:6px!important;line-height:1.5!important}
+    .hero .pills{margin-top:12px!important;gap:6px!important}
+    .hero .pill{padding:6px 10px!important;font-size:10.5px!important;border-radius:999px!important;border-width:1px!important}
+    .advice{margin-top:96px!important;padding:12px 13px!important;border-radius:14px!important;font-size:12px!important;line-height:1.55!important}
+    /* 今日训练卡 */
+    #todayList{gap:8px!important}
+    .ex,.ex.main{min-height:auto!important;padding:12px 13px!important;border-radius:15px!important;gap:10px!important}
+    .ex .l .n{font-size:12px!important}.ex .l .s{font-size:9.5px!important;margin-top:4px!important}
+    .ex .r .w{font-size:17px!important;letter-spacing:-.03em!important}
+    .ex .r .d{font-size:10.5px!important;margin-top:3px!important}.ex .r .rpe{font-size:9.5px!important;margin-top:3px!important}
+    .note{padding:9px 11px!important;font-size:11px!important;margin-top:9px!important;border-radius:12px!important}
+    /* 周期进度 */
+    #cycleCard:before{right:14px;top:13px;font-size:9px!important}
+    .ringwrap{min-height:150px!important;padding:16px 14px 14px!important;gap:14px!important;flex-direction:column!important;align-items:center!important}
+    .ring{width:82px!important;height:82px!important}
+    .ring svg{width:82px!important;height:82px!important}
+    .ring .num{width:68px;height:68px}
+    .ring .num .w{font-size:23px!important}.ring .num .ph{font-size:9px!important;margin-top:6px!important}
+    .ringinfo{width:100%}
+    .ringinfo .row{min-height:36px!important;padding:6px 0!important;gap:8px!important}
+    .ringinfo .row .k{font-size:10px!important}.ringinfo .row .v{font-size:12.5px!important}
+    .stages{padding:6px 16px 22px!important;gap:7px!important}
+    .stg{height:8px!important}
+    /* 本周练日 */
+    .days{gap:9px!important}
+    .day{min-height:140px!important;padding:14px 15px!important;border-radius:15px!important}
+    .day:before{right:10px!important;bottom:-14px!important;font-size:62px!important}
+    .day .dn{font-size:13.5px!important}.day .st{padding:3px 8px!important;font-size:8.5px!important}
+    .day .dd{max-width:100%!important;margin-top:8px!important;font-size:10.5px!important}
+    .day .m{margin-top:10px!important;gap:5px!important}
+    .day-main{gap:7px!important;padding-top:5px!important}.day-main strong{font-size:13px!important}.day-main b{font-size:10px!important}
+    /* 本周说明 / 计划详情 */
+    #weekNote{grid-template-columns:1fr!important;gap:14px!important;padding:14px 15px!important;border-radius:16px!important}
+    .insight-lead{font-size:14px!important;margin-top:3px!important}
+    .insight-points{grid-template-columns:1fr!important;gap:7px!important}
+    .insight-point{padding:8px 10px!important;font-size:10.5px!important;border-left-width:2px!important}
+    #weekMain{grid-template-columns:1fr!important}
+    .wk .row{min-height:140px!important;padding:15px 16px!important}
+    .wk .row .k{font-size:13px!important}
+    .wk .row .v{font-size:10.5px!important;line-height:1.55!important;margin-top:5px!important}
+    .plan-prescription{margin-top:11px!important;font-size:12px!important}
+    .plan-criterion{margin-top:9px!important;padding-top:9px!important;font-size:9.5px!important}
+    .plan-meta{gap:5px!important;margin-top:7px!important}
+    .plan-tag{font-size:8.5px!important;padding:3px 7px!important}
+    /* 图表卡 */
+    #chartBox{gap:12px!important}
+    .chartcard{padding:14px!important;border-radius:16px!important}
+    .chartcard .ttl{margin-bottom:9px!important;flex-direction:column!important;align-items:flex-start!important;gap:6px!important}
+    .chartcard .ttl .n{font-size:13.5px!important}
+    .chartcard .ttl .cap{padding:3px 7px!important;font-size:9px!important}
+    .chartcard .plot{padding:5px 5px 0!important}
+    .chartcard svg{height:130px!important}
+    .chartcard .lg{font-size:10px!important;gap:6px!important;flex-wrap:wrap}
+    .chartcard .actual{padding:3px 7px!important;font-size:9px!important}
+    /* 复盘 */
+    .rv{grid-template-columns:1fr!important;padding:10px!important;gap:10px!important;border-radius:14px!important}
+    .rv .row{min-height:160px!important;padding:14px!important;border-radius:14px!important}
+    .rv .row:before{font-size:72px!important}
+    .rv .top .dt{font-size:10px!important}
+    .rv .mid{min-height:92px!important;padding:8px 0!important;font-size:11px!important}
+    .rv .bot{gap:6px!important;padding-top:7px!important}
+    /* 外部链接 */
+    .links{gap:8px!important}
+    .link{min-height:auto!important;padding:11px 12px!important;border-radius:14px!important}
+    .link .n{font-size:11.5px!important}
+    .link .s{margin-top:4px!important;font-size:9.5px!important}
+    /* 底部导航 */
+    .nav{height:auto!important;padding:4px 6px calc(4px + env(safe-area-inset-bottom,0px))!important;gap:0!important;border-top-width:1px!important}
+    .nav a{padding:7px 0 6px!important;gap:2px!important;font-size:10.5px!important;font-weight:600!important}
+    .nav a i{width:18px;height:2px!important}
+    /* 页脚 */
+    footer{margin-top:18px!important;padding:12px 14px 24px!important;font-size:10px!important;line-height:1.6!important;gap:4px!important}
+    /* AI 教练面板（移动端整体瘦身）*/
+    .ai-fab{width:50px!important;height:50px!important;bottom:84px!important;right:14px!important;box-shadow:0 3px 14px rgba(108,92,231,.46)!important}
+    .ai-fab svg{width:23px!important;height:23px!important}
+    .ai-panel{border-radius:0!important}
+    .ai-hdr{padding:10px 14px!important}
+    .ai-hdr .ttl{font-size:14px!important;gap:6px!important}
+    .ai-hdr .ttl svg{width:18px!important;height:18px!important}
+    .ai-hdr .acts{gap:4px!important}
+    .ai-hdr .acts button{width:28px!important;height:28px!important;font-size:16px!important;border-radius:7px!important}
+    .ai-modes button{padding:8px 3px!important;font-size:12.5px!important}
+    .ai-cfg{padding:8px 11px!important}
+    .ai-cfg label{font-size:11px!important;margin-bottom:3px!important}
+    .ai-cfg .row{gap:6px!important}
+    .ai-cfg input{padding:7px 9px!important;font-size:12px!important;border-radius:7px!important}
+    .ai-cfg button{padding:7px 11px!important;font-size:12px!important;border-radius:7px!important}
+    .ai-cfg .hint{font-size:10px!important;margin-top:4px!important}
+    .ai-msgs{padding:10px!important;gap:9px!important}
+    .ai-msg{max-width:90%!important;padding:8px 11px!important;border-radius:12px!important;font-size:13px!important;line-height:1.55!important}
+    .ai-msg.bot code{padding:1px 4px!important;font-size:12px!important}
+    .ai-typing{padding:9px 13px!important;border-radius:12px!important;gap:3px!important}
+    .ai-typing span{width:6.5px!important;height:6.5px!important}
+    .ai-quick{gap:5px!important;padding:5px 10px 8px!important}
+    .ai-quick button{padding:5.5px 10px!important;font-size:11.5px!important;border-radius:999px!important;border-width:1px!important;font-weight:700!important}
+    .ai-input-area{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))!important;gap:6px!important}
+    .ai-input-area textarea{padding:7px 10px!important;font-size:13px!important;line-height:1.45!important;border-radius:9px!important;max-height:96px!important}
+    .ai-input-area button{width:36px!important;height:36px!important;font-size:16px!important}
+    /* 身体数据卡 / 其他表格类卡片通用瘦身 */
+    #setBox .setrow, .setrow{padding:11px 13px!important;gap:10px!important}
+    .setrow .k{font-size:10.5px!important}.setrow .v{font-size:11.5px!important;line-height:1.5!important}
+    .bwrow{font-size:11px!important;padding:11px 13px!important}
+    .links{grid-template-columns:1fr 1fr!important}
+  }
+  /* 420px 以下：窄屏极限瘦身（主流手机 360-414px）*/
+  @media (max-width:420px){
+    main{padding:14px 10px 96px!important}
+    .appbar{height:48px!important;padding:0 10px!important}
+    .appbar h1{font-size:11.5px!important}
+    .chip{font-size:8.5px!important;padding:2.5px 7px!important}
+    .syncbar{padding:6px 9px!important;font-size:10.5px!important;margin:7px 8px 0!important}
+    h2{margin:15px 0 7px!important;font-size:11px!important}
+    .hero{min-height:250px!important;padding:17px 14px 15px!important;border-radius:16px!important}
+    .hero .hi{font-size:19px!important;line-height:1.15!important}
+    .hero .sub{font-size:11px!important}
+    .hero .pill{padding:5px 9px!important;font-size:10px!important}
+    .advice{margin-top:78px!important;padding:11px 12px!important;font-size:11.5px!important;border-radius:13px!important}
+    .ex,.ex.main{padding:11px 12px!important;border-radius:14px!important}
+    .ex .l .n{font-size:11px!important}.ex .l .s{font-size:9px!important}
+    .ex .r .w{font-size:16px!important}
+    .ringwrap{padding:14px 12px 12px!important;gap:12px!important}
+    .ring{width:74px!important;height:74px!important}.ring svg{width:74px!important;height:74px!important}
+    .ring .num{width:60px;height:60px}
+    .ring .num .w{font-size:21px!important}
+    .stages{padding:5px 14px 20px!important}
+    .day{min-height:130px!important;padding:12px 13px!important;border-radius:14px!important}
+    .day .dn{font-size:12.5px!important}
+    .day .dd{font-size:10px!important;margin-top:7px!important}
+    .day .m{margin-top:9px!important;gap:4px!important}
+    .day-main strong{font-size:12.5px!important}
+    #weekNote{padding:12px 13px!important;border-radius:14px!important}
+    .insight-lead{font-size:13px!important}
+    .insight-point{padding:7px 9px!important;font-size:10px!important}
+    .wk .row{min-height:130px!important;padding:13px 14px!important}
+    .chartcard{padding:12px!important;border-radius:14px!important}
+    .chartcard svg{height:118px!important}
+    .rv .row{min-height:150px!important;padding:13px!important;border-radius:13px!important}
+    .ai-fab{width:46px!important;height:46px!important;bottom:82px!important;right:12px!important}
+    .ai-fab svg{width:21px!important;height:21px!important}
+    .ai-hdr{padding:9px 12px!important}
+    .ai-hdr .ttl{font-size:13.5px!important}
+    .ai-modes button{padding:7px 2px!important;font-size:12px!important}
+    .ai-msgs{padding:8px!important;gap:8px!important}
+    .ai-msg{padding:7px 10px!important;font-size:12.5px!important;border-radius:11px!important}
+    .ai-quick{padding:4px 8px 7px!important;gap:4px!important}
+    .ai-quick button{padding:5px 9px!important;font-size:11px!important}
+    .ai-input-area{padding:7px 8px calc(7px + env(safe-area-inset-bottom,0px))!important}
+    .ai-input-area textarea{font-size:12.5px!important;padding:6px 9px!important}
+    .ai-input-area button{width:34px!important;height:34px!important;font-size:15px!important}
+    .nav a{padding:6px 0 5px!important;font-size:10px!important}
+    footer{padding:10px 12px 22px!important;font-size:9.5px!important}
+  }
+  @media (max-width:700px){
+    /* 禁用移动端 hover 放大，减少重排/毛刺感 */
+    .ai-fab:hover{transform:none!important;box-shadow:0 3px 14px rgba(108,92,231,.46)!important}
+    .link:hover,.rv .row:hover,.day:hover,.chartcard:hover{transform:none!important;box-shadow:none!important}
+  }
 </style>
 </head>
 <body class="dark-background-theme">
