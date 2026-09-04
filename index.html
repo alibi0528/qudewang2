@@ -1082,40 +1082,7 @@
               <img src="data:image/png;base64,你的base64" alt="添加Felix微信" />
             方式3（不处理图片，仅靠微信号复制）：保持这段 placeholder SVG，同学会用下方「复制微信号」按钮直接添加，也能成功。
           -->
-          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Felix微信二维码">
-            <!-- 白底圆角底（配合 QR 风格） -->
-            <rect x="0" y="0" width="200" height="200" rx="8" fill="#fff"/>
-            <!-- 伪二维码：用蓝紫色点阵 + 微信"添加我"中央占位 -->
-            <defs>
-              <pattern id="dots" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                <rect x="0" y="0" width="4" height="4" fill="#4F6EEB"/>
-                <rect x="6" y="2" width="3" height="3" fill="#9B7CFF"/>
-                <rect x="2" y="6" width="3" height="3" fill="#1F1166" opacity=".65"/>
-                <rect x="7" y="7" width="2" height="2" fill="#4F6EEB"/>
-              </pattern>
-              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stop-color="#4F6EEB"/>
-                <stop offset="1" stop-color="#9B7CFF"/>
-              </linearGradient>
-            </defs>
-            <!-- 二维码点阵区 -->
-            <rect x="16" y="16" width="168" height="168" rx="6" fill="url(#dots)"/>
-            <!-- 三个定位角（和真实二维码一样） -->
-            <g fill="none" stroke="url(#g1)" stroke-width="3">
-              <rect x="24" y="24" width="28" height="28" rx="3"/>
-              <rect x="148" y="24" width="28" height="28" rx="3"/>
-              <rect x="24" y="148" width="28" height="28" rx="3"/>
-            </g>
-            <g fill="url(#g1)">
-              <rect x="30" y="30" width="16" height="16" rx="2"/>
-              <rect x="154" y="30" width="16" height="16" rx="2"/>
-              <rect x="30" y="154" width="16" height="16" rx="2"/>
-            </g>
-            <!-- 中央白色卡片 + 微信号 kk49512007 -->
-            <rect x="62" y="78" width="76" height="44" rx="10" fill="#ffffff" stroke="#9B7CFF" stroke-width="1.5"/>
-            <text x="100" y="101" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#4F6EEB" font-weight="700" letter-spacing=".02em">WECHAT</text>
-            <text x="100" y="117" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="14" fill="#1F1166" font-weight="700">kk49512007</text>
-          </svg>
+          <img src="wechat-qr.png" alt="添加Felix微信，扫二维码加好友 kk49512007" />
           <div class="qr-replace-hint">PLACEHOLDER · 可替换为真实二维码</div>
         </div>
 
