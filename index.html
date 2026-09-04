@@ -480,6 +480,120 @@
       box-shadow:none !important;
     }
   }
+
+  /* ========== WECHAT MODAL (微信二维码弹层) ========== */
+  .wx-modal{
+    position:fixed; inset:0; z-index:200; pointer-events:none; opacity:0; visibility:hidden;
+    transition:opacity .28s ease, visibility .28s ease;
+  }
+  .wx-modal.open{ pointer-events:auto; opacity:1; visibility:visible; }
+  .wx-modal-mask{
+    position:absolute; inset:0; background:rgba(8,8,10,0.78); backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+  }
+  .wx-modal-panel{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-46%) scale(.96);
+    width:min(420px,92vw); background:var(--surface);
+    border:1px solid var(--line-strong); border-radius:18px; overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(155,124,255,0.14);
+    transition:transform .32s cubic-bezier(.2,.8,.2,1), opacity .28s;
+    opacity:0;
+  }
+  .wx-modal.open .wx-modal-panel{ transform:translate(-50%,-50%) scale(1); opacity:1; }
+  .wx-modal-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 24px 16px; border-bottom:1px solid var(--line);
+  }
+  .wx-modal-head .title{ font-family:var(--font-display); font-size:22px; font-weight:400; }
+  .wx-modal-head .title em{ font-style:italic; color:var(--accent); }
+  .wx-modal-head .sub{ font-family:var(--font-mono); font-size:10px; color:var(--accent); letter-spacing:0.12em; margin-top:4px; }
+  .wx-modal-close{
+    width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line-strong); background:transparent; color:var(--ink);
+    cursor:pointer; font-size:20px; line-height:1; transition:border-color .2s,color .2s,background .2s;
+  }
+  .wx-modal-close:hover{ border-color:var(--accent); color:var(--accent); background:rgba(155,124,255,0.12); }
+
+  .wx-modal-body{ padding:24px; text-align:center; }
+  .wx-qr{
+    width:220px; height:220px; margin:0 auto 20px; border-radius:14px; background:#fff;
+    padding:14px; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 24px rgba(0,0,0,0.12); position:relative; overflow:hidden;
+  }
+  .wx-qr img, .wx-qr svg{ display:block; width:100%; height:100%; }
+  .wx-qr .qr-replace-hint{
+    position:absolute; bottom:4px; left:0; right:0; text-align:center;
+    font-family:var(--font-mono); font-size:8px; letter-spacing:.1em; color:#9B7CFF; opacity:.7;
+  }
+
+  .wx-id-row{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:var(--surface-2); border:1px solid var(--line); border-radius:12px;
+    padding:10px 12px 10px 16px; margin-bottom:20px;
+  }
+  .wx-id-row .label{ font-family:var(--font-mono); font-size:10px; color:var(--faint); letter-spacing:.12em; }
+  .wx-id-row .val{ font-family:var(--font-mono); font-size:18px; color:var(--ink); font-weight:500; letter-spacing:.02em; }
+  .wx-copy{
+    flex:0 0 auto; display:inline-flex; align-items:center; gap:8px;
+    background:var(--accent); color:#fff; border:none; border-radius:10px;
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.08em;
+    padding:9px 14px; cursor:pointer; transition:background .2s, transform .15s;
+  }
+  .wx-copy:hover{ background:var(--accent-2); }
+  .wx-copy:active{ transform:scale(.96); }
+
+  .wx-steps{
+    text-align:left; border-top:1px dashed var(--line); padding-top:18px;
+    color:var(--muted); font-size:13px; line-height:1.7;
+  }
+  .wx-steps .st{ display:flex; gap:10px; margin-bottom:8px; align-items:flex-start; }
+  .wx-steps .num{
+    flex:0 0 22px; width:22px; height:22px; border-radius:50%; background:rgba(155,124,255,0.14);
+    border:1px solid rgba(155,124,255,0.35); color:var(--accent-soft);
+    font-family:var(--font-mono); font-size:11px; display:flex; align-items:center; justify-content:center;
+  }
+  .wx-steps .txt b{ color:var(--ink); font-weight:500; }
+  .wx-modal-foot{
+    padding:0 24px 24px;
+    font-family:var(--font-mono); font-size:10px; color:var(--faint); letter-spacing:.08em; text-align:center;
+  }
+
+  /* ========== TOAST (复制成功提示) ========== */
+  .toast{
+    position:fixed; z-index:300; left:50%; top:20%; transform:translate(-50%,-20px);
+    background:rgba(20,20,23,0.96); backdrop-filter:blur(10px);
+    border:1px solid var(--accent); color:var(--ink);
+    padding:12px 22px; border-radius:999px; font-size:13px;
+    box-shadow:0 12px 36px rgba(155,124,255,0.35);
+    opacity:0; pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .toast.show{ opacity:1; transform:translate(-50%,0); }
+  .toast b{ color:var(--accent-soft); }
+
+  /* 微信卡片：让它也有点击光标+手型（和tel/mailto一致） */
+  .contact-card.wx-card{ cursor:pointer; }
+
+  /* 移动端响应（Modal/Toast） */
+  @media (max-width:760px){
+    .wx-qr{ width:200px; height:200px; }
+    .wx-id-row .val{ font-size:16px; }
+    .wx-modal-head{ padding:18px 20px 14px; }
+    .wx-modal-head .title{ font-size:20px; }
+    .wx-modal-body{ padding:20px; }
+    .wx-steps{ font-size:12.5px; }
+  }
+  @media (max-width:420px){
+    .wx-modal-panel{ width:min(360px,92vw); }
+    .wx-qr{ width:180px; height:180px; padding:12px; }
+    .wx-id-row{ padding:8px 10px 8px 14px; gap:8px; }
+    .wx-id-row .val{ font-size:15px; }
+    .wx-copy{ padding:8px 12px; font-size:10.5px; }
+    .wx-modal-head{ padding:16px 18px 12px; }
+    .wx-modal-head .title{ font-size:18px; }
+    .wx-modal-body{ padding:18px; }
+    .wx-modal-foot{ padding:0 18px 20px; font-size:9.5px; }
+  }
   /* ===== SERVICES (我能帮你做什么) ===== */
   /* (mobile overrides above at line 301-482) */
   .services-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
@@ -620,9 +734,9 @@
           <span class="cc-ic">📧</span>
           <div><div class="cc-label">QQ MAIL</div><div class="cc-val">2655732386@qq.com</div></div>
         </a>
-        <a class="contact-card" href="#interests">
+        <a class="contact-card wx-card" href="#wxModal" role="button" data-wx-open>
           <span class="cc-ic">💬</span>
-          <div><div class="cc-label">WECHAT</div><div class="cc-val">kk49512007</div></div>
+          <div><div class="cc-label">WECHAT · 点击弹出二维码</div><div class="cc-val">kk49512007</div></div>
         </a>
       </div>
     </div>
@@ -946,6 +1060,90 @@
     </div>
   </section>
 
+  <!-- WECHAT MODAL (Hero + Footer 两处微信卡片共用一个弹层) -->
+  <div class="wx-modal" id="wxModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="添加 Felix 的微信">
+    <div class="wx-modal-mask" data-wx-close></div>
+    <div class="wx-modal-panel" role="document">
+      <div class="wx-modal-head">
+        <div>
+          <div class="title">添加我的 <em>微信</em></div>
+          <div class="sub">ADD FELIX ON WECHAT</div>
+        </div>
+        <button class="wx-modal-close" data-wx-close aria-label="关闭微信弹层">×</button>
+      </div>
+      <div class="wx-modal-body">
+        <!-- 微信二维码区域 -->
+        <div class="wx-qr">
+          <!--
+            【替换说明：把下面整个 <svg>...</svg> 整段替换为你的真实微信二维码图片即可】
+            方式1（推荐，高清不糊）：导出微信「添加我」二维码 PNG → 上传到 GitHub 仓库 → 把整段 <svg> 替换为
+              <img src="你的二维码图片路径，例如 assets/wechat-qr.png" alt="添加Felix微信" />
+            方式2（无需改仓库）：把你真实二维码截图转 Base64 data:image/png;base64,...，替换 <svg...> 为
+              <img src="data:image/png;base64,你的base64" alt="添加Felix微信" />
+            方式3（不处理图片，仅靠微信号复制）：保持这段 placeholder SVG，同学会用下方「复制微信号」按钮直接添加，也能成功。
+          -->
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Felix微信二维码">
+            <!-- 白底圆角底（配合 QR 风格） -->
+            <rect x="0" y="0" width="200" height="200" rx="8" fill="#fff"/>
+            <!-- 伪二维码：用蓝紫色点阵 + 微信"添加我"中央占位 -->
+            <defs>
+              <pattern id="dots" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                <rect x="0" y="0" width="4" height="4" fill="#4F6EEB"/>
+                <rect x="6" y="2" width="3" height="3" fill="#9B7CFF"/>
+                <rect x="2" y="6" width="3" height="3" fill="#1F1166" opacity=".65"/>
+                <rect x="7" y="7" width="2" height="2" fill="#4F6EEB"/>
+              </pattern>
+              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#4F6EEB"/>
+                <stop offset="1" stop-color="#9B7CFF"/>
+              </linearGradient>
+            </defs>
+            <!-- 二维码点阵区 -->
+            <rect x="16" y="16" width="168" height="168" rx="6" fill="url(#dots)"/>
+            <!-- 三个定位角（和真实二维码一样） -->
+            <g fill="none" stroke="url(#g1)" stroke-width="3">
+              <rect x="24" y="24" width="28" height="28" rx="3"/>
+              <rect x="148" y="24" width="28" height="28" rx="3"/>
+              <rect x="24" y="148" width="28" height="28" rx="3"/>
+            </g>
+            <g fill="url(#g1)">
+              <rect x="30" y="30" width="16" height="16" rx="2"/>
+              <rect x="154" y="30" width="16" height="16" rx="2"/>
+              <rect x="30" y="154" width="16" height="16" rx="2"/>
+            </g>
+            <!-- 中央白色卡片 + 微信号 kk49512007 -->
+            <rect x="62" y="78" width="76" height="44" rx="10" fill="#ffffff" stroke="#9B7CFF" stroke-width="1.5"/>
+            <text x="100" y="101" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#4F6EEB" font-weight="700" letter-spacing=".02em">WECHAT</text>
+            <text x="100" y="117" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="14" fill="#1F1166" font-weight="700">kk49512007</text>
+          </svg>
+          <div class="qr-replace-hint">PLACEHOLDER · 可替换为真实二维码</div>
+        </div>
+
+        <!-- 微信号行 + 一键复制 -->
+        <div class="wx-id-row">
+          <div>
+            <div class="label">WECHAT ID</div>
+            <div class="val" id="wxIdText">kk49512007</div>
+          </div>
+          <button class="wx-copy" type="button" id="wxCopyBtn" title="复制微信号">
+            <span>📋</span><span>复制ID</span>
+          </button>
+        </div>
+
+        <!-- 操作步骤 -->
+        <div class="wx-steps">
+          <div class="st"><span class="num">1</span><div class="txt">打开 <b>微信 App</b>，点右上角「+」→「添加朋友」</div></div>
+          <div class="st"><span class="num">2</span><div class="txt">扫上方二维码，或 <b>粘贴微信号 kk49512007</b> 搜索</div></div>
+          <div class="st"><span class="num">3</span><div class="txt">加好友时打个招呼 👋 例如：「我是XX专业的同学，想找你帮个忙 / 交流交流」</div></div>
+        </div>
+      </div>
+      <div class="wx-modal-foot">瞿德旺 Felix Chu · 视觉设计 · AI 应用 · 在校可承接项目</div>
+    </div>
+  </div>
+
+  <!-- TOAST (用于复制成功提示) -->
+  <div class="toast" id="toastEl" role="status" aria-live="polite">微信号 <b id="toastVal"></b> 已复制到剪贴板 ✅</div>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
@@ -959,9 +1157,9 @@
           <span class="cc-ic">📧</span>
           <div><div class="cc-label">QQ MAIL</div><div class="cc-val">2655732386@qq.com</div></div>
         </a>
-        <a class="contact-card" href="#interests">
+        <a class="contact-card wx-card" href="#wxModal" role="button" data-wx-open>
           <span class="cc-ic">💬</span>
-          <div><div class="cc-label">WECHAT</div><div class="cc-val">kk49512007</div></div>
+          <div><div class="cc-label">WECHAT · 点击弹出二维码</div><div class="cc-val">kk49512007</div></div>
         </a>
       </div>
       <div class="meta">
@@ -1220,6 +1418,127 @@
       if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
     });
   });
+})();
+</script>
+
+<!-- ======= WECHAT MODAL & CONTACT CLICK ======= -->
+<!--  电话/邮箱：原生 tel:/mailto: 跳转（页面已有 href，浏览器会处理）     -->
+<!--  微信：点击 → 弹出二维码弹层 + 一键复制微信号（避免 weixin:// 拦截坑） -->
+<script>
+(function(){
+  const WX_ID = 'kk49512007';          // ← 你的微信号改这里（同时请改 HTML 中显示文本）
+  const modal  = document.getElementById('wxModal');
+  const copyBtn= document.getElementById('wxCopyBtn');
+  const toast  = document.getElementById('toastEl');
+  const toastVal = document.getElementById('toastVal');
+  const wxIdText = document.getElementById('wxIdText');
+  if(!modal || !copyBtn || !toast) return;
+
+  // --- Toast 提示 ---
+  let toastTimer = null;
+  function showToast(msg){
+    if(toastVal) toastVal.textContent = msg || WX_ID;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>{ toast.classList.remove('show'); }, 1800);
+  }
+
+  // --- 复制微信号（Clipboard API 优先，降级 execCommand） ---
+  async function copyWx(){
+    const txt = WX_ID;
+    try {
+      if(navigator.clipboard && window.isSecureContext){
+        await navigator.clipboard.writeText(txt);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = txt; ta.style.position='fixed'; ta.style.top='-1000px';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch(_){}
+        document.body.removeChild(ta);
+      }
+      showToast(txt);
+    } catch(e) {
+      // 最终兜底：选中+提示用户手动复制
+      try {
+        if(window.getSelection){
+          const range = document.createRange();
+          if(wxIdText) { range.selectNodeContents(wxIdText); window.getSelection().removeAllRanges(); window.getSelection().addRange(range); }
+        }
+      } catch(_){}
+      toast.textContent = '长按/选中微信号复制：' + txt + ' ⚠️';
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=>{ toast.classList.remove('show'); }, 2400);
+    }
+    if(copyBtn){
+      copyBtn.style.transform='scale(.94)'; setTimeout(()=>{ copyBtn.style.transform=''; }, 160);
+    }
+  }
+  copyBtn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); copyWx(); });
+
+  // --- 弹层开关 ---
+  let lastFocus = null;
+  function openWxModal(){
+    lastFocus = document.activeElement;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    // 阻止 Lenis 滚动（兼容）
+    const L = window.Lenis || window.__lenis || (window.lenis);
+    if(L && typeof L.stop === 'function') try{ L.stop(); }catch(_){}
+    setTimeout(()=>{ try{ const first = modal.querySelector('.wx-modal-close') || modal.querySelector('.wx-copy'); if(first) first.focus({preventScroll:true}); }catch(_){} }, 60);
+  }
+  function closeWxModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    const L = window.Lenis || window.__lenis || (window.lenis);
+    if(L && typeof L.start === 'function') try{ L.start(); }catch(_){}
+    if(lastFocus && typeof lastFocus.focus === 'function') try{ lastFocus.focus({preventScroll:true}); }catch(_){}
+  }
+
+  // 绑定所有 [data-wx-open] 按钮（Hero & Footer 两处微信卡片）
+  document.querySelectorAll('[data-wx-open]').forEach(a=>{
+    a.addEventListener('click', function(e){
+      // 阻止默认的锚点滚动（微信卡片 href="#wxModal" 会交给我们自己处理，不再走全局 anchor 平滑滚动）
+      if(e && e.preventDefault) e.preventDefault();
+      if(e && e.stopPropagation) e.stopPropagation();
+      openWxModal();
+    });
+  });
+  // 绑定所有 [data-wx-close]（遮罩 + 右上角×）
+  modal.querySelectorAll('[data-wx-close]').forEach(el=>{
+    el.addEventListener('click', function(e){
+      if(e && e.preventDefault) e.preventDefault();
+      if(e && e.stopPropagation) e.stopPropagation();
+      closeWxModal();
+    });
+  });
+  // Esc 关闭
+  document.addEventListener('keydown', function(e){
+    if(!modal.classList.contains('open')) return;
+    if(e.key === 'Escape') closeWxModal();
+  });
+
+  // --- 联系卡片点击提示（电话/邮箱本来就是原生跳转；这里给一个「已启动拨号/邮件客户端」的 toast，作为视觉反馈，完全可选，出错静默降级）  ---
+  try{
+    document.querySelectorAll('.contact-card').forEach(card=>{
+      // 跳过微信卡片（它自己有 data-wx-open 逻辑）
+      if(card.matches('[data-wx-open]') || card.classList.contains('wx-card')) return;
+      const href = card.getAttribute('href') || '';
+      if(href.indexOf('tel:') === 0 || href.indexOf('mailto:') === 0){
+        card.addEventListener('click', function(){
+          if(href.indexOf('tel:') === 0){
+            toast.textContent = '📞 正在唤起拨号…'; toast.classList.add('show');
+            clearTimeout(toastTimer); toastTimer = setTimeout(()=>toast.classList.remove('show'), 1500);
+          } else {
+            toast.textContent = '📧 正在唤起邮件客户端…'; toast.classList.add('show');
+            clearTimeout(toastTimer); toastTimer = setTimeout(()=>toast.classList.remove('show'), 1500);
+          }
+        }, true);
+      }
+    });
+  } catch(_){ /* 完全降级：即使不弹 toast，原生 tel/mailto 跳转仍然会执行 */ }
 })();
 </script>
 </body>
