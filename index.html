@@ -297,6 +297,49 @@
   @media (prefers-reduced-motion: reduce){
     .project-card{ transition:none; }
   }
+  /* ===== SERVICES (我能帮你做什么) ===== */
+  .services-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
+  .service-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:28px 24px; transition:border-color .35s,transform .35s;
+    position:relative; overflow:hidden;
+  }
+  .service-card:hover{ border-color:rgba(155,124,255,.40); transform:translateY(-3px); }
+  .service-card .sv-ic{ font-size:28px; margin-bottom:14px; line-height:1; }
+  .service-card .sv-name{ font-family:var(--font-display); font-size:19px; font-weight:400; color:var(--ink); margin-bottom:8px; }
+  .service-card .sv-desc{ font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:14px; }
+  .service-card .sv-tags{ display:flex; flex-wrap:wrap; gap:6px; }
+  .service-card .sv-tags span{ font-family:var(--font-mono); font-size:10px; padding:4px 10px; border-radius:999px; background:rgba(79,110,235,.08); border:1px solid rgba(79,110,235,.24); color:var(--accent-soft); }
+  .service-card .sv-hit{ position:absolute; top:0; right:0; font-family:var(--font-mono); font-size:11px; color:var(--faint); padding:6px 12px; }
+
+  /* ===== INTERESTS (正在学习/感兴趣) ===== */
+  .interests-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  @media (max-width:760px){ .interests-wrap{ grid-template-columns:1fr; } }
+  .interest-block{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:28px 24px; }
+  .interest-block h3{ font-family:var(--font-display); font-size:20px; font-weight:400; color:var(--ink); margin-bottom:6px; }
+  .interest-block .ib-sub{ font-family:var(--font-mono); font-size:11px; color:var(--accent); letter-spacing:.1em; margin-bottom:20px; }
+  .interest-block .ib-tags{ display:flex; flex-wrap:wrap; gap:10px; }
+  .interest-block .ib-tags .it{
+    font-size:14px; padding:8px 16px; border-radius:999px; cursor:default;
+    border:1px solid var(--line-strong); color:var(--muted); transition:all .3s;
+  }
+  .interest-block .ib-tags .it:hover{ border-color:var(--accent-2); color:var(--ink); }
+  .interest-block .ib-tags .it.heat{ border-color:rgba(155,124,255,.45); color:var(--accent-soft); background:rgba(155,124,255,.06); }
+  .interest-block .ib-note{ margin-top:18px; font-size:14px; color:var(--muted); line-height:1.7; }
+
+  /* ===== CONTACT (enhanced footer) ===== */
+  .contact-cards{ display:flex; flex-wrap:wrap; gap:14px; margin-top:28px; }
+  .contact-card{
+    display:flex; align-items:center; gap:12px;
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:14px 20px; text-decoration:none; color:var(--ink);
+    transition:border-color .3s,transform .3s;
+  }
+  .contact-card:hover{ border-color:var(--accent); transform:translateY(-2px); }
+  .contact-card .cc-ic{ font-size:22px; }
+  .contact-card .cc-label{ font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; color:var(--faint); }
+  .contact-card .cc-val{ font-size:14px; color:var(--ink); }
+
   /* footer */
   .footer{ padding:80px 0 60px; border-top:1px solid var(--line); margin-top:8vh; }
   .footer-inner{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; }
@@ -361,9 +404,11 @@
       <div class="brand">瞿德旺 <em>/</em> Felix Chu</div>
       <div class="nav-links">
         <a href="#hero">首页</a>
+        <a href="#services">服务</a>
         <a href="#skills">技能</a>
         <a href="#credentials">教育</a>
         <a href="#projects">项目</a>
+        <a href="#interests">兴趣</a>
       </div>
       <div class="status">可承接项目</div>
     </div>
@@ -378,13 +423,82 @@
       <div class="sub reveal-up">PPT设计 <b>·</b> AI工具 <b>·</b> 视觉叙事 <b>·</b> 团队协作</div>
       <p class="intro reveal-up">中南林业科技大学在读本科生，热衷于将视觉设计美学与 AI 前沿技术深度融合。擅长通过 PPT 视觉叙事、提示词工程与 AI 辅助工作流，将复杂信息转化为直观、高转化率的视觉呈现，持续提升团队内容生产效率与数字化表达能力。</p>
       <div class="ctas reveal-up">
-        <a class="btn primary" href="#skills">查看技能矩阵 <span class="arrow">→</span></a>
-        <a class="btn" href="#credentials">教育与证书</a>
-        <a class="btn" href="tel:19720817095">联系我 · 19720817095</a>
+        <a class="btn primary" href="#services">我能帮你做什么 <span class="arrow">→</span></a>
+        <a class="btn" href="#skills">查看技能矩阵</a>
+        <a class="btn" href="#interests">兴趣 & 正在探索</a>
+      </div>
+      <div class="contact-cards reveal-up">
+        <a class="contact-card" href="tel:19720817095">
+          <span class="cc-ic">📞</span>
+          <div><div class="cc-label">PHONE</div><div class="cc-val">19720817095</div></div>
+        </a>
+        <a class="contact-card" href="mailto:2655732386@qq.com">
+          <span class="cc-ic">📧</span>
+          <div><div class="cc-label">QQ MAIL</div><div class="cc-val">2655732386@qq.com</div></div>
+        </a>
+        <a class="contact-card" href="#interests">
+          <span class="cc-ic">💬</span>
+          <div><div class="cc-label">WECHAT / QQ</div><div class="cc-val">2655732386</div></div>
+        </a>
       </div>
     </div>
     <div class="scroll-hint">向下滚动 · 见证显影<div class="line"></div></div>
   </header>
+
+  <!-- SERVICES: 我能帮你做什么 -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="sec-head reveal-up">
+        <div>
+          <div class="sec-idx">01 / SERVICES</div>
+          <h2 class="sec-title">我能帮你<em>做什么</em></h2>
+          <div class="sec-desc">在校同学有 PPT / AI / 数据可视化需求，欢迎随时找我聊～ 以下是我能提供的具体帮助：</div>
+        </div>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card reveal-up">
+          <div class="sv-hit">90%</div>
+          <div class="sv-ic">🎨</div>
+          <div class="sv-name">PPT 美化与视觉设计</div>
+          <div class="sv-desc">课程汇报 PPT、比赛答辩 PPT、社团招新海报、活动宣传页。把信息显影成可视叙事，让你在小组展示里一眼脱颖而出。</div>
+          <div class="sv-tags"><span>期末汇报</span><span>路演答辩</span><span>招新海报</span></div>
+        </div>
+
+        <div class="service-card reveal-up">
+          <div class="sv-hit">88%</div>
+          <div class="sv-ic">🤖</div>
+          <div class="sv-name">AI 工具实操指导</div>
+          <div class="sv-desc">教同学用 AI 写论文大纲、做调研整理、自动生成 PPT 初稿。我有阿里云高级人工智能训练师证书，实战派不是纸上谈兵。</div>
+          <div class="sv-tags"><span>提示词工程</span><span>论文辅助</span><span>效率提升</span></div>
+        </div>
+
+        <div class="service-card reveal-up">
+          <div class="sv-hit">80%</div>
+          <div class="sv-ic">📊</div>
+          <div class="sv-name">数据可视化</div>
+          <div class="sv-desc">帮同学把课程作业中的图表做得专业好看、帮社团做活动数据统计展示。市场调研报告、年度总结的数据看板都行。</div>
+          <div class="sv-tags"><span>调研报告</span><span>数据看板</span><span>社团总结</span></div>
+        </div>
+
+        <div class="service-card reveal-up">
+          <div class="sv-hit">90%</div>
+          <div class="sv-ic">🤝</div>
+          <div class="sv-name">团队协作与经验分享</div>
+          <div class="sv-desc">组织 AI 学习小组、分享提示词工程技巧、带同学一起做项目。我不只是自己会，更愿意教人带人，一起进步。</div>
+          <div class="sv-tags"><span>学习小组</span><span>项目协作</span><span>经验分享</span></div>
+        </div>
+
+        <div class="service-card reveal-up">
+          <div class="sv-hit">PROJECT</div>
+          <div class="sv-ic">💪</div>
+          <div class="sv-name">健身项目交流</div>
+          <div class="sv-desc">我的个人作品「Felix Chu 健身训练工作台」——前端 + AI 教练 + 部署全链路。对计算机或体育感兴趣的同学可以一起交流。</div>
+          <div class="sv-tags"><span>前端开发</span><span>AI 建档</span><span>力量训练</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- SKILLS -->
   <section class="section" id="skills">
@@ -590,14 +704,85 @@
       </div>
     </div>
   </section>
+
+  <!-- INTERESTS: 正在学习 / 感兴趣 -->
+  <section class="section" id="interests">
+    <div class="container">
+      <div class="sec-head reveal-up">
+        <div>
+          <div class="sec-idx">05 / INTERESTS</div>
+          <h2 class="sec-title">正在<em>学习</em> · 感兴趣</h2>
+          <div class="sec-desc">交友不只是「我能给你什么」，还有「我想和你一起做什么」。以下是我的兴趣和正在探索的方向，如果你也感兴趣，随时来聊～</div>
+        </div>
+      </div>
+
+      <div class="interests-wrap">
+        <div class="interest-block reveal-up">
+          <h3>兴趣 & 热爱</h3>
+          <div class="ib-sub">HOBBIES & PASSIONS</div>
+          <div class="ib-tags">
+            <span class="it heat">💪 健身 / 力量训练</span>
+            <span class="it heat">🤖 AI / 提示词工程</span>
+            <span class="it heat">🎨 视觉设计 / PPT 叙事</span>
+            <span class="it">💻 前端开发 / 部署</span>
+            <span class="it">🌱 环境工程 / 生态学</span>
+            <span class="it">📖 读书 & 自我管理</span>
+          </div>
+          <div class="ib-note">健身是我坚持最久的习惯，也是我做「训练工作台」的初心。如果你也在健身或有想开始训练的打算，我们可以一起交流计划、互相监督。</div>
+        </div>
+
+        <div class="interest-block reveal-up">
+          <h3>正在探索</h3>
+          <div class="ib-sub">CURRENTLY LEARNING</div>
+          <div class="ib-tags">
+            <span class="it heat">🔑 DeepSeek / 大模型 API</span>
+            <span class="it heat">☁️ Cloudflare Workers / Pages</span>
+            <span class="it">📦 GitHub Actions 自动化</span>
+            <span class="it">🎨 Three.js / GSAP 动效</span>
+            <span class="it">📊 数据可视化 / D3.js</span>
+            <span class="it">🧪 Python / 数据分析</span>
+          </div>
+          <div class="ib-note">目前在做的事：把 AI 能力接入真实场景（健身教练、PPT 辅助），从需求到部署全链路自己跑通。如果你也在学这些技术，我们可以一起做项目。</div>
+        </div>
+
+        <div class="interest-block reveal-up" style="grid-column:1 / -1;">
+          <h3>想认识这样的你</h3>
+          <div class="ib-sub">LOOKING FOR</div>
+          <div class="ib-tags">
+            <span class="it heat">🎯 对 AI / 科技有热情的同学</span>
+            <span class="it heat">🎯 喜欢设计 / 视觉表达的同学</span>
+            <span class="it heat">🎯 在健身或想开始训练的同学</span>
+            <span class="it">🎯 环境工程专业的学长学姐</span>
+            <span class="it">🎯 愿意一起做项目的伙伴</span>
+            <span class="it">🎯 喜欢分享 & 乐于交流的人</span>
+          </div>
+          <div class="ib-note">我不只是想「推销自己」，更想找到志同道合的人一起成长。如果你看到这里觉得「这个人还挺有意思」，那就来找我聊聊吧 👇</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
       <h3>把复杂，<em>显影</em>为简单。</h3>
+      <div class="contact-cards">
+        <a class="contact-card" href="tel:19720817095">
+          <span class="cc-ic">📞</span>
+          <div><div class="cc-label">PHONE</div><div class="cc-val">19720817095</div></div>
+        </a>
+        <a class="contact-card" href="mailto:2655732386@qq.com">
+          <span class="cc-ic">📧</span>
+          <div><div class="cc-label">QQ MAIL</div><div class="cc-val">2655732386@qq.com</div></div>
+        </a>
+        <a class="contact-card" href="#interests">
+          <span class="cc-ic">💬</span>
+          <div><div class="cc-label">WECHAT / QQ</div><div class="cc-val">2655732386</div></div>
+        </a>
+      </div>
       <div class="meta">
-        瞿德旺 · 19720817095<br>
-        QQ 邮箱：2655732386@qq.com<br>
-        视觉设计 + AI 应用 · 持续显影中
+        瞿德旺 Felix Chu · 视觉设计 + AI 应用 · 持续显影中<br>
+        在校同学有 PPT / AI / 数据可视化需求，欢迎随时找我聊～
       </div>
     </div>
   </footer>
